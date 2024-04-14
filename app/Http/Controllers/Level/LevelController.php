@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Level;
 
+use App\Constants\Constants;
 use App\Models\system\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class LevelController extends Controller
@@ -19,6 +21,10 @@ class LevelController extends Controller
 
     public function index()
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+
+        }
         $d['level'] = $this->level->getLevel();
         return view("pages.system_settings.level.index", $d);
     }

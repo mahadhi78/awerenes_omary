@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Course;
 
-use App\Helpers\Common;
 use DOMDocument;
+use App\Helpers\Common;
+use App\Constants\Constants;
 use Illuminate\Http\Request;
+use App\Models\system\Lesson;
 use App\Models\system\Courses;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Level\LevelDaoImpl;
-use App\Models\system\Lesson;
 
 class LessonController extends Controller
 {
@@ -25,12 +27,19 @@ class LessonController extends Controller
 
     public function index()
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+
+        }
         $d['course'] = $this->course->getCourse();
         $d['levels'] = $this->level->getAlevelByIdAndName();
         return view("pages.C_M_L_manage.lessons.index", $d);
     }
     public function create()
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+        }
         $d['course'] = $this->course->getCourse();
         $d['levels'] = $this->level->getAlevelByIdAndName();
         return view("pages.C_M_L_manage.lessons.create", $d);

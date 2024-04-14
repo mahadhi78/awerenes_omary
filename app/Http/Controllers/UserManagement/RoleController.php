@@ -26,7 +26,10 @@ class RoleController extends Controller
 
     public function index(Request $request)
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
 
+        }
         $d['roles'] = $this->roles->getAllRoles();
         return view('pages.user_management.roles.index', $d);
     }
@@ -34,6 +37,10 @@ class RoleController extends Controller
 
     public function create()
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+
+        }
         $user = Auth::user();
 
         if ($user->hasRole(Constants::ROLE_SUPER_ADMINISTRATOR)) {
@@ -141,6 +148,10 @@ class RoleController extends Controller
 
     public function edit($id)
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+
+        }
         $user = Auth::user();
         $role = Role::findOrFail($id);
         $rolePermissions = DB::table('role_has_permissions')->where('role_id', $role->id)->pluck('permission_id')->toArray();

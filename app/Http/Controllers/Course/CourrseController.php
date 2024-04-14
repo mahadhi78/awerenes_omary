@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Course;
 
 use App\Helpers\Common;
+use App\Constants\Constants;
 use Illuminate\Http\Request;
 use App\Models\system\Courses;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Level\LevelDaoImpl;
+use App\Http\Controllers\Course\CourseDaoImpl;
 
 class CourrseController extends Controller
 {
@@ -23,7 +26,9 @@ class CourrseController extends Controller
 
     public function index()
     {
-        
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+        }        
         $d['course'] = $this->course->getCourse();
         $d['levels'] = $this->level->getAlevelByIdAndName();
         return view("pages.C_M_L_manage.course.index", $d);
@@ -69,6 +74,10 @@ class CourrseController extends Controller
 
     public function coursePreview($id)
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+
+        }
         $id = Common::decodeHash($id);
         $d['course'] = $this->course->getCourseById($id)->c_name;
         $d['modules'] = $this->course->getModuleByCourseId($id);

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\approval;
 
 use App\Constants\Constants;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\UserManagement\Dao\UserDaoImpl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\UserManagement\Dao\UserDaoImpl;
 
 class UserApprovalController extends Controller
 {
@@ -20,6 +21,10 @@ class UserApprovalController extends Controller
     }
     public function index()
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+
+        }
         $d['users'] = $this->userDaoImpl->getUnApprovedUsers();
         return view('pages.approval.users.index', $d);
     }

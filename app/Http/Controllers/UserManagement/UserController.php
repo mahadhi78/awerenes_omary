@@ -35,6 +35,10 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+
+        }
         $d['users'] = $this->userDaoImpl->getApprovedUsers();
         $d['activeStatus'] = Constants::STATUS_ACTIVE;
         return view('pages.user_management.users.index', $d);
@@ -49,6 +53,10 @@ class UserController extends Controller
     }
     public function edit($id)
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+
+        }
         $d['roles'] = $this->roleDaoImpl->getRoleNotLikeAdmin();
         $user = $this->userDaoImpl->findUserById($id);
         if ($user) {

@@ -54,6 +54,12 @@ class CourseDaoImpl implements CourseDao
         return Courses::findOrFail($id)->delete();
     }
 
+    // fetch last 5 course in table
+    public function fetchLastFiveData()
+    {
+        return  Courses::orderBy('created_at', 'desc')->take(5)->get();
+    }
+
 
     /// modules
     public function getModule()

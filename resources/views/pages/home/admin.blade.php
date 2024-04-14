@@ -57,42 +57,4 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-6">
-        <div class="ibox ">
-            <div class="ibox-title">
-                <h5>Inputs <small>Statistics.</small></h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <div class="flot-chart">
-                    <div class="flot-chart-content" id="flot-bar-chart" style="padding: 0px; position: relative;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-        <div class="col-lg-6">
-        <div class="ibox ">
-            <div class="ibox-title">
-                <h5>Logbook <small>Report.</small></h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <div class="flot-chart">
-                    <div class="flot-chart-content" id="logbook" style="padding: 0px; position: relative;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-</div>

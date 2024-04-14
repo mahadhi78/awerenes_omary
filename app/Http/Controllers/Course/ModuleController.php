@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Course;
 
 use App\Helpers\Common;
+use App\Constants\Constants;
 use Illuminate\Http\Request;
 use App\Models\system\Courses;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-
-use App\Http\Controllers\Level\LevelDaoImpl;
 use App\Models\system\Modules;
+use Illuminate\Support\Facades\Log;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Level\LevelDaoImpl;
 
 class ModuleController extends Controller
 {
@@ -61,6 +63,10 @@ class ModuleController extends Controller
 
     public function modulePreview($id)
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+
+        }
         $id = Common::decodeHash($id);
         $d['modules'] = $this->course->getLessonByModuleId($id);
         // 

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\setting;
 
 use App\Helpers\Common;
-use App\Http\Controllers\setting\Dao\SettingDaoImp;
+use App\Constants\Constants;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\setting\Dao\SettingDaoImp;
 use App\Http\Controllers\setting\UpdateSettingRequest;
 
 
@@ -19,6 +21,10 @@ class SettingController extends Controller
 
     public function index()
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+
+        }
         $s = $this->settings->getAllsettings();
         $d['s'] = $s->flatMap(function ($s) {
             return [$s->type => $s->description];

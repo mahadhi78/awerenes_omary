@@ -5,8 +5,7 @@
                 <th>#</th>
                 <th>Full Name</th>
                 <th>Email</th>
-                <th>Phone Number</th>
-                <th>Gender</th>
+                <th>User Type</th>
                 <th>Approval Status</th>
                 <th>Action</th>
             </tr>
@@ -17,13 +16,12 @@
                     <td>{{ $loop->iteration }}</td>
                     <td> {{ $list->firstname }} {{ $list->middlename }} {{ $list->lastname }}</td>
                     <td>{{ $list->email }}</td>
-                    <td>{{ $list->phone_number }}</td>
-                    <td>{{ $list->gender }}</td>
+                    <td>{{ $list->userType }}</td>
                     <td>
                         <p class="badge bg-info">{{ $list->is_approved }}</p>
                     </td>
                     <td>
-                        @if (Gate::check('staffs_approval-edit'))
+                        @if (Gate::check('user_approval-edit'))
                             <a class='btn btn-default' onclick="approvaStaff({{ $list->id }})">
                                 <i class="fa fa-check"></i>
                             </a>

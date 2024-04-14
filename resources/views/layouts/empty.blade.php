@@ -49,19 +49,30 @@
                             </li>
                         </ul>
                         <ul class="nav navbar-top-links navbar-right">
-                            
-                            <li>
-                                <a href="{{ route('register')}}">
-                                    <i class="fa fa-download"></i> Register
-                                </a>
-                                
-                            </li>
-                            <li>
-                                <a href="{{ route('login')}}">
-                                    <i class="fa fa-download"></i> Login
-                                </a>
-                                
-                            </li>
+                            @if (Auth::check())
+                                <li>
+                                    <a href="{{ route('logout') }}"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="fa fa-download"></i> Logout
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                    </form>
+                                </li>
+                            @else
+                                <li>
+                                    <a href="{{ route('register') }}">
+                                        <i class="fa fa-download"></i> Register
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('login') }}">
+                                        <i class="fa fa-download"></i> Login
+                                    </a>
+                                </li>
+                            @endif
+
                         </ul>
                     </div>
                 </nav>
@@ -70,14 +81,16 @@
                 <div class="container">
                     <div class="col-lg-12">
                         @yield('content')
-
-
                     </div>
 
                 </div>
             </div>
+
+
         </div>
     </div>
+    @include('layouts.partials.script')
+    @include('layouts.partials.alert')
 </body>
 
 

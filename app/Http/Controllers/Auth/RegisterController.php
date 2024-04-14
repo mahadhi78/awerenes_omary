@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use App\Constants\Constants;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
+use App\Models\UserManagement\CustomUser;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Http\Controllers\UserManagement\Dao\UserDaoImpl;
 
 class RegisterController extends Controller
 {
+
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -30,6 +35,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
+
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
@@ -58,37 +64,32 @@ class RegisterController extends Controller
     }
 
 
-    protected function create(array $data)
+    public function create()
     {
-       return view('auth.register');
+        return view('auth.register');
     }
 
-   function generateRandomPassword($length) {
-        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $password = '';
-        for ($i = 0; $i < $length; $i++) {
-            $password .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $password;
-    }
-
-       function generateRandomNumber($length) {
-        $characters = '0123456789';
-        $charactersLength = strlen($characters);
-        $password = '';
-        for ($i = 0; $i < $length; $i++) {
-            $password .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $password;
-    }
-
-
-
-
-     public function registerUser(Request $request)
+    public function save(Request $request)
     {
+        $request->validate(CustomUser::$learner_register);
+        $data = $request->all();
+        try {
+            $data['password'] = bcrypt($data['password']);
+            $data['userType'] = Constants::LEARNER;
+            $user = CustomUser::create($data);
+            // 
 
+            $response = 'Data Saved  Successfully';
+            Log::channel('daily')->info($response . ' ' . $user);
+            return ['success' => true, 'response' => $response];
+        } catch (\Exception $error) {
+            $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+            Log::channel('daily')->error($response . ' ' . $error->getMessage());
+
+            return response()->json([
+                'error' => false,
+                'response' => $response,
+            ]);
+        }
     }
-
 }

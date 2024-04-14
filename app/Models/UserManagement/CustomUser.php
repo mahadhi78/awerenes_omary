@@ -17,6 +17,7 @@ class CustomUser extends Model
 		'firstname',
 		'middlename',
 		'lastname',
+		'username',
 		'dob',
 		'phone_number',
 		'email',
@@ -44,6 +45,15 @@ class CustomUser extends Model
 		'password' => 'required',
 		'username' => 'required|unique:users|min:8|max:50',
 		'email' => ['required', 'string', 'email', 'unique:users', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
+	];
+
+	public static $learner_register = [
+		'firstname' => 'required',
+		'middlename' => 'required',
+		'lastname' => 'required',
+		'username' => 'required|unique:users|min:8|max:50',
+		'email' => ['required', 'string', 'email', 'unique:users', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
+		'password' => ['required', 'string', 'min:8', 'confirmed'],
 	];
 	public static $update_rules = [
 		'firstname' => 'required',

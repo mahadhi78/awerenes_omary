@@ -26,20 +26,20 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-        /**
+    /**
      * Auth guard
      *
      * @var
      */
     protected $auth;
-    
-     /**
+
+    /**
      * lockoutTime
      *
      * @var
      */
     //protected $lockoutTime;
-    
+
     /**
      * maxLoginAttempts
      *
@@ -59,7 +59,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-   /**
+    /**
      * Create a new controller instance.
      *
      * LoginController constructor.
@@ -74,40 +74,41 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        // 1) we validate the request
-        $this->validateLogin($request);
-        
+        $request->validate([
+            'username_email' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
             return $this->sendLockoutResponse($request);
         }
         
-        // 3) now we can attempte the login
-        $email      = $request->get('email');
-        $password   = $request->get('password');
-        $remember   = $request->get('remember');
-
-        if (Auth::attempt([
-            'email'     => $email,
-            'password'  => $password,
-            'status'  => Constants:: STATUS_ACTIVE,
-            'activation_status'  => Constants:: STATUS_ACTIVE,
-        ], $remember == 1 ? true : false)) {
-            // SUCCESS: If the login attempt was successful we redirect to the dashboard. but first, we 
-            // clear the login attempts session
+        // Attempt the login using both email and username
+        $credentials = $request->only('username_email', 'password');
+        $remember = $request->filled('remember');
+        if (
+            Auth::attempt(['email' => $credentials['username_email'], 'password' => $credentials['password'], 'status' => Constants::STATUS_ACTIVE, 'activation_status' => Constants::STATUS_ACTIVE], $remember)
+            || Auth::attempt(['username' => $credentials['username_email'], 'password' => $credentials['password'], 'status' => Constants::STATUS_ACTIVE, 'activation_status' => Constants::STATUS_ACTIVE], $remember)
+        ) {
+            // Successful login
             $request->session()->regenerate();
             $this->clearLoginAttempts($request);
             // return redirect()->route('home');
+            if (Auth::user()->userType == Constants::LEARNER) {
+
+                return redirect()->intended('/learning/home');
+            }
             return redirect()->intended('/home');
-        }
-        else {
+
+        } else {
             // FAIL: If the login attempt was unsuccessful we will increment the number of attempts
             // to login and redirect the user back to the login form. Of course, when this
             // user surpasses their maximum number of attempts they will get locked out.
             $this->incrementLoginAttempts($request);
-            
+
             return redirect()->back()
-                ->with('message','Incorrect Credentials')
+                ->with('message', 'Incorrect Credentials')
                 ->with('status', 'danger')
                 ->withInput();
         }

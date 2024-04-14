@@ -5,8 +5,6 @@
                 <th>#</th>
                 <th>Full Name</th>
                 <th>Email</th>
-                <th>Phone Number</th>
-                <th>Gender</th>
                 <th> Status</th>
                 @canany(['staffs-edit', 'staffs-delete'])
                     <th>Action</th>
@@ -14,15 +12,12 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $list)
+            @foreach ($leaners as $list)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td> {{ $list->firstname }} {{ $list->middlename }} {{ $list->lastname }}</td>
                     <td>{{ $list->email }}</td>
-                    <td>{{ $list->phone_number }}</td>
-                    <td>{{ $list->gender }}</td>
                     <td>
-
                         @if ($list->status == $activeStatus)
                             <span class="badge bg-primary">{{ $list->status }}</span>
                         @else

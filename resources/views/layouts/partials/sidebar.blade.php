@@ -65,11 +65,11 @@
             <span class="fa arrow"></span>
         </a>
         <ul class="nav nav-second-level collapse">
-
-            @if (Gate::check('staffs_approval-list'))
+            @if (Gate::check('user_approval-list'))
                 <li>
-                    <a href="{{ route('staffs_approval.list') }}" data-route="staffs_approval.list">Staff
-                        Registration</a>
+                    <a href="{{ route('user_approval.list') }}" data-route="user_approval.list">
+                        Registration
+                    </a>
                 </li>
             @endif
         </ul>
@@ -88,6 +88,11 @@
             @if (Gate::check('staffs-list') || Gate::check('staffs-edit') || Gate::check('staffs-delete'))
                 <li>
                     <a href="{{ route('staffs.list') }}" data-route="staffs.list">Staff's' Details</a>
+                </li>
+            @endif
+            @if (Gate::check('staffs-list') || Gate::check('staffs-edit') || Gate::check('staffs-delete'))
+                <li>
+                    <a href="{{ route('learners.list') }}" data-route="learners.list">Learner's Details</a>
                 </li>
             @endif
         </ul>

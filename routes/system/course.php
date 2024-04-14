@@ -5,6 +5,11 @@ use App\Http\Controllers\Course\LessonController;
 use App\Http\Controllers\Course\ModuleController;
 use App\Http\Controllers\Course\CourrseController;
 
+
+Route::get('/course/preview/{id}', [CourrseController::class, 'coursePreview'])->name('course.preview');
+
+Route::get('/module/preview/{id}', [ModuleController::class, 'modulePreview'])->name('module.preview');
+
 Route::group(['prefix' => 'system'], function () {
     Route::get('/course', [CourrseController::class, 'index'])->name('course.list');
     Route::post('/course/save', [CourrseController::class, 'store'])->name('course.save');
@@ -28,5 +33,4 @@ Route::group(['prefix' => 'system'], function () {
     Route::get('/lesson/edit', [LessonController::class, 'edit'])->name('lesson.edit');
     Route::post('/lesson/update', [LessonController::class, 'update'])->name('lesson.update');
     Route::post('/lesson/delete', [LessonController::class, 'destroy'])->name('lesson.destroy');
-
 });

@@ -21,7 +21,8 @@ class LeanerController extends Controller
 
     public function index(Request $request)
     {
-        $d['leaner'] = $this->userDaoImpl->getApprovedUsers();
+        $d['leaners'] = $this->userDaoImpl->getApprovedlearners();
+        $d['activeStatus']  = Constants::STATUS_ACTIVE;
         return view('pages.user_management.leaner.index', $d);
     }
 
@@ -91,7 +92,8 @@ class LeanerController extends Controller
                 try {
                     $data['password'] = bcrypt($data['password']);
                     $data['userType'] = Constants::LEARNER;
-                    $user = $this->userDaoImpl->createUser($data);
+                    $user = CustomUser::create($data);
+
                     // 
 
                     $response = 'Data Saved  Successfully';

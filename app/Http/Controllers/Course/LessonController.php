@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Course;
 
 use App\Helpers\Common;
+use DOMDocument;
 use Illuminate\Http\Request;
 use App\Models\system\Courses;
 use Illuminate\Support\Facades\Log;
@@ -50,6 +51,7 @@ class LessonController extends Controller
                 return ['success' => 'failure', 'response' => $response];
             }
 
+            $data['description'] = $this->uploadBySummernote($data['description']);
             try {
                 $school = $this->course->createLesson($data);
                 if ($school) {
@@ -65,6 +67,26 @@ class LessonController extends Controller
         }
     }
 
+    protected function uploadBySummernote($description)
+    {
+        $dom = new DomDocument();
+        $dom->loadHtml($description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $imageFile = $dom->getElementsByTagName('imageFile');
+
+        foreach ($imageFile as $item => $image) {
+            $data = $img->getAttribute('src');
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $imgeData = base64_decode($data);
+            $image_name = "/upload/" . time() . $item . '.png';
+            $path = public_path() . $image_name;
+            file_put_contents($path, $imgeData);
+
+            $image->removeAttribute('src');
+            $image->setAttribute('src', $image_name);
+        }
+        return $dom->saveHTML();
+    }
 
     public function show($id)
     {

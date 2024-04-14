@@ -4,7 +4,7 @@
 @endsection
 @section('page_title', 'Staffs Approval')
 @section('content')
-    @if (Gate::check('staffs_approval-list') || Gate::check('staffs_approval-edit'))
+    @if (Gate::check('user_approval-list') || Gate::check('user_approval-edit'))
         <div class="wrapper wrapper-content animated fadeInRight">
             <div class="row">
                 <div class="col-lg-12">
@@ -13,7 +13,7 @@
                             <div class="row ml-2">
                                 <a href="javascript:history.back()"
                                     class="btn btn-default  fa fa-arrow-circle-left"></a>&nbsp;&nbsp;
-                                    <h4>Staff Registration Approval</h4>
+                                    <h4>Users Registration Approval</h4>
                                 &nbsp;&nbsp;
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                 function approvaStaff(id) {
                     var formData = new FormData()
                     formData.append('id', id);
-                    var url = "{{ route('staffs_approval.edit') }}";
+                    var url = "{{ route('user_approval.edit') }}";
                     ApproveData(formData, url);
                 }
             </script>

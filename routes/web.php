@@ -25,13 +25,14 @@ use App\Http\Controllers\LoginHistory\LoginHistoryController;
 Route::fallback(function () {
     return view('404');
 });
-Route::get('/', [HomeFController::class, 'index'])->name('frontend.home');
+Route::get('/', [HomeController::class, 'index'])->name('frontend.home');
 
 
 require __DIR__ . '/activities/path.php';
 
 Route::get('/login', ['as' => 'login', 'uses' => 'App\Http\Controllers\Auth\LoginController@showLoginForm']);
-Route::get('/register', [RegisterController::class, 'create'])->name('register');
+Route::get('/registration', [RegisterController::class, 'create'])->name('registration');
+Route::post('/registration/post', [RegisterController::class, 'save'])->name('registration.save');
 
 Auth::routes();
 Route::post('password-resets', [UserController::class, 'resetPassword'])->name('password.resets');
@@ -41,6 +42,7 @@ Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
     Route::post('/logout', ['as' => 'logout', 'uses' => 'LoginController@logout']);
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/learning/home', [HomeController::class, 'learning'])->name('learning.home');
 
     Route::get('/system/LoginHistory', [LoginHistoryController::class, 'index'])->name('LoginHistory');
 

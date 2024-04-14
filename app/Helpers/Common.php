@@ -93,24 +93,6 @@ class Common extends Qs
         // return AcademicYear::where("status", Constants::STATUS_ACTIVE)->value('current_year');
         // return self::AcademicYear('current_year');
     }
-    public static function schoolDataByUserLogin($data)
-    {
-        return School::where('id', Auth()->user()->school_id)->value($data);
-    }
-
-    public static function getScholName()
-    {
-        return self::schoolDataByUserLogin('sc_name');
-    }
-    public static function getSchoolLogo()
-    {
-        return self::schoolDataByUserLogin('logo');
-    }
-    public static function getSchoolInitial()
-    {
-        return self::schoolDataByUserLogin('initial');
-    }
-
 
     public static function permissionsData()
     {

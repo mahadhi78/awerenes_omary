@@ -59,6 +59,15 @@ class ModuleController extends Controller
         }
     }
 
+    public function modulePreview($id)
+    {
+        $id = Common::decodeHash($id);
+        $d['modules'] = $this->course->getLessonByModuleId($id);
+        // 
+
+        return view("pages.C_M_L_manage.module.preview.index", $d);
+        //
+    }
 
     public function show($id)
     {

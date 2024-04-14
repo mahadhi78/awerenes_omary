@@ -15,7 +15,12 @@
             @foreach ($course as $list)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $list->c_name }}</td>
+                    <td>
+                        <a class='text text-primary' href="{{ route('course.preview', Common::hash($list->id)) }}">
+                            {{ $list->c_name }}
+                            <i class="fa fa-eye"></i>
+                        </a>
+                    </td>
                     <td>{{ $list->level_name }}</td>
                     <td>
                         @if ($logo = $list->c_logo)

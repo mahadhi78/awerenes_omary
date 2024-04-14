@@ -23,31 +23,22 @@ class UserDaoImpl implements UserDao
 
     public function getUnApprovedUsers()
     {
-        if (Auth::user()->hasRole(Constants::ROLE_SUPER_ADMINISTRATOR)) {
-            $data = CustomUser::where('is_approved', Constants::PENDING)->get();
-        } else if (Auth::user()->hasRole(Constants::ROLE_ADMINISTRATOR)) {
-            $data = CustomUser::where('is_approved', Constants::PENDING)->whereNull('is_super_admin')->get();
-        } else {
-            $data = CustomUser::where('is_approved', Constants::PENDING)->where('school_id', Auth::user()->school_id)->get();
-        }
-        return $data;
+        return CustomUser::where('is_approved', Constants::PENDING)->get();
     }
 
     public function getApprovedUsers()
     {
-        if (Auth::user()->hasRole(Constants::ROLE_SUPER_ADMINISTRATOR) || Auth::user()->hasRole(Constants::ROLE_ADMINISTRATOR)) {
-            $data = CustomUser::where('is_approved', Constants::APPROVED)->get();
-        } elseif (Auth::user()->hasRole(Constants::ROLE_ADMINISTRATOR)) {
-            $data = CustomUser::where('is_approved', Constants::APPROVED)->get();
-        } else {
-            if ($school_id = Auth::user()->school_id) {
-                $data = CustomUser::where('is_approved', Constants::APPROVED)->where('school_id', $school_id)->get();
-            }
-        }
+        $data = CustomUser::where('is_approved', Constants::APPROVED)->where('userType',Constants::STAFF)->get();
+
         return $data;
     }
 
+    public function getApprovedlearners()
+    {
+        $data = CustomUser::where('is_approved', Constants::APPROVED)->where('userType',Constants::LEARNER)->get();
 
+        return $data;
+    }
 
     public function findUserById($id)
     {

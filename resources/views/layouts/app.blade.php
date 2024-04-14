@@ -43,8 +43,9 @@
                 <ul class="nav metismenu" id="side-menu" style="">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <img src="@if (!empty(Auth::user()->school_id)) {{ asset(Common::getSchoolLogo()) }}  @elseif(empty(Auth::user()->school_id )){{ asset(Common::getSystemLogo()) }}@else{{ asset('images/SchoolLog.jpg') }} @endif"
-                                class="profile-image  img-circle align-items-center ml-3" width="80px" height="95px" alt="School Logo">
+                            <img src="@if (Common::getSystemLogo()) {{ asset(Common::getSystemLogo()) }}@else{{ asset('images/SchoolLog.jpg') }} @endif"
+                                class="profile-image  img-circle align-items-center ml-3" width="80px" height="95px"
+                                alt="School Logo">
                         </div>
                     </li>
                     @include('layouts.partials.sidebar')

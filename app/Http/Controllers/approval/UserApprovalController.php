@@ -35,20 +35,10 @@ class UserApprovalController extends Controller
                 $user->update([
                     'status' => Constants::STATUS_ACTIVE,
                     'activation_status' => Constants::STATUS_ACTIVE,
-                    'is_approved'=>Constants::APPROVED,
-                    'password' => bcrypt($password)
+                    'is_approved' => Constants::APPROVED,
                 ]);
-
-                $email = $user->email;
-                $name = $user->firstname.' '.$user->middlename.' '.$user->lastname;
-                if ($user) {
-                    Mail::send('emails.staff_approval', ['email' => $email, 'name' => $name,'password'=>$password], function ($message) use ($user) {
-                        $message->to($user->email);
-                        $message->subject('Staff Registration Approval');
-                    });
-                    $response = 'Data Approved Successfully';
-                    return ['success' => true, 'response' => $response];
-                }
+                $response = 'Data Approved Successfully';
+                return ['success' => true, 'response' => $response];
             } catch (\Exception $error) {
                 $response = 'Operation Failed,Please Contact System Administrator ' . $error;
                 return ['success' => 'failure', 'response' => $response];

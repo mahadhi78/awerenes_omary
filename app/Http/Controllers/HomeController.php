@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Common;
+use App\Constants\Constants;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Home\HomeDaoImpl;
 
 class HomeController extends Controller
@@ -22,11 +25,22 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+
+        }
         $d['usersActive'] = $this->home->countStaff();
 
         return view('home',$d);
     }
     
+    public function learning()
+    {
+        $d['usersActive'] = $this->home->countStaff();
+
+        return view('pages.Learn.home',$d);
+
+    }
 
 
 }

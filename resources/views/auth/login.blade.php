@@ -1,6 +1,4 @@
 @extends('auth.auth_master')
-@section('page_title', 'Login ')
-
 @section('content')
     <div class="ibox-content shadow">
         <center>
@@ -26,10 +24,10 @@
                         </div>
                     @endif
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control form-control-lg @error('email') is-invalid @enderror"
-                            name="email" id="email" required autofocus autocomplete="off" />
-                        @error('email')
+                        <label for="username_email">Username / Email</label>
+                        <input type="text" class="form-control form-control-lg @error('username_email') is-invalid @enderror"
+                            name="username_email" id="username_email" required autofocus autocomplete="off" />
+                        @error('username_email')
                             <span class="invalid-feedback">
                                 <p>{{ $message }}</p>
                             </span>

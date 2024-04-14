@@ -85,6 +85,10 @@ class CourseDaoImpl implements CourseDao
     {
         return Modules::findOrFail($id);
     }
+    public function getModuleByCourseId($course_id)
+    {
+        return Modules::where('course_id', $course_id)->get();
+    }
     public function createModule($data)
     {
         return Modules::create($data);
@@ -119,6 +123,12 @@ class CourseDaoImpl implements CourseDao
     public function getLessonById($id)
     {
         return Modules::findOrFail($id);
+    }
+
+    public function getLessonByModuleId($module_id)
+    {
+        return Lesson::join('modules', 'modules.id', '=', 'lessons.module_id')
+            ->where('module_id', $module_id)->get();
     }
     public function createLesson($data)
     {

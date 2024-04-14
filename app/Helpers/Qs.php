@@ -2,6 +2,10 @@
 
 namespace App\Helpers;
 
+use Hashids\Hashids;
+use App\Constants\Constants;
+use Illuminate\Support\Facades\Auth;
+
 class Qs
 {
     public static function iboxTitle($h4Text, $buttons)
@@ -31,7 +35,7 @@ class Qs
             'class-list', 'class-edit', 'class-save',
             'section-list', 'section-edit', 'section-save',
             'subjects-list', 'subjects-edit', 'subjects-save',
-           
+
         ];
         return $data;
     }
@@ -98,4 +102,21 @@ class Qs
             </script>
         ';
     }
+
+    public static function hash($id)
+    {
+        $date = date('dMY') . 'developer';
+        $hash = new Hashids($date, 14);
+        return $hash->encode($id);
+    }
+
+    public static function decodeHash($str, $toString = true)
+    {
+        $date = date('dMY') . 'developer';
+        $hash = new Hashids($date, 14);
+        $decoded = $hash->decode($str);
+        return $toString ? implode(',', $decoded) : $decoded;
+    }
+
+
 }

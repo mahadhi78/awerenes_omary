@@ -23,6 +23,7 @@ class CourrseController extends Controller
 
     public function index()
     {
+        
         $d['course'] = $this->course->getCourse();
         $d['levels'] = $this->level->getAlevelByIdAndName();
         return view("pages.C_M_L_manage.course.index", $d);
@@ -66,10 +67,16 @@ class CourrseController extends Controller
     }
 
 
-    public function show($id)
+    public function coursePreview($id)
     {
+        $id = Common::decodeHash($id);
+        $d['course'] = $this->course->getCourseById($id)->c_name;
+        $d['modules'] = $this->course->getModuleByCourseId($id);
+
+        return view("pages.C_M_L_manage.course.preview.index", $d);
         //
     }
+
 
 
     public function edit($id)
@@ -77,24 +84,12 @@ class CourrseController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

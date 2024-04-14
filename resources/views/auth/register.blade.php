@@ -28,11 +28,15 @@
                     <div class="card shadow gy-4" data-aos="fade-up" data-aos-delay="50">
                         <div class="card-body">
                             <div class="col-lg-12">
-                                <form enctype="multipart/form-data" method="post" action="{{ route('learners.register') }}"
-                                    class="php-email-form" data-aos="fade-up" data-aos-delay="200">
-
+                                <form enctype="multipart/form-data" method="post" action="{{ route('registration.save') }}"
+                                    class="php-form" data-aos="fade-up" data-aos-delay="200">
+                                    @csrf
                                     <div class="row gy-4 mt-3">
-
+                                        @if (Session::has('message'))
+                                            <div class="alert alert-{{ Session::get('status') }}" role="alert">
+                                                {{ Session::get('message') }}
+                                            </div>
+                                        @endif
                                         <div class="form-group row">
                                             <label for="firstname" class="col-lg-2 col-form-label font-weight-semibold">
                                                 {{ __('First Name') }}
@@ -41,9 +45,13 @@
                                             <div class="col-lg-6">
                                                 <input id="firstname" type="text"
                                                     class="form-control @error('firstname') is-invalid @enderror"
-                                                    name="firstname" value="{{ old('firstname') }}" required
-                                                    autocomplete="firstname" autofocus>
-
+                                                    name="firstname" value="{{ old('firstname') }}" autocomplete="firstname"
+                                                    autofocus onkeyup="removeError(firstname)">
+                                                @error('firstname')
+                                                    <span id="firstname-error" class="invalid-feedback" role="alert">
+                                                        <p>{{ $message }}</p>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
 
@@ -56,11 +64,12 @@
                                                 <input id="middlename" type="text"
                                                     class="form-control @error('middlename') is-invalid @enderror"
                                                     name="middlename" value="{{ old('middlename') }}"
-                                                    placeholder="Middle Name" required autocomplete="middlename" autofocus>
+                                                    onkeyup="removeError(middlename)" placeholder="Middle Name"
+                                                    autocomplete="middlename" autofocus>
 
                                                 @error('middlename')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
+                                                    <span id="middlename-error" class="invalid-feedback" role="alert">
+                                                        <p>{{ $message }}</p>
                                                     </span>
                                                 @enderror
 
@@ -75,12 +84,11 @@
                                             <div class="col-lg-6">
                                                 <input id="lastname" type="text"
                                                     class="form-control @error('lastname') is-invalid @enderror"
-                                                    name="lastname" value="{{ old('lastname') }}" required
-                                                    autocomplete="lastname" autofocus>
-
+                                                    name="lastname" value="{{ old('lastname') }}" autocomplete="lastname"
+                                                    autofocus onkeyup="removeError(lastname)">
                                                 @error('lastname')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
+                                                    <span id="lastname-error" class="invalid-feedback" role="alert">
+                                                        <p>{{ $message }}</p>
                                                     </span>
                                                 @enderror
 
@@ -95,12 +103,12 @@
                                             <div class="col-lg-6">
                                                 <input id="username" type="text"
                                                     class="form-control @error('username') is-invalid @enderror"
-                                                    name="username" value="{{ old('username') }}" required
-                                                    autocomplete="username" autofocus>
+                                                    name="username" value="{{ old('username') }}" autocomplete="username"
+                                                    autofocus onkeyup="removeError(username)">
 
                                                 @error('username')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
+                                                    <span id="username-error" class="invalid-feedback" role="alert">
+                                                        <p>{{ $message }}</p>
                                                     </span>
                                                 @enderror
                                             </div>
@@ -113,11 +121,10 @@
                                             <div class="col-lg-6">
                                                 <input id="email" type="email"
                                                     class="form-control @error('email') is-invalid @enderror" name="email"
-                                                    value="{{ old('email') }}" required autocomplete="email">
-
+                                                    value="{{ old('email') }}" autocomplete="email">
                                                 @error('email')
                                                     <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
+                                                        <p>{{ $message }}</p>
                                                     </span>
                                                 @enderror
                                             </div>
@@ -132,11 +139,11 @@
 
                                                 <input id="password" type="password"
                                                     class="form-control @error('password') is-invalid @enderror"
-                                                    name="password" required >
+                                                    name="password">
                                                 @error('password')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
+                                                    <div class="error-message">
+                                                        <p>{{ $message }}</p>
+                                                    </div>
                                                 @enderror
                                             </div>
                                         </div>
@@ -148,13 +155,13 @@
                                             </label>
                                             <div class="col-lg-6">
                                                 <input id="password-confirm" type="password" class="form-control"
-                                                    name="password_confirmation" required >
+                                                    name="password_confirmation">
                                             </div>
                                         </div>
 
                                         <div class="col-md-12 text-center">
                                             <div class="loading">Loading</div>
-                                            <div class="error-message"></div>
+
                                             <div class="sent-message">Your message has been sent. Thank you!</div>
 
                                             <button type="submit">Register</button>
@@ -173,4 +180,11 @@
         </section><!-- /Contact Section -->
 
     </main>
+    @push('scripts')
+        <script>
+            function removeError(fieldName) {
+                document.getElementById(fieldName + '-error').innerHTML = '';
+            }
+        </script>
+    @endpush
 @endsection

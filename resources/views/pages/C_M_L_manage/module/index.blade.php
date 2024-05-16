@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('page_title', 'Course')
+@section('page_title', 'Modules')
 
 @section('content')
     @if (Gate::any(['module-list', 'module-edit', 'module-save']))

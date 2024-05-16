@@ -40,6 +40,9 @@ class UserDaoImpl implements UserDao
         return $data;
     }
 
+    
+
+
     public function findUserById($id)
     {
         return User::find($id);

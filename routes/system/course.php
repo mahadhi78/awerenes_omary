@@ -4,11 +4,18 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Course\LessonController;
 use App\Http\Controllers\Course\ModuleController;
 use App\Http\Controllers\Course\CourrseController;
+use App\Http\Controllers\Phishing\CompaignController;
+use App\Http\Controllers\Phishing\PhishingController;
+use App\Http\Controllers\Phishing\TemplateController;
 
 
 Route::get('/course/preview/{id}', [CourrseController::class, 'coursePreview'])->name('course.preview');
 
 Route::get('/module/preview/{id}', [ModuleController::class, 'modulePreview'])->name('module.preview');
+
+Route::post('/phishing/{temp_name}/{user_id}', [PhishingController::class, 'storePhished'])->name('phishing.storePhished');
+// ->where('temp_name', '\d{4}(?:\/|\-|\_)(?:\d{2,10})')
+
 
 Route::group(['prefix' => 'system'], function () {
     Route::get('/course', [CourrseController::class, 'index'])->name('course.list');
@@ -33,4 +40,25 @@ Route::group(['prefix' => 'system'], function () {
     Route::get('/lesson/edit', [LessonController::class, 'edit'])->name('lesson.edit');
     Route::post('/lesson/update', [LessonController::class, 'update'])->name('lesson.update');
     Route::post('/lesson/delete', [LessonController::class, 'destroy'])->name('lesson.destroy');
+
+    // phishing
+    Route::get('/phishing', [PhishingController::class, 'index'])->name('phishing.list');
+    Route::get('/phishing/post', [PhishingController::class, 'create'])->name('phishing.create');
+    Route::post('/phishing/save', [PhishingController::class, 'store'])->name('phishing.save');
+
+
+
+    //compaign
+    Route::get('/compaign', [CompaignController::class, 'index'])->name('compaign.list');
+    Route::post('/compaign/save', [CompaignController::class, 'store'])->name('compaign.save');
+    Route::get('/compaign/edit', [CompaignController::class, 'edit'])->name('compaign.edit');
+    Route::post('/compaign/update', [CompaignController::class, 'update'])->name('compaign.update');
+    Route::post('/compaign/delete', [CompaignController::class, 'destroy'])->name('compaign.destroy');
+
+    //template
+    Route::get('/template', [TemplateController::class, 'index'])->name('template.list');
+    Route::post('/template/save', [TemplateController::class, 'store'])->name('template.save');
+    Route::get('/template/edit', [TemplateController::class, 'edit'])->name('template.edit');
+    Route::post('/template/update', [TemplateController::class, 'update'])->name('template.update');
+    Route::post('/template/delete', [TemplateController::class, 'destroy'])->name('template.destroy');
 });

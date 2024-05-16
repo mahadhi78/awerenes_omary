@@ -63,7 +63,10 @@ class Qs
     public static function approvalPermissions()
     {
         $data = [
-            'staffs_approval-list'
+            'course-list', 'course-edit', 'course-save', 'course-destroy',
+            'module-list', 'module-edit', 'module-save', 'module-destroy',
+            'lesson-list', 'lesson-edit', 'lesson-save', 'lesson-destroy',
+
         ];
         return $data;
     }
@@ -81,6 +84,34 @@ class Qs
             <script>
                 $(function() {
                     $(\'#dataTableList\').DataTable({
+                        "processing": true,
+                        "pageLength": 10,
+                        "pagingType": "full_numbers",
+                        "scrollCollapse": true,
+                        "language": {
+                            "lengthMenu": "Show _MENU_",
+                        },
+                        "dom": "<\'row\'" +
+                            "<\'col-sm-6 d-flex align-items-center justify-conten-start\'l>" +
+                            "<\'col-sm-6 d-flex align-items-center justify-content-end\'f>" +
+                            ">" +
+                            "<tr>" +
+                            "<\'row\'" +
+                            "<\'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start\'i>" +
+                            "<\'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end\'p>" +
+                            ">"
+                    });
+                })
+            </script>
+        ';
+    }
+
+    public static function renderDataTable2()
+    {
+        return '
+            <script>
+                $(function() {
+                    $(\'#dataTableList2\').DataTable({
                         "processing": true,
                         "pageLength": 10,
                         "pagingType": "full_numbers",

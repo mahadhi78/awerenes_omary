@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($leaners as $list)
+            @foreach ($users as $list)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td> {{ $list->firstname }} {{ $list->middlename }} {{ $list->lastname }}</td>

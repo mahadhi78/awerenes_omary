@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $list)
+            @foreach ($leaners as $list)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td> {{ $list->firstname }} {{ $list->middlename }} {{ $list->lastname }}</td>

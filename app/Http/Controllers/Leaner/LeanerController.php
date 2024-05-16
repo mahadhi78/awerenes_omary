@@ -72,43 +72,4 @@ class LeanerController extends Controller
         }
     }
 
-    public function registerStore(Request $request)
-    {
-        if ($request->ajax()) {
-            $validator = Validator::make($data = $request->all(), CustomUser::$learner_rules);
-            if ($validator->fails()) {
-                return ['success' => false, 'response' => $validator->errors()];
-            }
-            $email = $data['email'];
-            $emalExists = CustomUser::where('email', $email)->first();
-            if ($emalExists) {
-                $response = 'Email Exists';
-                return response()->json([
-                    'success' => 'failure',
-                    'response' => $response,
-                ]);
-            } else {
-
-                try {
-                    $data['password'] = bcrypt($data['password']);
-                    $data['userType'] = Constants::LEARNER;
-                    $user = CustomUser::create($data);
-
-                    // 
-
-                    $response = 'Data Saved  Successfully';
-                    Log::channel('daily')->info($response . ' ' . $user);
-                    return ['success' => true, 'response' => $response];
-                } catch (\Exception $error) {
-                    $response = 'Operation Failed,Please Contact System Administrator ' . $error;
-                    Log::channel('daily')->error($response . ' ' . $error->getMessage());
-
-                    return response()->json([
-                        'error' => false,
-                        'response' => $response,
-                    ]);
-                }
-            }
-        }
-    }
 }

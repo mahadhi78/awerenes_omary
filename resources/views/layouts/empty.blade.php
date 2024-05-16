@@ -89,8 +89,8 @@
 
         </div>
     </div>
-    @include('layouts.partials.script')
-    @include('layouts.partials.alert')
+    @include('layouts.script')
+    @include('layouts.alert')
 </body>
 
 

@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('links')
+
 @section('links')
     <link href="{{ asset('assets/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/plugins/summernote/summernote-bs4.css') }}" rel="stylesheet" />
 @endsection
-@section('page_title', 'Driver Logbook Report')
+@section('page_title', 'Create Lesson')
 
 @section('content')
     @if (Gate::any(['lesson-edit', 'lesson-save']))

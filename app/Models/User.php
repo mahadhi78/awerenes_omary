@@ -34,7 +34,7 @@ class User extends Authenticatable
         'admision_date',
         'activation_status',
         'is_approved',
-        'school_id',
+        'userType',
         'photo_path',
         'email_token'
     ];

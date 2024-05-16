@@ -16,7 +16,7 @@
                             </div>
                         </div>
                         <div class="ibox-content">
-                            @include('pages.user_management.users.table')
+                            @include('pages.user_management.leaner.table')
                         </div>
                     </div>
                 </div>

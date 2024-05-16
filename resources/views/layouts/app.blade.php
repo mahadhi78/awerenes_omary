@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description">
-    <meta name="keywords" content="School Management System">
+    <meta name="keywords" content="Awerenes Management System">
     <meta name="msapplication-TileColor" content="#ffffff">
     @if ($systemLogo = Common::getSystemLogo())
         <link rel = "icon" href ="{{ asset('storage/' . $systemLogo) }}" type = "image/x-icon">
@@ -48,13 +48,13 @@
                                 alt="School Logo">
                         </div>
                     </li>
-                    @include('layouts.partials.sidebar')
+                    @include('layouts.sidebar')
                 </ul>
             </div>
         </nav>
         <div id="page-wrapper" class="gray-bg">
             <div class="row border-bottom">
-                @include('layouts.partials.header')
+                @include('layouts.header')
             </div>
             <div class="wrapper wrapper-content">
                 @yield('content')
@@ -74,8 +74,8 @@
             </div>
         </div>
     </div>
-    @include('layouts.partials.script')
-    @include('layouts.partials.alert')
+    @include('layouts.script')
+    @include('layouts.alert')
 </body>
 
 </html>

@@ -1,7 +1,15 @@
 <li class="{{ Route::currentRouteName() == 'home' ? 'active' : '' }}">
     <a href="{{ route('home') }}" class="{{ Request::is('home') ? 'active' : '' }}">
-        <i class="fa fa-th-large fa-lg"></i>
+        <i class="fa fa-th-large fa-sm"></i>
         <span class="nav-label">Dashboard</span>
+    </a>
+</li>
+
+
+<li class="{{ Route::currentRouteName() == 'phishing.list' ? 'active' : '' }}">
+    <a href="{{ route('phishing.list') }}" class="{{ Request::is('phishing.list') ? 'active' : '' }}">
+        <i class="fa fa-desktop fa-sm"></i>
+        <span class="nav-label">Phishing</span>
     </a>
 </li>
 
@@ -37,7 +45,7 @@
             return Gate::check($permission);
         })->isNotEmpty())
     <li id="staffs">
-        <a href="#"><i class="fa fa-user-plus fa-lg"></i>
+        <a href="#"><i class="fa fa-user-plus fa-sm"></i>
             <span class="nav-label">Users</span>
             <span class="fa arrow"></span>
         </a>
@@ -48,9 +56,9 @@
                 </li>
             @endif
             {{-- @if (Gate::check('learners-save')) --}}
-                <li>
-                    <a href="{{ route('learners.create') }}" data-route="learners.create">Learners</a>
-                </li>
+            <li>
+                <a href="{{ route('learners.create') }}" data-route="learners.create">Learners</a>
+            </li>
             {{-- @endif --}}
 
         </ul>
@@ -60,7 +68,7 @@
             return Gate::check($permission);
         })->isNotEmpty())
     <li id="approval">
-        <a href="#"><i class="fa fa-check-square-o fa-lg"></i>
+        <a href="#"><i class="fa fa-check-square-o fa-sm"></i>
             <span class="nav-label">Approval</span>
             <span class="fa arrow"></span>
         </a>
@@ -79,7 +87,7 @@
             return Gate::check($permission);
         })->isNotEmpty())
     <li id="reports">
-        <a href="#"><i class="fa fa-file-text-o fa-lg"></i>
+        <a href="#"><i class="fa fa-file-text-o fa-sm"></i>
             <span class="nav-label">Reports</span>
             <span class="fa arrow"></span>
         </a>
@@ -111,7 +119,7 @@
             return Gate::check($permission);
         })->isNotEmpty())
     <li id="system-settings">
-        <a href="#"><i class="fa fa-cogs fa-lg"></i>
+        <a href="#"><i class="fa fa-cogs fa-sm"></i>
             <span class="nav-label">System Setting</span>
             <span class="fa arrow"></span>
         </a>
@@ -128,14 +136,12 @@
                 </li>
             @endif
 
-
-
         </ul>
     </li>
 @endif
 
 <li id="security">
-    <a href="#"><i class="fa fa-lock fa-lg"></i>
+    <a href="#"><i class="fa fa-lock fa-sm"></i>
         <span class="nav-label">Security</span>
         <span class="fa arrow"></span>
     </a>

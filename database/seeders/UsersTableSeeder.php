@@ -34,7 +34,7 @@ class UsersTableSeeder extends Seeder
                 'lastname' => 'Ramadahn',
                 'phone_number' => '255755455399',
                 'email' => 'mahadhiramadhan@gmail.com',
-                'email_verified_at' => Carbon::now()->format('Ymd'),
+                'email_verified_at' => Carbon::now(),
                 'password' => bcrypt('mahadhi@12345'),
                 'remember_token' => Str::random(60),
                 'is_super_admin' => true,

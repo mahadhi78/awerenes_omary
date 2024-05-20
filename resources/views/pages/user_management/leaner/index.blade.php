@@ -2,7 +2,7 @@
 @section('links')
     <link href="{{ asset('assets/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 @endsection
-@section('page_title', 'Staff List')
+@section('page_title', 'Leaner List')
 @section('content')
     @if (Gate::check('staffs-list') || Gate::check('staffs-edit') || Gate::check('staffs-delete'))
         <div class="wrapper wrapper-content animated fadeInRight">
@@ -12,7 +12,7 @@
                         <div class="ibox-title">
                             <div class="row ml-2">
                                 <a href="javascript:history.back()" class="btn btn-default  fa fa-arrow-circle-left"></a>
-                                <h4>Staff Details</h4>
+                                <h4>Leaner Details</h4>
                             </div>
                         </div>
                         <div class="ibox-content">

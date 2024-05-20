@@ -29,8 +29,8 @@
                                             src="{{ asset('assets/images/user_logo.jfif') }}">
                                     @endif
                                 </div>
-                                <h3>{{ Auth::user()->firstName }} 
-                                    {{ Auth::user()->lastName }}</h3>
+                                <h3>{{ Auth::user()->firstname }} 
+                                    {{ Auth::user()->lastname }}</h3>
                                 <hr>
 
                                 <div class="text-left">

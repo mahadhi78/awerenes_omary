@@ -42,7 +42,6 @@ class DEmoDataSeeder extends Seeder
                 'email_verified_at' => Carbon::now(),
                 'password' => bcrypt('juma@12345'),
                 'remember_token' => Str::random(60),
-                'school_id' => '1',
                 'status' => Constants::STATUS_ACTIVE,
                 'activation_status' => Constants::STATUS_ACTIVE,
                 'is_approved' => Constants::APPROVED,

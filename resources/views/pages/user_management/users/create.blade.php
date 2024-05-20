@@ -24,10 +24,11 @@
                             </div>
                         </div>
                         <div class="ibox-content">
+
                             <form novalidate id="entryForm" action="" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="box-body">
-                                   
+
                                     <h3><i class="fa fa-info" aria-hidden="true"> Personal info </i></h3>
 
                                     <div class="row">
@@ -108,9 +109,57 @@
                                                 {!! Form::select('roles[]', $roles, [], ['class' => 'form-control form-control-solid', 'id' => 'roles']) !!}
                                             </div>
                                         </div>
-                                        
+                                        <div class="col-md-4">
+                                            <div class="form-group" id="username_validate">
+                                                <label for="username">UserName <i class="text-danger">*</i></label>
+                                                {!! Form::text('username', $user ? $user->username : '', [
+                                                    'placeholder' => 'Enter User Name',
+                                                    'class' => 'form-control form-control-solid',
+                                                    'autocomplete' => 'off',
+                                                    'minLength' => 3,
+                                                    'maxLength' => 30,
+                                                    'id' => 'username',
+                                                ]) !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="password" class=" ">
+                                                    Password: <i class="text-danger">*</i>
+                                                </label>
+                                                <input type="password" required class="form-control " minLength="8"
+                                                    placeholder="Enter Password" name="password" id="password"
+                                                    autocomplete="off" />
+                                            </div>
 
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
 
+                                                <label for="password_confirmation" class=" ">
+                                                    Confirm Password: <i class="text-danger">*</i>
+                                                </label>
+                                                <input type="password" required class="form-control "
+                                                    placeholder="Enter Confirmation Password" name="password_confirmation"
+                                                    minLength="8" autocomplete="off" id="password_confirmation" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h3><i class="fa fa-info" aria-hidden="true"> Password Rules </i></h3>
+
+                                    </div>
+                                    <div class="row  mt-3">
+                                        <span>
+                                            <ol>
+                                                <li>Minimum Password Length should be 8 Characters</li>
+                                                <li>Password must have Capital</li>
+                                                <li>Password must have Small Letters</li>
+                                                <li>Password must have Special Characters( <b
+                                                        class="text-danger">$,&,@,#,*,&,(,),[,]</b> )</li>
+                                            </ol>
+                                        </span>
                                     </div>
                                 </div>
                                 <hr>
@@ -164,6 +213,32 @@
                     $(".indicator-progress").toggle(true);
                     $(".indicator-label").hide();
 
+                    var password = $("#password").val();
+                    var password_confirmation = $("#password_confirmation").val();
+
+                    if (password == "" || password.length < 8) {
+                        swal("Password is Required and Minimum Length must be 8 ", {
+                                icon: "warning"
+                            })
+                            .then((m) => {
+                                window.location.reload();
+
+                            });
+                        return false;
+                    }
+
+                    if (password_confirmation == "" || password_confirmation.length < 8 ||
+                        password_confirmation != password) {
+                        swal("Confirmation Password is Required and Minimum Length must be 8, and must match with the Password ", {
+                                icon: "warning"
+                            })
+                            .then((m) => {
+                                window.location.reload();
+
+                            });
+                        return false;
+                    }
+
                     var formData = new FormData();
                     formData.append('firstname', $("#firstname").val().trim());
                     formData.append('middlename', $("#middlename").val().trim());
@@ -171,6 +246,10 @@
                     formData.append('email', $("#email").val().trim());
                     formData.append('phone_number', $("#phone_number").val().trim());
                     formData.append('roles', $("#roles").val().trim());
+                    formData.append('password', password);
+                    formData.append('password_confirmation', password_confirmation);
+                    formData.append('username', $("#username").val().trim());
+
 
                     if (isUpdate) {
                         formData.append('id', {!! isset($user) ? json_encode($user->id) : 'null' !!});

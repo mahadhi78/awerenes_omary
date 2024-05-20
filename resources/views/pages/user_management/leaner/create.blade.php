@@ -2,7 +2,7 @@
 @section('links')
     <link href="{{ asset('assets/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 @endsection
-@section('page_title', 'Staff Registration')
+@section('page_title', 'Leaner Registration')
 
 @section('content')
     @if (Gate::check('staffs-save'))
@@ -100,9 +100,26 @@
                                         <div class="col-md-4">
                                             <div class="form-group" id="password_validate">
                                                 <label for="password">Password <i class="text-danger">*</i></label>
-                                                <input type="password" required name="password" id="password" class="form-control form-control-solid">
+                                                <input type="password" required name="password" id="password"
+                                                    class="form-control form-control-solid">
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <h3><i class="fa fa-info" aria-hidden="true"> password Rules </i></h3>
+
+                                    </div>
+                                    <div class="row col mt-3">
+                                        <span>
+                                            <ol>
+                                                <li>Minimum Password Length should be 8 Characters</li>
+                                                <li>Password must have Capital</li>
+                                                <li>Password must have Small Letters</li>
+                                                <li>Password must have Special Characters( <b
+                                                        class="text-danger">$,&,@,#,*,&,(,),[,]</b> )</li>
+                                            </ol>
+                                        </span>
                                     </div>
                                 </div>
                                 <hr>

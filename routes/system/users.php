@@ -21,6 +21,8 @@ Route::get('/profile/change-password', [ProfileController::class, 'changePasswor
 
 Route::get('/staff/edit/{id}', [UserController::class, 'edit'])->name('staffs.edit');
 
+Route::get('/learners/edit/{id}', [LeanerController::class, 'edit'])->name('learners.edit');
+
 Route::post('/staff/updatePhoto', [UserController::class, 'updatePhoto'])->name('staffs.updatePhoto');
 
 

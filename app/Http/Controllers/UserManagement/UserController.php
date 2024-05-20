@@ -37,7 +37,6 @@ class UserController extends Controller
     {
         if (Auth::user()->userType == Constants::LEARNER) {
             return redirect()->route('learning.home');
-
         }
         $d['users'] = $this->userDaoImpl->getApprovedUsers();
         $d['activeStatus'] = Constants::STATUS_ACTIVE;
@@ -55,7 +54,6 @@ class UserController extends Controller
     {
         if (Auth::user()->userType == Constants::LEARNER) {
             return redirect()->route('learning.home');
-
         }
         $d['roles'] = $this->roleDaoImpl->getRoleNotLikeAdmin();
         $user = $this->userDaoImpl->findUserById($id);
@@ -86,16 +84,15 @@ class UserController extends Controller
             } else {
 
                 try {
-                    $password = $this->generateRandomPassword(6);
                     $data['userType'] = Constants::STAFF;
-                    $data['password'] = bcrypt($password);
+                    $data['remember_token']= Str::random(60);
+                    $data['password'] = bcrypt($data['password']);
                     $user = $this->userDaoImpl->createUser($data);
 
-                   
-                            $response = 'Data Saved && Email Sent Successfully';
-                            Log::channel('daily')->info($response . ' ' . $user);
-                            return ['success' => true, 'response' => $response];
-                       
+
+                    $response = 'Data Saved && Email Sent Successfully';
+                    Log::channel('daily')->info($response . ' ' . $user);
+                    return ['success' => true, 'response' => $response];
                 } catch (\Exception $error) {
                     $response = 'Operation Failed,Please Contact System Administrator ' . $error;
                     Log::channel('daily')->error($response . ' ' . $error->getMessage());

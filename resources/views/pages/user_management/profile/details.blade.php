@@ -12,7 +12,7 @@
                 <label class="col-lg-4 ">First Name:
                </label>
                 <div class="col-lg-8 d-flex align-items-center">
-                    <span class="fw fs-6 me-2">{{ Auth::user()->firstName }}</span>
+                    <span class="fw fs-6 me-2">{{ Auth::user()->firstname }}</span>
                 </div>
             </div>
             
@@ -20,7 +20,7 @@
                 <label class="col-lg-4 ">Last Name:
                </label>
                 <div class="col-lg-8 d-flex align-items-center">
-                    <span class="fw fs-6 me-2">{{ Auth::user()->lastName }}</span>
+                    <span class="fw fs-6 me-2">{{ Auth::user()->lastname }}</span>
                 </div>
             </div>
             <div class="row">

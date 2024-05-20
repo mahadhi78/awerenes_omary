@@ -22,7 +22,11 @@
             <span class="fa arrow"></span>
         </a>
         <ul class="nav nav-second-level collapse">
-
+            @if (Gate::any(['levels-list', 'levels-edit', 'levels-save', 'levels-destroy']))
+                <li>
+                    <a href="{{ route('levels.list') }}" data-route="levels.list">Levels</a>
+                </li>
+            @endif
             @if (Gate::any(['course-list', 'course-edit', 'course-save', 'course-destroy']))
                 <li>
                     <a href="{{ route('course.list') }}" data-route="course.list">Course</a>
@@ -52,14 +56,25 @@
         <ul class="nav nav-second-level collapse">
             @if (Gate::check('staffs-save'))
                 <li>
-                    <a href="{{ route('staffs.create') }}" data-route="staffs.create">Registration</a>
+                    <a href="{{ route('staffs.create') }}" data-route="staffs.create"> Staff's Registration</a>
                 </li>
             @endif
-            {{-- @if (Gate::check('learners-save')) --}}
-            <li>
-                <a href="{{ route('learners.create') }}" data-route="learners.create">Learners</a>
-            </li>
-            {{-- @endif --}}
+            @if (Gate::check('staffs-list') || Gate::check('staffs-edit') || Gate::check('staffs-delete'))
+                <li>
+                    <a href="{{ route('staffs.list') }}" data-route="staffs.list">Staff's' List</a>
+                </li>
+            @endif
+            @if (Gate::check('learners-save'))
+                <li>
+                    <a href="{{ route('learners.create') }}" data-route="learners.create">Learners Registration</a>
+                </li>
+            @endif
+
+            @if (Gate::check('staffs-list') || Gate::check('staffs-edit') || Gate::check('staffs-delete'))
+                <li>
+                    <a href="{{ route('learners.list') }}" data-route="learners.list">Learner's List</a>
+                </li>
+            @endif
 
         </ul>
     </li>
@@ -93,16 +108,7 @@
         </a>
         <ul class="nav nav-second-level collapse">
 
-            @if (Gate::check('staffs-list') || Gate::check('staffs-edit') || Gate::check('staffs-delete'))
-                <li>
-                    <a href="{{ route('staffs.list') }}" data-route="staffs.list">Staff's' Details</a>
-                </li>
-            @endif
-            @if (Gate::check('staffs-list') || Gate::check('staffs-edit') || Gate::check('staffs-delete'))
-                <li>
-                    <a href="{{ route('learners.list') }}" data-route="learners.list">Learner's Details</a>
-                </li>
-            @endif
+
         </ul>
     </li>
 @endif
@@ -130,11 +136,7 @@
                     <a href="{{ route('settings.list') }}" data-route="settings.list">Configuation</a>
                 </li>
             @endif
-            @if (Gate::any(['levels-list', 'levels-edit', 'levels-save', 'levels-destroy']))
-                <li>
-                    <a href="{{ route('levels.list') }}" data-route="levels.list">Levels</a>
-                </li>
-            @endif
+
 
         </ul>
     </li>

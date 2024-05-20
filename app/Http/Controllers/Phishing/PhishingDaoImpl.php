@@ -44,9 +44,9 @@ class PhishingDaoImpl implements PhishingDao
 
     public function getTemplate()
     {
-        if (Auth::user()->hasRole(Constants::ROLE_SUPER_ADMINISTRATOR)) {
-            $data = Template::withTrashed()->get();
-        }
+        // if (Auth::user()->hasRole(Constants::ROLE_SUPER_ADMINISTRATOR)) {
+        //     $data = Template::withTrashed()->get();
+        // }
         $data = Template::all();
         return $data;
     }

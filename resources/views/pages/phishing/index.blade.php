@@ -66,7 +66,7 @@
 
                                     <div class="tab-pane show" id="new-section3">
                                         <div class="col-lg-12">
-                                            @include('pages.phishing.templates.table')
+                                            @include('pages.phishing.templates.data')
                                         </div>
                                     </div>
                                     <div class="tab-pane show" id="new-section4">

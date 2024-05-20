@@ -29,14 +29,14 @@
                             <span class="badge bg-danger">{{ $list->status }}</span>
                         @endif
                     </td>
-                    @canany(['staffs-edit', 'staffs-delete'])
+                    @canany(['learners-edit', 'learners-delete'])
                         <td>
-                            @can('staffs-edit')
-                                <a href="{{ route('staffs.edit', $list->id) }}" class="btn btn-default btn-xs">
+                            @can('learners-edit')
+                                <a href="{{ route('learners.edit', $list->id) }}" class="btn btn-default btn-xs">
                                     <i class="fa fa-edit"></i>
                                 </a>
                             @endcan
-                            @can('staffs-delete')
+                            @can('learners-delete')
                                 <button class="btn btn-danger" onclick="deleteUser({{ $list->id }})">
                                     <i class="fa fa-trash"></i>
                                 </button>

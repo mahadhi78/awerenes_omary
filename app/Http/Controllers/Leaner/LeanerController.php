@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Leaner;
 
+use Illuminate\Support\Str;
 use App\Constants\Constants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\UserManagement\CustomUser;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\UserManagement\Dao\UserDaoImpl;
@@ -53,6 +55,7 @@ class LeanerController extends Controller
                 try {
                     $data['password'] = bcrypt($data['password']);
                     $data['userType'] = Constants::LEARNER;
+                    $data['remember_token']= Str::random(60);
                     $user = $this->userDaoImpl->createUser($data);
                     // 
 
@@ -70,6 +73,20 @@ class LeanerController extends Controller
                 }
             }
         }
+    }
+
+    public function edit($id)
+    {
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return redirect()->route('learning.home');
+        }
+        $user = $this->userDaoImpl->findUserById($id);
+        if ($user) {
+            $d['leaner'] = $user;
+        } else {
+            $d['mesage'] = 'The is no user for Selected Details';
+        }
+        return view('pages.user_management.leaner.create', $d);
     }
 
 }

@@ -25,7 +25,6 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('email_token')->nullable();
-            $table->integer('school_id')->nullable();
             $table->string('status',30)->default('Inactive');
             $table->string('gender',10)->nullable();
             $table->string('photo_path')->nullable();

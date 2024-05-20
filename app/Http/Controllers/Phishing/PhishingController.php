@@ -39,6 +39,7 @@ class PhishingController extends Controller
         }
         $d['compaign'] = $this->phishing->getCompaign();
         $d['activeStatus'] = Constants::STATUS_ACTIVE;
+        $d['templates'] = $this->phishing->getTemplate();
 
         return view("pages.phishing.index", $d);
     }

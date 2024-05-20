@@ -36,6 +36,7 @@ class User extends Authenticatable
         'is_approved',
         'userType',
         'photo_path',
+        'username',
         'email_token'
     ];
 

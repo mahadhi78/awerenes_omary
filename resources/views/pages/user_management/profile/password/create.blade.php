@@ -1,4 +1,4 @@
-<form action="{{ route('student_project.save') }}" method="post">
+<form action="" method="post">
     @csrf
     <div class="box-body ">
         <div class="row mb-3">

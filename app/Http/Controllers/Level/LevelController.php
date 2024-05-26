@@ -7,15 +7,17 @@ use App\Models\system\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Service\ServiceDaoImpl;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class LevelController extends Controller
 {
-    protected $level;
-    public function __construct(LevelDaoImpl $level)
+    protected $level,$service;
+    public function __construct(LevelDaoImpl $level,ServiceDaoImpl $service)
     {
         $this->level = $level;
+        $this->service = $service;
         $this->middleware(['auth', 'prevent-back-history']);
     }
 
@@ -29,11 +31,6 @@ class LevelController extends Controller
         return view("pages.system_settings.level.index", $d);
     }
 
-
-    public function create()
-    {
-        //
-    }
 
     public function store(Request $request)
     {
@@ -52,6 +49,7 @@ class LevelController extends Controller
 
             try {
                 $school = $this->level->createLevel($data);
+                 $this->service->createLevel($data);
                 if ($school) {
                     $response = 'Level Name saved successfully';
                     Log::channel('daily')->info($response . ': ' . $school);

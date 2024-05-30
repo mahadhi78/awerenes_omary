@@ -26,11 +26,11 @@ class CourrseController extends Controller
 
     public function index()
     {
-        if (Auth::user()->userType == Constants::LEARNER) {
-            return redirect()->route('learning.home');
-        }        
         $d['course'] = $this->course->getCourse();
         $d['levels'] = $this->level->getAlevelByIdAndName();
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return view('pages.Learn.course.index', $d);
+        }        
         return view("pages.C_M_L_manage.course.index", $d);
     }
 
@@ -74,14 +74,14 @@ class CourrseController extends Controller
 
     public function coursePreview($id)
     {
-        if (Auth::user()->userType == Constants::LEARNER) {
-            return redirect()->route('learning.home');
-
-        }
         $id = Common::decodeHash($id);
         $d['course'] = $this->course->getCourseById($id)->c_name;
         $d['modules'] = $this->course->getModuleByCourseId($id);
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return view('pages.Learn.course.preview', $d);
 
+
+        }
         return view("pages.C_M_L_manage.course.preview.index", $d);
         //
     }

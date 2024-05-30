@@ -42,4 +42,6 @@ class HomeController extends Controller
 
         return view('pages.Learn.home', $d);
     }
+
+
 }

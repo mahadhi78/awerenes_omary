@@ -17,26 +17,4 @@
 <script src="{{ asset('assets/js/plugins/chosen/chosen.jquery.js') }}"></script>
 
 
-<script>
-
-    $(document).ready(function() {
-        function setActiveClass(container, route) {
-            var $activeChildLink = $(container + ' ul.nav-second-level li a[data-route="' + route + '"]');
-            if ($activeChildLink.length > 0) {
-                $(container + ' > a').click();
-                $activeChildLink.closest('li').addClass('active');
-            }
-        }
-        var currentRoute = "{{ Route::currentRouteName() }}";
-
-        setActiveClass('#system-settings', currentRoute);
-        setActiveClass('#student', currentRoute);
-        setActiveClass('#staffs', currentRoute);
-        setActiveClass('#driver', currentRoute);
-        setActiveClass('#approval', currentRoute);
-        setActiveClass('#academic', currentRoute);
-        setActiveClass('#uniform', currentRoute);
-    });
-</script>
-
 @stack('scripts')

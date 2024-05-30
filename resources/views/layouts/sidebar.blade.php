@@ -107,6 +107,20 @@
             <span class="fa arrow"></span>
         </a>
         <ul class="nav nav-second-level collapse">
+            {{-- @if (Gate::check('type-list')) --}}
+                <li>
+                    <a href="{{ route('type.list') }}" data-route="type.list">
+                        Type
+                    </a>
+                </li>
+            {{-- @endif --}}
+            {{-- @if (Gate::check('type-list')) --}}
+            <li>
+                <a href="{{ route('type.list') }}" data-route="type.list">
+                    Type
+                </a>
+            </li>
+        {{-- @endif --}}
 
 
         </ul>

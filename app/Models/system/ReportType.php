@@ -6,23 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Courses extends Model
+class ReportType extends Model
 {
     use HasFactory,SoftDeletes;
 
-    
-    protected $table = "courses";
+    protected $table = "type_reports";
     protected $fillable = [
-        'c_name',
-        'level_id',
-        'c_logo',
-        'total_modules',
+        'name',
+        'status',
 
     ];
 
     public static $rules = [
-        "c_name" => "required |min:3|max:50",
-        "level_id" => "required|exists:levels,id",
-        "c_logo" => "required |min:3",
+        "name" => "required |min:3|max:50",
+        "status" => "required",
     ];
 }

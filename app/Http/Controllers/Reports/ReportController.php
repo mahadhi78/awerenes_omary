@@ -1,70 +1,65 @@
 <?php
 
-namespace App\Http\Controllers\Course;
+namespace App\Http\Controllers\Reports;
 
-use DOMDocument;
+
 use App\Helpers\Common;
 use App\Constants\Constants;
 use Illuminate\Http\Request;
-use App\Models\system\Lesson;
+use App\Models\system\Report;
 use App\Models\system\Courses;
-use Illuminate\Support\Facades\Log;
+use App\Models\system\ReportType;
 
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Level\LevelDaoImpl;
+use App\Http\Controllers\Reports\ReportDaoImpl;
+use DOMDocument;
 
-class LessonController extends Controller
+class ReportController extends Controller
 {
-    protected $course, $level;
-    public function __construct(CourseDaoImpl $course, LevelDaoImpl $level)
+    protected $report;
+    public function __construct(ReportDaoImpl $report)
     {
-        $this->course = $course;
-        $this->level = $level;
+        $this->report = $report;
         $this->middleware(['auth', 'prevent-back-history']);
     }
 
     public function index()
     {
+        $d['type'] = $this->report->getType();
         if (Auth::user()->userType == Constants::LEARNER) {
-            return redirect()->route('learning.home');
-
+            return view('pages.Learn.course.index', $d);
         }
-        $d['lesson'] = $this->course->getLesson();
-       
-        return view("pages.C_M_L_manage.lessons.index", $d);
+        return view("pages.reports.type.index", $d);
     }
+
     public function create()
     {
+        $d['type'] = $this->report->getType();
         if (Auth::user()->userType == Constants::LEARNER) {
-            return redirect()->route('learning.home');
+            return view('pages.learn.report.create', $d);
         }
-        $d['course'] = $this->course->getCourse();
-        $d['levels'] = $this->level->getAlevelByIdAndName();
-        return view("pages.C_M_L_manage.lessons.create", $d);
+        return view("pages.learn.report.create", $d);
     }
 
+    
     public function store(Request $request)
     {
         if ($request->ajax()) {
-            $validator = Validator::make($data = $request->all(), Lesson::$rules);
+            $validator = Validator::make($data = $request->all(), Report::$rules);
 
             if ($validator->fails()) {
                 return ['success' => false, 'response' => $validator->errors()];
             }
 
-            $schoolExists = Lesson::where("lesson_name", "=", $data['lesson_name'])->first();
-            if ($schoolExists) {
-                $response = 'Course: ' . $data['lesson_name'] . ' already exists';
-                return ['success' => 'failure', 'response' => $response];
-            }
-
             $data['description'] = $this->uploadBySummernote($data['description']);
+            $data['user_id'] = Auth::user()->id;
             try {
-                $school = $this->course->createLesson($data);
+                $school = $this->report->createReport($data);
                 if ($school) {
-                    $response = 'Lessons saved successfully';
+                    $response = 'Report Send successfully';
                     Log::channel('daily')->info($response . ': ' . $school);
                     return ['success' => true, 'response' => $response];
                 }
@@ -76,42 +71,6 @@ class LessonController extends Controller
         }
     }
 
-
-
-    public function show($id)
-    {
-        //
-    }
-
-
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     protected function uploadBySummernote($description)
     {
         $dom = new DOMDocument();
@@ -119,7 +78,7 @@ class LessonController extends Controller
         $imageFile = $dom->getElementsByTagName('imageFile');
 
         foreach ($imageFile as $item => $image) {
-            $data = $img->getAttribute('src');
+            $data = $image->getAttribute('src');
             list($type, $data) = explode(';', $data);
             list(, $data)      = explode(',', $data);
             $imgeData = base64_decode($data);
@@ -131,5 +90,21 @@ class LessonController extends Controller
             $image->setAttribute('src', $image_name);
         }
         return $dom->saveHTML();
+    }
+
+    public function edit($id)
+    {
+        //
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    public function destroy($id)
+    {
+        //
     }
 }

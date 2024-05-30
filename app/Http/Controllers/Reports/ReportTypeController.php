@@ -1,55 +1,60 @@
 <?php
 
-namespace App\Http\Controllers\Course;
+namespace App\Http\Controllers\Reports;
+
 
 use App\Helpers\Common;
 use App\Constants\Constants;
 use Illuminate\Http\Request;
 use App\Models\system\Courses;
-use App\Models\system\Modules;
 use Illuminate\Support\Facades\Log;
-
 use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Level\LevelDaoImpl;
+use App\Http\Controllers\Reports\ReportDaoImpl;
+use App\Models\system\ReportType;
 
-class ModuleController extends Controller
+class ReportTypeController extends Controller
 {
-    protected $course, $level;
-    public function __construct(CourseDaoImpl $course, LevelDaoImpl $level)
+    protected $report;
+    public function __construct(ReportDaoImpl $report)
     {
-        $this->course = $course;
-        $this->level = $level;
+        $this->report = $report;
         $this->middleware(['auth', 'prevent-back-history']);
     }
 
     public function index()
     {
-        $d['module'] = $this->course->getModule();
-        $d['levels'] = $this->level->getAlevelByIdAndName();
-        return view("pages.C_M_L_manage.module.index", $d);
-        // return $d;
+        $d['type'] = $this->report->getType();
+        if (Auth::user()->userType == Constants::LEARNER) {
+            return view('pages.Learn.course.index', $d);
+        }
+        return view("pages.reports.type.index", $d);
     }
 
     public function store(Request $request)
     {
         if ($request->ajax()) {
-            $validator = Validator::make($data = $request->all(), Modules::$rules);
+            $validator = Validator::make($data = $request->all(), ReportType::$rules);
 
             if ($validator->fails()) {
                 return ['success' => false, 'response' => $validator->errors()];
             }
 
-            $schoolExists = $this->course->valiateModule("m_name", $data['m_name'])->first();
+            $schoolExists =  $this->report->getTypeData([
+                ['name',$data['name']],
+                ['status',Constants::STATUS_ACTIVE]
+            ])->first();
             if ($schoolExists) {
-                $response = 'Module: ' . $data['m_name'] . ' already exists';
+                $response = 'Type: ' . $data['name'] . ' already exists';
                 return ['success' => 'failure', 'response' => $response];
             }
+
             try {
-                $school = $this->course->createModule($data);
+                $school = $this->report->createType($data);
                 if ($school) {
-                    $response = 'Module saved successfully';
+                    $response = 'Type saved successfully';
                     Log::channel('daily')->info($response . ': ' . $school);
                     return ['success' => true, 'response' => $response];
                 }
@@ -61,23 +66,19 @@ class ModuleController extends Controller
         }
     }
 
-    public function modulePreview($id)
+
+    public function coursePreview($id)
     {
         $id = Common::decodeHash($id);
-        $d['modules'] = $this->course->getLessonByModuleId($id);
+        $d['course'] = $this->course->getCourseById($id)->c_name;
+        $d['modules'] = $this->course->getModuleByCourseId($id);
         if (Auth::user()->userType == Constants::LEARNER) {
-            return view('pages.Learn.course.module_preview', $d);
-
-            // 
+            return view('pages.Learn.course.preview', $d);
         }
-        return view("pages.C_M_L_manage.module.preview.index", $d);
+        return view("pages.C_M_L_manage.course.preview.index", $d);
         //
     }
 
-    public function show($id)
-    {
-        //
-    }
 
 
     public function edit($id)
@@ -85,24 +86,12 @@ class ModuleController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

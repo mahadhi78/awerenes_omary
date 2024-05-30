@@ -21,7 +21,8 @@
     <link href="{{ asset('assets/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('assets/css/plugins/chosen/bootstrap-chosen.css') }}" rel="stylesheet">
+    @yield('links')
 </head>
 
 <body class="top-navigation pace-done">
@@ -38,8 +39,8 @@
 
                     <div class="navbar-collapse collapse" id="navbar">
                         <ul class="nav navbar-nav mr-auto">
-                            <li class="active text-capitalize">
-                                <a aria-expanded="false" role="button" href="#">
+                            <li class="{{ Route::currentRouteName() == 'learning.home' ? 'active' : '' }} text-capitalize">
+                                <a aria-expanded="false" role="button" href="{{ route('learning.home')}}">
                                     @if (Common::getSystemTitle())
                                         {{ Common::getSystemTitle() }}
                                     @else
@@ -47,6 +48,17 @@
                                     @endif
                                 </a>
                             </li>
+                            <li class="{{ Route::currentRouteName() == 'learning.course' ? 'active' : '' }} text-capitalize">
+                                <a href="{{ route('learning.course') }}">
+                                    Course
+                                </a>
+                            </li>
+                            <li class="{{ Route::currentRouteName() == 'report.create' ? 'active' : '' }} text-capitalize">
+                                <a href="{{ route('report.create') }}">
+                                    Send Report
+                                </a>
+                            </li>
+                           
                         </ul>
                         <ul class="nav navbar-top-links navbar-right">
                             @if (Auth::check())

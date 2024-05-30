@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
     Route::post('/logout', ['as' => 'logout', 'uses' => 'LoginController@logout']);
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/learning/home', [HomeController::class, 'learning'])->name('learning.home');
+    require __DIR__ . '/system/learning.php';
 
     Route::get('/system/LoginHistory', [LoginHistoryController::class, 'index'])->name('LoginHistory');
 
@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
     require __DIR__ . '/system/settings.php';
     require __DIR__ . '/system/levels.php';
     require __DIR__ . '/system/course.php';
+    require __DIR__ . '/system/report.php';
 
     // activities for user with no permissions
 

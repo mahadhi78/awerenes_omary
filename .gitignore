@@ -4,7 +4,7 @@
 /storage/*.key
 /vendor
 .git
-.env
+
 .env.backup
 .vscode
 .phpunit.result.cache
@@ -19,3 +19,4 @@ yarn-error.log
 /storage/logs
 
 *.zip
+.env

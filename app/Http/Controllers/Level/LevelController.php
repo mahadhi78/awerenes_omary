@@ -49,7 +49,7 @@ class LevelController extends Controller
 
             try {
                 $school = $this->level->createLevel($data);
-                 $this->service->createLevel($data);
+                //  $this->service->createLevel($data);
                 if ($school) {
                     $response = 'Level Name saved successfully';
                     Log::channel('daily')->info($response . ': ' . $school);

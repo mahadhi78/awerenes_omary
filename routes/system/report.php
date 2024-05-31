@@ -1,8 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Reports\NewsController;
 use App\Http\Controllers\Reports\ReportController;
 use App\Http\Controllers\Reports\ReportTypeController;
+
+Route::get('/report/edit{id}', [ReportController::class, 'edit'])->name('report_edit.list');
+
+Route::get('/news/{id}', [NewsController::class, 'edit'])->name('news_edit.list');
 
 Route::group(['prefix' => 'system'], function () {
     Route::get('/type', [ReportTypeController::class, 'index'])->name('type.list');
@@ -18,4 +23,11 @@ Route::group(['prefix' => 'system'], function () {
     Route::get('/report/edit', [ReportController::class, 'edit'])->name('report.edit');
     Route::post('/report/update', [ReportController::class, 'update'])->name('report.update');
     Route::post('/report/delete', [ReportController::class, 'destroy'])->name('report.destroy');
+
+
+    // send and preview news
+    Route::get('/news', [NewsController::class, 'index'])->name('news.list');
+    Route::post('/news/save', [NewsController::class, 'store'])->name('news.save');
+    Route::post('/news/update', [NewsController::class, 'update'])->name('news.update');
+    Route::post('/news/delete', [NewsController::class, 'destroy'])->name('news.destroy');
 });

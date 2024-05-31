@@ -85,7 +85,7 @@ class UserController extends Controller
 
                 try {
                     $data['userType'] = Constants::STAFF;
-                    $data['remember_token']= Str::random(60);
+                    $data['remember_token'] = Str::random(60);
                     $data['password'] = bcrypt($data['password']);
                     $user = $this->userDaoImpl->createUser($data);
 
@@ -152,6 +152,29 @@ class UserController extends Controller
                         return ['success' => true, 'response' => $response];
                     }
                 }
+            } catch (\Exception $error) {
+                $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+                Log::channel('daily')->error($response . ' ' . $error->getMessage());
+
+                return response()->json([
+                    'error' => false,
+                    'response' => $response,
+                ]);
+            }
+        }
+    }
+
+
+    public function destroy(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $request->all();
+
+            try {
+                $user = $this->userDaoImpl->deleteuser($data['id']);
+                $response = 'User Deleted Successfully';
+                Log::channel('daily')->info($response . ' ' . $user);
+                return ['success' => true, 'response' => $response];
             } catch (\Exception $error) {
                 $response = 'Operation Failed,Please Contact System Administrator ' . $error;
                 Log::channel('daily')->error($response . ' ' . $error->getMessage());

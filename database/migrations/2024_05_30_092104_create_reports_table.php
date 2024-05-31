@@ -29,6 +29,14 @@ class CreateReportsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('news', function (Blueprint $table) {
+            $table->id();
+            $table->string('new_name',50);
+            $table->longText('description');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**

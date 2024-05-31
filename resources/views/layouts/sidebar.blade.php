@@ -12,6 +12,12 @@
         <span class="nav-label">Phishing</span>
     </a>
 </li>
+<li class="{{ Route::currentRouteName() == 'news.list' ? 'active' : '' }}">
+    <a href="{{ route('news.list') }}" class="{{ Request::is('news.list') ? 'active' : '' }}">
+        <i class="fa fa-envelope fa-sm"></i>
+        <span class="nav-label">News</span>
+    </a>
+</li>
 
 @if (collect(Common::approvalPermissions())->filter(function ($permission) {
             return Gate::check($permission);
@@ -114,10 +120,10 @@
                     </a>
                 </li>
             {{-- @endif --}}
-            {{-- @if (Gate::check('type-list')) --}}
+            {{-- @if (Gate::check('report-list')) --}}
             <li>
-                <a href="{{ route('type.list') }}" data-route="type.list">
-                    Type
+                <a href="{{ route('report.list') }}" data-route="report.list">
+                    Feedback
                 </a>
             </li>
         {{-- @endif --}}

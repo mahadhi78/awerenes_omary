@@ -32,7 +32,7 @@
                                 </a>
                             @endcan
                             @can('staffs-delete')
-                                <button class="btn btn-danger" onclick="deleteUser({{ $list->id }})">
+                                <button class="btn btn-danger btn-xs" onclick="deleteUser({{ $list->id }})">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             @endcan

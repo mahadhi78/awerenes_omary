@@ -35,6 +35,7 @@ Route::group(['prefix' => 'system'], function () {
     Route::get('/staff/index', [UserController::class, 'index', 'middleware' => ['permission:staffs-list|staffs-save|staffs-edit|staffs-activation']])->name('staffs.list');
 
     Route::post('/staff/update', [UserController::class, 'update', 'middleware' => ['permission:staffs-edit']])->name('staffs.update');
+    Route::post('/staff/delete', [UserController::class, 'destroy', 'middleware' => ['permission:staffs-delete']])->name('staffs.destroy');
 
 
     // user approval

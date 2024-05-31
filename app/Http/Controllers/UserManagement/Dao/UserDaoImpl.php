@@ -28,19 +28,19 @@ class UserDaoImpl implements UserDao
 
     public function getApprovedUsers()
     {
-        $data = CustomUser::where('is_approved', Constants::APPROVED)->where('userType',Constants::STAFF)->get();
+        $data = CustomUser::where('is_approved', Constants::APPROVED)->where('userType', Constants::STAFF)->get();
 
         return $data;
     }
 
     public function getApprovedlearners()
     {
-        $data = CustomUser::where('is_approved', Constants::APPROVED)->where('userType',Constants::LEARNER)->get();
+        $data = CustomUser::where('is_approved', Constants::APPROVED)->where('userType', Constants::LEARNER)->get();
 
         return $data;
     }
 
-    
+
 
 
     public function findUserById($id)
@@ -61,5 +61,10 @@ class UserDaoImpl implements UserDao
             $user->update($data);
         }
         return $user;
+    }
+
+    public function deleteuser($id)
+    {
+        return User::findOrFail($id)->delete();
     }
 }

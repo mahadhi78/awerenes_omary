@@ -27,7 +27,6 @@ class CustomUser extends Model
 		'admision_date',
 		'activation_status',
 		'is_approved',
-		'school_id',
 		'photo_path'
 	];
 	public static $rules = [

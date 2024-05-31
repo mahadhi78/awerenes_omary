@@ -3,21 +3,22 @@
 namespace App\Http\Controllers\Reports;
 
 
+use DOMDocument;
 use App\Helpers\Common;
 use App\Constants\Constants;
 use Illuminate\Http\Request;
 use App\Models\system\Report;
 use App\Models\system\Courses;
-use App\Models\system\ReportType;
 
+use App\Models\system\NewData;
+use App\Models\system\ReportType;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Reports\ReportDaoImpl;
-use DOMDocument;
 
-class ReportController extends Controller
+class NewsController extends Controller
 {
     protected $report;
     public function __construct(ReportDaoImpl $report)
@@ -28,38 +29,27 @@ class ReportController extends Controller
 
     public function index()
     {
-        $d['report'] = $this->report->getReport();
+        $d['news'] = $this->report->getNews();
         if (Auth::user()->userType == Constants::LEARNER) {
             return view('pages.Learn.course.index', $d);
         }
-        return view("pages.reports.feedback.index", $d);
+        return view("pages.reports.news.index", $d);
     }
 
-    public function create()
-    {
-        $d['type'] = $this->report->getType();
-        if (Auth::user()->userType == Constants::LEARNER) {
-            return view('pages.learn.report.create', $d);
-        }
-        return view("pages.learn.report.create", $d);
-    }
-
-    
     public function store(Request $request)
     {
         if ($request->ajax()) {
-            $validator = Validator::make($data = $request->all(), Report::$rules);
+            $validator = Validator::make($data = $request->all(), NewData::$rules);
 
             if ($validator->fails()) {
                 return ['success' => false, 'response' => $validator->errors()];
             }
 
             $data['description'] = $this->uploadBySummernote($data['description']);
-            $data['user_id'] = Auth::user()->id;
             try {
-                $school = $this->report->createReport($data);
+                $school = $this->report->createNews($data);
                 if ($school) {
-                    $response = 'Report Send successfully';
+                    $response = 'News Saved successfully';
                     Log::channel('daily')->info($response . ': ' . $school);
                     return ['success' => true, 'response' => $response];
                 }
@@ -82,7 +72,7 @@ class ReportController extends Controller
             list($type, $data) = explode(';', $data);
             list(, $data)      = explode(',', $data);
             $imgeData = base64_decode($data);
-            $image_name = "/upload/" . time() . $item . '.png';
+            $image_name = "/uploads/news" . time() . $item . '.png';
             $path = public_path() . $image_name;
             file_put_contents($path, $imgeData);
 
@@ -94,7 +84,7 @@ class ReportController extends Controller
 
     public function edit($id)
     {
-        return response()->json($this->report->getReportById($id));
+        return response()->json($this->report->getNewsById($id));
     }
 
 

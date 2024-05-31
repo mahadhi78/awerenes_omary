@@ -3,11 +3,7 @@
         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
             <i class="fa fa-bars"></i>
         </a>
-        @if (Auth::user()->school_id)
-            <p class="minimalize-styl-2 text-primary " href="#">
-                <b> {{ Common::getScholName() }}</b>
-            </p>
-        @elseif (Common::getSystemName())
+        @if (Common::getSystemName())
             <p class="minimalize-styl-2 text-primary " href="#">
                 <b> {{ Common::getSystemName() }}</b>
             </p>

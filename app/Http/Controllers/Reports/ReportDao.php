@@ -17,4 +17,12 @@ interface ReportDao
     public function createReport($data);
     public function updateReportById($id, $data);
     public function deleteReportById($id);
+
+      // reports
+      public function getNews();
+      public function getNewsById($id);
+      public function getNewsData($data);
+      public function createNews($data);
+      public function updateNewsById($id, $data);
+      public function deleteNewsById($id);
 }

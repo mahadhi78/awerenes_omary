@@ -50,6 +50,13 @@
                     width: "100%"
                 });
 
+                function deleteUser(id) {
+                    var formData = new FormData()
+                    formData.append('id', id);
+                    var url = "{{ route('staffs.destroy') }}";
+                    deleteData(formData, url);
+                }
+                
                 removeError();
             </script>
              {!! Common::renderDataTable() !!}

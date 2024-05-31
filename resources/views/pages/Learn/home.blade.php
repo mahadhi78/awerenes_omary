@@ -6,9 +6,25 @@
     <div class="row">
         <div class="col-lg-8">
             <div class="ibox ">
-                <div class="ibox-content">
-                    
+                <div class="ibox-content forum-container">
 
+                    <div class="forum-title">
+                        <h3>General subjects</h3>
+                    </div>
+                    @foreach ($news as $new)
+                        <div class="forum-item ">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="forum-icon">
+                                        <i class="fa fa-shield"></i>
+                                    </div>
+                                    <a href="forum_post.html" class="forum-item-title">{{ $new->new_name }}</a>
+                                    <div class="forum-sub-title">
+                                        {!! $new->description !!}.</div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

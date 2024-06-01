@@ -30,7 +30,7 @@
                                 </a>
                             @endcan
                             @can('roles-delete')
-                                @if ($list->name != Constants::ROLE_SUPER_ADMINISTRATOR)
+                                @if (!in_array($list->name, Constants::EXCLUDE_DELETED))
                                     <button type="button" class="btn btn-danger btn-xs"
                                         onclick="confirmDelete({{ $list->id }})">
                                         <i class="fa fa-trash"></i>

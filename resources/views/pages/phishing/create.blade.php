@@ -23,7 +23,7 @@
                                     @csrf
 
                                     <div class="form-group row">
-                                        <label class="col-lg-3 col-form-label font-weight-semibold">Users<span
+                                        <label class="col-lg-3 col-form-label font-weight-semibold">Learners<span
                                                 class="text-danger">*</span></label>
                                         <div class="col-lg-9">
                                             <select name="user_id[]" id="user_id"

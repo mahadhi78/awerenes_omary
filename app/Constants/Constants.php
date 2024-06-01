@@ -27,4 +27,8 @@ class Constants {
    const GUARD_NAME = 'web';
    const CANCELLED = 'Cancelled';
    const DELETED = 'Deleted';
+   const EXCLUDE_DELETED =[
+      Constants::ROLE_SUPER_ADMINISTRATOR,
+      Constants::ADMINISTRATOR,
+   ];
 }

@@ -74,13 +74,13 @@
             @endif
             @if (Gate::check('learners-save'))
                 <li>
-                    <a href="{{ route('learners.create') }}" data-route="learners.create">Learners Registration</a>
+                    <a href="{{ route('learners.create') }}" data-route="learners.create">Student Registration</a>
                 </li>
             @endif
 
             @if (Gate::check('staffs-list') || Gate::check('staffs-edit') || Gate::check('staffs-delete'))
                 <li>
-                    <a href="{{ route('learners.list') }}" data-route="learners.list">Learner's List</a>
+                    <a href="{{ route('learners.list') }}" data-route="learners.list">Student List</a>
                 </li>
             @endif
 

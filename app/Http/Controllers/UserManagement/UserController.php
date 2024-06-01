@@ -88,11 +88,13 @@ class UserController extends Controller
                     $data['remember_token'] = Str::random(60);
                     $data['password'] = bcrypt($data['password']);
                     $user = $this->userDaoImpl->createUser($data);
+                    if ($user) {
+                        $user->assignRole($data['roles']);
 
-
-                    $response = 'Data Saved && Email Sent Successfully';
-                    Log::channel('daily')->info($response . ' ' . $user);
-                    return ['success' => true, 'response' => $response];
+                        $response = 'Data Saved && Email Sent Successfully';
+                        Log::channel('daily')->info($response . ' ' . $user);
+                        return ['success' => true, 'response' => $response];
+                    }
                 } catch (\Exception $error) {
                     $response = 'Operation Failed,Please Contact System Administrator ' . $error;
                     Log::channel('daily')->error($response . ' ' . $error->getMessage());
@@ -135,6 +137,7 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+        
         if ($request->ajax()) {
             $validator = Validator::make($data = $request->all(), CustomUser::$update_rules);
             if ($validator->fails()) {
@@ -142,7 +145,7 @@ class UserController extends Controller
             }
 
             try {
-
+                $data['password'] = bcrypt($data['password']);
                 $user = $this->userDaoImpl->updateUserById($data['id'], $data);
                 if ($user) {
                     $roleAssigned =  $user->syncRoles([$data['roles']]);

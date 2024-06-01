@@ -5,24 +5,26 @@
     </a>
 </li>
 
-
-<li class="{{ Route::currentRouteName() == 'phishing.list' ? 'active' : '' }}">
-    <a href="{{ route('phishing.list') }}" class="{{ Request::is('phishing.list') ? 'active' : '' }}">
-        <i class="fa fa-desktop fa-sm"></i>
-        <span class="nav-label">Phishing</span>
-    </a>
-</li>
-<li class="{{ Route::currentRouteName() == 'news.list' ? 'active' : '' }}">
-    <a href="{{ route('news.list') }}" class="{{ Request::is('news.list') ? 'active' : '' }}">
-        <i class="fa fa-envelope fa-sm"></i>
-        <span class="nav-label">News</span>
-    </a>
-</li>
-
-@if (collect(Common::approvalPermissions())->filter(function ($permission) {
+@if (Gate::any(['phishing-list', 'phishing-edit', 'phishing-save', 'phishing-destroy']))
+    <li class="{{ Route::currentRouteName() == 'phishing.list' ? 'active' : '' }}">
+        <a href="{{ route('phishing.list') }}" class="{{ Request::is('phishing.list') ? 'active' : '' }}">
+            <i class="fa fa-desktop fa-sm"></i>
+            <span class="nav-label">Phishing</span>
+        </a>
+    </li>
+@endif
+@if (Gate::any(['news-list', 'news-edit', 'news-save', 'news-destroy']))
+    <li class="{{ Route::currentRouteName() == 'news.list' ? 'active' : '' }}">
+        <a href="{{ route('news.list') }}" class="{{ Request::is('news.list') ? 'active' : '' }}">
+            <i class="fa fa-envelope fa-sm"></i>
+            <span class="nav-label">News</span>
+        </a>
+    </li>
+@endif
+@if (collect(Common::learningPermissions())->filter(function ($permission) {
             return Gate::check($permission);
         })->isNotEmpty())
-    <li id="course_management">
+    <li id="learning_mgnt">
         <a href="#"><i class="fa fa-book fa-md"></i>
             <span class="nav-label">Manage Learning</span>
             <span class="fa arrow"></span>
@@ -51,10 +53,10 @@
         </ul>
     </li>
 @endif
-@if (collect(Common::staffsPermissions())->filter(function ($permission) {
+@if (collect(Common::usersPermissions())->filter(function ($permission) {
             return Gate::check($permission);
         })->isNotEmpty())
-    <li id="staffs">
+    <li id="users_m">
         <a href="#"><i class="fa fa-user-plus fa-sm"></i>
             <span class="nav-label">Users</span>
             <span class="fa arrow"></span>
@@ -104,7 +106,7 @@
         </ul>
     </li>
 @endif
-@if (collect(Common::approvalPermissions())->filter(function ($permission) {
+@if (collect(Common::reportsPermissions())->filter(function ($permission) {
             return Gate::check($permission);
         })->isNotEmpty())
     <li id="reports">
@@ -113,32 +115,32 @@
             <span class="fa arrow"></span>
         </a>
         <ul class="nav nav-second-level collapse">
-            {{-- @if (Gate::check('type-list')) --}}
+            @if (Gate::any(['type-list', 'type-edit', 'type-save', 'type-destroy']))
                 <li>
                     <a href="{{ route('type.list') }}" data-route="type.list">
                         Type
                     </a>
                 </li>
-            {{-- @endif --}}
-            {{-- @if (Gate::check('report-list')) --}}
-            <li>
-                <a href="{{ route('report.list') }}" data-route="report.list">
-                    Feedback
-                </a>
-            </li>
-        {{-- @endif --}}
-
-
+            @endif
+            @if (Gate::any(['report-list', 'report-edit', 'report-save', 'report-destroy']))
+                <li>
+                    <a href="{{ route('report.list') }}" data-route="report.list">
+                        Feedback
+                    </a>
+                </li>
+            @endif
         </ul>
     </li>
 @endif
-@if (Gate::check('roles-list') || Gate::check('roles-edit'))
-    <li>
-        <a href="{{ route('roles.index') }}"><i class="fa fa-users"></i>
-            <span class="nav-label">Role Management</span></a>
+
+@if (Gate::any(['roles-list', 'roles-edit', 'roles-save', 'roles-destroy']))
+    <li class="{{ Route::currentRouteName() == 'roles-list' ? 'active' : '' }}">
+        <a href="{{ route('roles.index') }}" class="{{ Request::is('roles-list') ? 'active' : '' }}">
+            <i class="fa fa-users"></i>
+            <span class="nav-label">Role Management</span>
+        </a>
     </li>
 @endif
-
 
 
 @if (collect(Common::systemSettingPermissions())->filter(function ($permission) {

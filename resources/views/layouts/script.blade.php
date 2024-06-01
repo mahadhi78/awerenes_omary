@@ -16,5 +16,37 @@
 <!-- Chosen -->
 <script src="{{ asset('assets/js/plugins/chosen/chosen.jquery.js') }}"></script>
 
+<script>
+    $(document).ready(function() {
+        $('.nav-item > a').click(function(e) {
+            e.preventDefault();
+            var $dropdown = $(this).siblings('.dropdown-menu');
+            $('.dropdown-menu').not($dropdown).hide();
+            $dropdown.toggle();
+        });
 
+        $(document).click(function(e) {
+            if (!$(e.target).closest('.nav-item').length) {
+                $('.dropdown-menu').hide();
+            }
+        });
+
+        function setActiveClass(container, route) {
+            var $activeChildLink = $(container + ' ul.nav-second-level li a[data-route="' + route + '"]');
+            if ($activeChildLink.length > 0) {
+                $(container + ' > a').click();
+                $activeChildLink.closest('li').addClass('active');
+            }
+        }
+
+        var currentRoute = "{{ Route::currentRouteName() }}";
+        setActiveClass('#learning_mgnt', currentRoute);
+        setActiveClass('#users_m', currentRoute);
+        setActiveClass('#approval', currentRoute);
+        setActiveClass('#reports', currentRoute);
+        setActiveClass('#system-settings', currentRoute);
+        setActiveClass('#security', currentRoute);
+    
+    });
+</script>
 @stack('scripts')

@@ -31,49 +31,44 @@ class Qs
     {
         $data = [
             'settings-list', 'settings-edit', 'settings-save',
-            'schools-list', 'schools-edit', 'schools-save',
-            'class-list', 'class-edit', 'class-save',
-            'section-list', 'section-edit', 'section-save',
-            'subjects-list', 'subjects-edit', 'subjects-save',
+        ];
+        return $data;
+    }
 
-        ];
-        return $data;
-    }
-    public static function studentPermissions()
+    public static function usersPermissions()
     {
         $data = [
-            'student_registration-save'
+            'staffs-save',
+            'staffs-list', 'staffs-edit', 'staffs-delete',
+            'learners-save',
+            'staffs-list', 'staffs-edit', 'staffs-delete',
         ];
         return $data;
     }
-    public static function staffsPermissions()
-    {
-        $data = [
-            'staffs-save', 'staffs_subjects-save', 'staffs_input-save'
-        ];
-        return $data;
-    }
-    public static function driverPermissions()
-    {
-        $data = [
-            'drivers-save', 'driver_roots-list', 'driver_roots-save', 'driver_roots-edit'
-        ];
-        return $data;
-    }
+
     public static function approvalPermissions()
     {
         $data = [
+            'user_approval-list',
+        ];
+        return $data;
+    }
+    public static function reportsPermissions()
+    {
+        $data = [
+            'type-list', 'type-edit', 'type-save', 'type-destroy',
+            'report-list', 'report-edit', 'report-save', 'report-destroy'
+        ];
+        return $data;
+    }
+    public static function learningPermissions()
+    {
+        $data = [
+            'levels-list', 'levels-edit', 'levels-save', 'levels-destroy',
             'course-list', 'course-edit', 'course-save', 'course-destroy',
             'module-list', 'module-edit', 'module-save', 'module-destroy',
             'lesson-list', 'lesson-edit', 'lesson-save', 'lesson-destroy',
 
-        ];
-        return $data;
-    }
-    public static function uniformPermissions()
-    {
-        $data = [
-            'uniforms_published-save'
         ];
         return $data;
     }
@@ -148,6 +143,4 @@ class Qs
         $decoded = $hash->decode($str);
         return $toString ? implode(',', $decoded) : $decoded;
     }
-
-
 }

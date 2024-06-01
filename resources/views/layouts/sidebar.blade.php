@@ -1,7 +1,7 @@
 <li class="{{ Route::currentRouteName() == 'home' ? 'active' : '' }}">
     <a href="{{ route('home') }}" class="{{ Request::is('home') ? 'active' : '' }}">
         <i class="fa fa-th-large fa-sm"></i>
-        <span class="nav-label">Dashboardi</span>
+        <span class="nav-label">Dashboard</span>
     </a>
 </li>
 

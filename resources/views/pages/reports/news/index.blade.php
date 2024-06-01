@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('page_title', 'Levels')
+@section('page_title', 'News')
 @section('links')
     <link href="{{ asset('assets/css/plugins/summernote/summernote-bs4.css') }}" rel="stylesheet" />
 @endsection

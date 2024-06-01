@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('page_title', 'Levels')
+@section('page_title', 'Report Type')
 
 @section('content')
     {{-- @if (Gate::any(['levels-list', 'levels-edit'])) --}}

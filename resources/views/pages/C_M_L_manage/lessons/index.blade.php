@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('page_title', 'Course')
+@section('page_title', 'Lessons')
 
 @section('content')
     @if (Gate::any(['lesson-list', 'lesson-edit', 'lesson-save']))

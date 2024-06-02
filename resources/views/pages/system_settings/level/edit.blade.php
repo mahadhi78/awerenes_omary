@@ -6,12 +6,12 @@
                         class="sr-only">Close</span></button>
             </div>
             <div class="modal-body bg-white">
-                <div class="form-group" id="sc_name_validate">
-                    <label for="sc_name">
+                <div class="form-group" id="edit_lv_name_validate">
+                    <label for="edit_lv_name">
                         <span> Name <i class="text-danger">*</i></span>
                     </label>
                     <input type="text" required class="form-control" placeholder="Enter Name" minlength="3"
-                        maxlength="250" name="sc_name" id="sc_name" />
+                        maxlength="250" name="lv_name" id="edit_lv_name" />
                 </div>
             </div>
             <div class="modal-footer">

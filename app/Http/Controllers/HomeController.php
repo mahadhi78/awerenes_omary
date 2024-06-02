@@ -12,9 +12,9 @@ use App\Http\Controllers\Reports\ReportDaoImpl;
 
 class HomeController extends Controller
 {
-    protected $home, $course,$report;
+    protected $home, $course, $report;
 
-    public function __construct(HomeDaoImpl $home, CourseDaoImpl $course,ReportDaoImpl $report)
+    public function __construct(HomeDaoImpl $home, CourseDaoImpl $course, ReportDaoImpl $report)
     {
         $this->home = $home;
         $this->course = $course;
@@ -29,22 +29,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->userType == Constants::LEARNER) {
-            return redirect()->route('learning.home');
-        }
+        // $d['usersActive'] = $this->home->countStaff();
+        $d['topCourse'] = $this->course->fetchLastFiveData();
+        $d['news'] = $this->report->getNews()->take(5);
         $d['usersActive'] = $this->home->countStaff();
 
         return view('home', $d);
     }
-
-    public function learning()
-    {
-        // $d['usersActive'] = $this->home->countStaff();
-        $d['topCourse'] = $this->course->fetchLastFiveData();
-        $d['news'] = $this->report->getNews()->take(5);
-
-        return view('pages.Learn.home', $d);
-    }
-
-
 }

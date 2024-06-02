@@ -39,7 +39,7 @@
             <script type="text/javascript" language="javascript" class="init">
                 $(".indicator-progress").toggle(false);
 
-                $('#level_id,#edit_level_id,#course_id').chosen({
+                $('#level_id,#edit_level_id,#course_id,#edit_course_id').chosen({
                     width: "100%"
                 });
 
@@ -54,7 +54,6 @@
                     formData.append('m_name', $("#m_name").val().trim());
                     formData.append('level_id', $("#level_id").val().trim());
                     formData.append('course_id', $("#course_id").val().trim());
-                    
 
                     var formActionUrl = "{{ route('module.save') }}";
                     saveFormData(formActionUrl, formData);
@@ -74,6 +73,45 @@
                         option.push('<option value=' + d.id + '>' + d.c_name + '</option>');
                     });
                     $("#course_id").html(option.join('')).trigger('chosen:updated');
+                    $("#edit_course_id").html(option.join('')).trigger('chosen:updated');
+                }
+
+                var moduleId = null;
+
+                function editModule(id) {
+                    var url = "{{ route('module.edit', ':id') }}";
+                    url = url.replace(':id', id);
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        success: function(response) {
+                            $('#edit_m_name').val(response.m_name);
+                            $('#edit_level_id').val(response.level_id);
+                            $('#edit_course_id').val(response.course_id);
+                            moduleId = id
+                            $('#edit_level_id').trigger('chosen:updated');
+                            $('#edit_course_id').trigger('chosen:updated');
+                            $('#editModal').modal('show');
+                        }
+                    });
+                }
+
+                function UpdateModule() {
+                    var formData = new FormData()
+                    formData.append('m_name', $("#edit_m_name").val().trim());
+                    formData.append('level_id', $("#edit_level_id").val().trim());
+                    formData.append('course_id', $("#edit_course_id").val().trim());
+
+                    formData.append('id', moduleId);
+                    var formActionUrl = "{{ route('module.update') }}";
+                    UpdateData(formActionUrl, formData);
+                }
+
+                function deleteModule(id) {
+                    var formData = new FormData()
+                    formData.append('id', id);
+                    var url = "{{ route('module.destroy') }}";
+                    deleteData(formData, url);
                 }
             </script>
             {!! Common::renderDataTable() !!}

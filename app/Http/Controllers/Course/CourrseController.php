@@ -90,17 +90,61 @@ class CourrseController extends Controller
 
     public function edit($id)
     {
-        //
+        return response()->json($this->course->getCourseById($id));
     }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $validator = Validator::make($data = $request->all(), Courses::$rules);
+
+            if ($validator->fails()) {
+                return ['success' => false, 'response' => $validator->errors()];
+            }
+            $school = $this->course->getCourseById($data['id']);
+
+            $oldLogo = $school->logo;
+            $schoolExists = Courses::where("c_name", "=", $data['c_name'])->first();
+            if ($schoolExists) {
+                $response = 'Course: ' . $data['c_name'] . ' already exists';
+                return ['success' => 'failure', 'response' => $response];
+            }
+            $fileUploadResult = Common::handleFileUpload($request, 'c_logo', '/uploads/schools/');
+
+            if ($fileUploadResult['success']) {
+                $data['c_logo'] = $fileUploadResult['response'];
+                try {
+                    $school = $this->course->updateCourseById($data['id'],$data);
+                    if ($school) {
+                        $response = 'Course Updated successfully';
+                        Log::channel('daily')->info($response . ': ' . $school);
+                        return ['success' => true, 'response' => $response];
+                    }
+                } catch (\Exception $error) {
+                    $response = 'Operation failed, please contact the system administrator: ' . $error->getMessage();
+                    Log::channel('daily')->error($response);
+                    return ['success' => 'failure', 'response' => $response];
+                }
+            }
+            else{
+                return $fileUploadResult;
+            }
+        }
     }
 
-    public function destroy($id)
+
+    public function destroy(Request $request)
     {
-        //
+        $class = $this->course->deleteCourseById($request['id']);
+        try {
+            $response = 'Data Deleted Successfully';
+            Log::channel('daily')->info($response . ' ' . $class);
+            return ['success' => true, 'response' => $response];
+        } catch (\Exception $error) {
+            $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+            Log::channel('daily')->error($response . ' ' . $error->getMessage());
+            return ['success' => 'failure', 'response' => $response];
+        }
     }
 }

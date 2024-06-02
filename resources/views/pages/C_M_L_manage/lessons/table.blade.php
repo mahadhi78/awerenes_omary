@@ -6,7 +6,7 @@
                 <th>Course Name</th>
                 <th>Module Name</th>
                 <th>Lesson Name</th>
-                @canany(['course-edit', 'course-delete'])
+                @canany(['lesson-edit', 'lesson-delete'])
                     <th>Action</th>
                 @endcanany
             </tr>
@@ -17,31 +17,25 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>
                         <a class='text text-primary' href="{{ route('course.preview', Common::hash($list->id)) }}">
-                            {{ $list->c_name }}
+                            {{ $list->course_name }}
                             <i class="fa fa-eye"></i>
                         </a>
                     </td>
                     <td>{{ $list->lv_name }}</td>
                     <td>{{ $list->lesson_name }}</td>
-                    @canany(['course-edit', 'course-delete'])
+                    @canany(['lesson-edit', 'lesson-delete'])
                         <td>
-                            @if ($list->is_deleted)
-                                <button class='btn btn-info btn-sm' onclick="restoreClass({{ $list->id }})">
-                                    <i class="fa fa-refresh"></i>
-                                </button>
-                            @else
-                                @can('course-edit')
-                                    <a class='btn btn-default btn-sm' onclick="editClass({{ $list->id }})">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                @endcan
-                                @can('course-delete')
-                                    <button class='btn btn-danger btn-sm' onclick="deleteClass({{ $list->id }})">
-                                        <i class="fa fa-trash"></i>
+                            @can('lesson-edit')
+                            <a href="{{ route('lesson.edit', Common::hash($list->id)) }}" class="btn btn-default btn-xs">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            @endcan
+                            @can('lesson-delete')
+                                <button class='btn btn-danger btn-sm' onclick="deleteLesson({{ $list->id }})">
+                                    <i class="fa fa-trash"></i>
 
-                                    </button>
-                                @endcan
-                            @endif
+                                </button>
+                            @endcan
                         </td>
                     @endcanany
                 </tr>

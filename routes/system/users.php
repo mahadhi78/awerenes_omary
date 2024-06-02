@@ -49,4 +49,5 @@ Route::group(['prefix' => 'system'], function () {
     Route::post('/learners/store', [LeanerController::class, 'store'])->name('learners.store');
     Route::get('/learners/registration', [LeanerController::class, 'create'])->name('learners.create');
     Route::post('/learners/update', [LeanerController::class, 'update'])->name('learners.update');
+    Route::post('/learners/delete', [LeanerController::class, 'destroy'])->name('learners.destroy');
 });

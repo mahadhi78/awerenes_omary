@@ -13,7 +13,7 @@
                                 <a href="javascript:history.back()" class="btn btn-default  fa fa-arrow-circle-left"></a>
                                 <h4>Lessons</h4>
                                 @can('lesson-save')
-                                    <a href="{{ route('lesson.create')}}" class="btn btn-primary pull-right" >
+                                    <a href="{{ route('lesson.create') }}" class="btn btn-primary pull-right">
                                         <i class="fa fa-plus"></i>
                                         Add Lessons</a>
                                     </a>
@@ -51,10 +51,46 @@
                     var formData = new FormData()
                     formData.append('c_name', $("#c_name").val().trim());
                     formData.append('level_id', $("#level_id").val().trim());
-                    
-
                     var formActionUrl = "{{ route('lesson.save') }}";
                     saveFormData(formActionUrl, formData);
+                }
+                var lessonId = null;
+
+                function editClass(id) {
+                    var url = "{{ route('lesson.edit', ':id') }}";
+                    url = url.replace(':id', id);
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        success: function(response) {
+                            $('#edit_c_name').val(response.c_name);
+                            $('#edit_level_id').val(response.level_id);
+                            lessonId = id
+                            $('#edit_level_id').trigger('chosen:updated');
+                            $('#editModal').modal('show');
+                        }
+                    });
+                }
+
+                function UpdateClass() {
+                    var EditLogo = document.getElementById("edit_c_logo").value;
+                    var formData = new FormData()
+                    formData.append('c_name', $("#edit_c_name").val().trim());
+                    formData.append('level_id', $("#edit_level_id").val().trim());
+                    if (EditLogo != '' && EditLogo != null) {
+                        formData.append('c_logo', $("#edit_c_logo")[0].files[0]);
+                    }
+
+                    formData.append('id', lessonId);
+                    var formActionUrl = "{{ route('lesson.update') }}";
+                    UpdateData(formActionUrl, formData);
+                }
+
+                function deleteLesson(id) {
+                    var formData = new FormData()
+                    formData.append('id', id);
+                    var url = "{{ route('lesson.destroy') }}";
+                    deleteData(formData, url);
                 }
             </script>
             {!! Common::renderDataTable() !!}

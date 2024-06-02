@@ -29,18 +29,18 @@ class ReportController extends Controller
     public function index()
     {
         $d['report'] = $this->report->getReport();
-        if (Auth::user()->userType == Constants::LEARNER) {
-            return view('pages.Learn.course.index', $d);
-        }
+        // if (Auth::user()->userType == Constants::LEARNER) {
+        //     return view('pages.Learn.course.index', $d);
+        // }
         return view("pages.reports.feedback.index", $d);
     }
 
     public function create()
     {
         $d['type'] = $this->report->getType();
-        if (Auth::user()->userType == Constants::LEARNER) {
-            return view('pages.learn.report.create', $d);
-        }
+        // if (Auth::user()->userType == Constants::LEARNER) {
+        //     return view('pages.learn.report.create', $d);
+        // }
         return view("pages.learn.report.create", $d);
     }
 

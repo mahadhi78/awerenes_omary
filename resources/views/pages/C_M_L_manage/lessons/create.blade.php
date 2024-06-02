@@ -73,8 +73,16 @@
                     $("#module_id").html(option.join('')).trigger('chosen:updated');
                 }
 
-
-                function saveLesson() {
+                @if ($lesson)
+                    function updateLesson() {
+                        lessonData(true);
+                    }
+                @else
+                    function saveLesson() {
+                        lessonData(false);
+                    }
+                @endif
+                function lessonData(isUpdate) {
                     $(".btnSave").prop('disabled', true);
                     $(".indicator-progress").toggle(true);
                     $(".indicator-label").hide();
@@ -85,10 +93,15 @@
                     formData.append('course_id', $("#course_id").val().trim());
                     formData.append('module_id', $("#module_id").val().trim());
                     formData.append('description', $("#description").val().trim());
-                    
 
-                    var formActionUrl = "{{ route('lesson.save') }}";
-                    saveFormData(formActionUrl, formData);
+                    if (isUpdate) {
+                        formData.append('id', {!! isset($lesson) ? json_encode($lesson->id) : 'null' !!});
+
+                        saveFormData("{{ route('lesson.update') }}", formData);
+                    } else {
+                        var formActionUrl = "{{ route('lesson.save') }}";
+                        saveFormData(formActionUrl, formData);
+                    }
                 }
 
                 removeError();

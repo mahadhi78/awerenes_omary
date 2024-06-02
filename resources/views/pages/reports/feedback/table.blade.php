@@ -31,11 +31,6 @@
                                     <i class="fa fa-refresh"></i>
                                 </button>
                             @else
-                                @can('levels-edit')
-                                    <a class='btn btn-default btn-sm' onclick="editSchool({{ $list->id }})">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                @endcan
                                 @can('levels-delete')
                                     <button class='btn btn-danger btn-sm' onclick="deleteSchool({{ $list->id }})">
                                         <i class="fa fa-trash"></i>

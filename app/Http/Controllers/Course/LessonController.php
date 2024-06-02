@@ -29,10 +29,9 @@ class LessonController extends Controller
     {
         if (Auth::user()->userType == Constants::LEARNER) {
             return redirect()->route('learning.home');
-
         }
         $d['lesson'] = $this->course->getLesson();
-       
+
         return view("pages.C_M_L_manage.lessons.index", $d);
     }
     public function create()
@@ -42,6 +41,7 @@ class LessonController extends Controller
         }
         $d['course'] = $this->course->getCourse();
         $d['levels'] = $this->level->getAlevelByIdAndName();
+        $d['lesson'] = null;
         return view("pages.C_M_L_manage.lessons.create", $d);
     }
 
@@ -86,30 +86,53 @@ class LessonController extends Controller
 
     public function edit($id)
     {
-        //
+        $d['course'] = $this->course->getCourse();
+        $d['levels'] = $this->level->getAlevelByIdAndName();
+        $d['lesson'] = $this->course->getLessonById(Common::decodeHash($id));
+        return view("pages.C_M_L_manage.lessons.create", $d);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $validator = Validator::make($data = $request->all(), Lesson::$rules);
+
+            if ($validator->fails()) {
+                return ['success' => false, 'response' => $validator->errors()];
+            }
+
+            $schoolExists = Lesson::where("lesson_name", "=", $data['lesson_name'])->first();
+            if ($schoolExists) {
+                $response = 'Lesson: ' . $data['c_name'] . ' already exists';
+                return ['success' => 'failure', 'response' => $response];
+            }
+            try {
+                $school = $this->course->updateLessonById($data['id'], $data);
+                $response = 'Lesson Updated successfully';
+                Log::channel('daily')->info($response . ': ' . $school);
+                return ['success' => true, 'response' => $response];
+            } catch (\Exception $error) {
+                $response = 'Operation failed, please contact the system administrator: ' . $error->getMessage();
+                Log::channel('daily')->error($response);
+                return ['success' => 'failure', 'response' => $response];
+            }
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+    public function destroy(Request $request)
     {
-        //
+        $class = $this->course->deleteLessonById($request['id']);
+        try {
+            $response = 'Data Deleted Successfully';
+            Log::channel('daily')->info($response . ' ' . $class);
+            return ['success' => true, 'response' => $response];
+        } catch (\Exception $error) {
+            $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+            Log::channel('daily')->error($response . ' ' . $error->getMessage());
+            return ['success' => 'failure', 'response' => $response];
+        }
     }
 
     protected function uploadBySummernote($description)
@@ -119,11 +142,11 @@ class LessonController extends Controller
         $imageFile = $dom->getElementsByTagName('imageFile');
 
         foreach ($imageFile as $item => $image) {
-            $data = $img->getAttribute('src');
+            $data = $image->getAttribute('src');
             list($type, $data) = explode(';', $data);
             list(, $data)      = explode(',', $data);
             $imgeData = base64_decode($data);
-            $image_name = "/upload/" . time() . $item . '.png';
+            $image_name = "/upload/lesson" . time() . $item . '.png';
             $path = public_path() . $image_name;
             file_put_contents($path, $imgeData);
 

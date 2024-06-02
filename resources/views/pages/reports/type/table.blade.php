@@ -28,12 +28,12 @@
                                 </button>
                             @else
                                 @can('levels-edit')
-                                    <a class='btn btn-default btn-sm' onclick="editSchool({{ $list->id }})">
+                                    <a class='btn btn-default btn-sm' onclick="editType({{ $list->id }})">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 @endcan
                                 @can('levels-delete')
-                                    <button class='btn btn-danger btn-sm' onclick="deleteSchool({{ $list->id }})">
+                                    <button class='btn btn-danger btn-sm' onclick="deleteType({{ $list->id }})">
                                         <i class="fa fa-trash"></i>
 
                                     </button>

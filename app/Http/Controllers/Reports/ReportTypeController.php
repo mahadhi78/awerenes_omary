@@ -43,8 +43,8 @@ class ReportTypeController extends Controller
             }
 
             $schoolExists =  $this->report->getTypeData([
-                ['name',$data['name']],
-                ['status',Constants::STATUS_ACTIVE]
+                ['name', $data['name']],
+                ['status', Constants::STATUS_ACTIVE]
             ])->first();
             if ($schoolExists) {
                 $response = 'Type: ' . $data['name'] . ' already exists';
@@ -67,33 +67,54 @@ class ReportTypeController extends Controller
     }
 
 
-    public function coursePreview($id)
-    {
-        $id = Common::decodeHash($id);
-        $d['course'] = $this->course->getCourseById($id)->c_name;
-        $d['modules'] = $this->course->getModuleByCourseId($id);
-        if (Auth::user()->userType == Constants::LEARNER) {
-            return view('pages.Learn.course.preview', $d);
-        }
-        return view("pages.C_M_L_manage.course.preview.index", $d);
-        //
-    }
-
 
 
     public function edit($id)
     {
-        //
+        return response()->json($this->report->getTypeById($id));
     }
 
-
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $validator = Validator::make($data = $request->all(), ReportType::$rules);
+
+            if ($validator->fails()) {
+                return ['success' => false, 'errors' => $validator->errors()];
+            }
+            $schoolExists =  $this->report->getTypeData([
+                ['name', $data['name']],
+                ['id', $data['id']],
+                ['status', Constants::STATUS_ACTIVE]
+            ])->first();
+            if ($schoolExists) {
+                $response = 'Type: ' . $data['name'] . ' already exists';
+                return ['success' => 'failure', 'response' => $response];
+            }
+            try {
+                $this->report->updateTypeById($data['id'], $data);
+                $response = 'Data Updated Successfully';
+                return ['success' => true, 'response' => $response];
+            } catch (\Exception $error) {
+                $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+                Log::channel('daily')->error($response . ' ' . $error->getMessage());
+
+                return ['success' => 'failure', 'errors' => $response];
+            }
+        }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $class = $this->report->deleteTypeById($request['id']);
+        try {
+            $response = 'Data Deleted Successfully';
+            Log::channel('daily')->info($response . ' ' . $class);
+            return ['success' => true, 'response' => $response];
+        } catch (\Exception $error) {
+            $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+            Log::channel('daily')->error($response . ' ' . $error->getMessage());
+            return ['success' => 'failure', 'response' => $response];
+        }
     }
 }

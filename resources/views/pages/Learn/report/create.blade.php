@@ -1,4 +1,4 @@
-@extends('layouts.empty')
+@extends('layouts.app')
 @section('links')
     <link href="{{ asset('assets/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/plugins/summernote/summernote-bs4.css') }}" rel="stylesheet" />

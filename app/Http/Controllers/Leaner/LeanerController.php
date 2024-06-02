@@ -88,5 +88,27 @@ class LeanerController extends Controller
         }
         return view('pages.user_management.leaner.create', $d);
     }
+    public function destroy(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $request->all();
+
+            try {
+                $user = $this->userDaoImpl->deleteuser($data['id']);
+                $response = 'Student Deleted Successfully';
+                Log::channel('daily')->info($response . ' ' . $user);
+                return ['success' => true, 'response' => $response];
+            } catch (\Exception $error) {
+                $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+                Log::channel('daily')->error($response . ' ' . $error->getMessage());
+
+                return response()->json([
+                    'error' => false,
+                    'response' => $response,
+                ]);
+            }
+        }
+    }
+
 
 }

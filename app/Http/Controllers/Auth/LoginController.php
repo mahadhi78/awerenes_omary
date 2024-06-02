@@ -95,10 +95,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
             $this->clearLoginAttempts($request);
             // return redirect()->route('home');
-            if (Auth::user()->userType == Constants::LEARNER) {
-
-                return redirect()->intended('/learning/home');
-            }
+           
             return redirect()->intended('/home');
 
         } else {

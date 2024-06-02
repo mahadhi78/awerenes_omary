@@ -15,6 +15,12 @@
                                     class="btn btn-default  fa fa-arrow-circle-left"></a>&nbsp;&nbsp;
                                 <h4>Phishing</h4>
                                 &nbsp;&nbsp;
+                                @can('compaign-save')
+                                    <a type="button" class="btn btn-primary pull-right" href="{{ route('phishing.create') }}">
+                                        <i class="fa fa-send"></i>
+                                        Send Phishing
+                                    </a>
+                                @endcan
                             </div>
                         </div>
 
@@ -51,14 +57,6 @@
                                         </li>
                                     @endcan
 
-                                    @can('compaign-save')
-                                        <li class="nav-item">
-                                            <a type="button" href="{{ route('phishing.create') }}" class="nav-link">
-                                                <i class="fa fa-send"></i>
-                                                Send Phishing
-                                            </a>
-                                        </li>
-                                    @endcan
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane show  active " id="new-section">

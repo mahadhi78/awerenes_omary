@@ -48,13 +48,47 @@
                     $(".indicator-progress").toggle(true);
                     $(".indicator-label").hide();
 
-                   
-
                     var formData = new FormData()
                     formData.append('lv_name', $("#lv_name").val().trim());
-                  
+
                     var formActionUrl = "{{ route('levels.save') }}";
                     saveFormData(formActionUrl, formData);
+                }
+
+                var levelId = null;
+
+                function editData(id) {
+                    var url = "{{ route('levels.edit', ':id') }}";
+                    url = url.replace(':id', id);
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        success: function(response) {
+                            $('#edit_lv_name').val(response.lv_name);
+                            levelId = id
+                            $('#editModal').modal('show');
+                        }
+                    });
+                }
+
+                function updateSchool() {
+                    $(".btnSave").prop('disabled', true);
+                    $(".indicator-progress").toggle(true);
+                    $(".indicator-label").hide();
+
+                    var formData = new FormData()
+                    formData.append('lv_name', $("#edit_lv_name").val().trim());
+                    formData.append('id', levelId);
+
+                    var formActionUrl = "{{ route('levels.update') }}";
+                    UpdateData(formActionUrl, formData);
+                }
+
+                function deleteLevel(id) {
+                    var formData = new FormData()
+                    formData.append('id', id);
+                    var url = "{{ route('levels.destroy') }}";
+                    deleteData(formData, url);
                 }
             </script>
             {!! Common::renderDataTable() !!}

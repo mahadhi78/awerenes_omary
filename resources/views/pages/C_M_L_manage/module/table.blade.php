@@ -18,27 +18,21 @@
                     <td>{{ $list->lv_name }}</td>
                     <td>{{ $list->course_name }}</td>
                     <td>{{ $list->m_name }}</td>
-                    
+
 
                     @canany(['course-edit', 'course-delete'])
                         <td>
-                            @if ($list->is_deleted)
-                                <button class='btn btn-info btn-sm' onclick="restoreClass({{ $list->id }})">
-                                    <i class="fa fa-refresh"></i>
-                                </button>
-                            @else
-                                @can('course-edit')
-                                    <a class='btn btn-default btn-sm' onclick="editClass({{ $list->id }})">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                @endcan
-                                @can('course-delete')
-                                    <button class='btn btn-danger btn-sm' onclick="deleteClass({{ $list->id }})">
-                                        <i class="fa fa-trash"></i>
+                            @can('course-edit')
+                                <a class='btn btn-default btn-sm' onclick="editModule({{ $list->id }})">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            @endcan
+                            @can('course-delete')
+                                <button class='btn btn-danger btn-sm' onclick="deleteModule({{ $list->id }})">
+                                    <i class="fa fa-trash"></i>
 
-                                    </button>
-                                @endcan
-                            @endif
+                                </button>
+                            @endcan
                         </td>
                     @endcanany
                 </tr>

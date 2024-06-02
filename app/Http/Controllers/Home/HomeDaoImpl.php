@@ -9,7 +9,7 @@ class HomeDaoImpl implements HomeDao
 {
      public function countStaff()
      {
-          // return User::where('status', Constants::STATUS_ACTIVE)->where('school_id','!=',null)->count();
+          return User::where('status', Constants::STATUS_ACTIVE)->count();
      }
      public function countStudents()
      {

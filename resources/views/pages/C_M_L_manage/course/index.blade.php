@@ -11,7 +11,7 @@
                         <div class="ibox-title">
                             <div class="row ml-2">
                                 <a href="javascript:history.back()" class="btn btn-default  fa fa-arrow-circle-left"></a>
-                                <h4>classes Management</h4>
+                                <h4>Course Management</h4>
                                 @can('course-save')
                                     <button type="button" class="btn btn-primary pull-right" data-toggle="modal"
                                         data-target="#myModal">
@@ -60,6 +60,44 @@
 
                     var formActionUrl = "{{ route('course.save') }}";
                     saveFormData(formActionUrl, formData);
+                }
+                var courseId = null;
+
+                function editClass(id) {
+                    var url = "{{ route('course.edit', ':id') }}";
+                    url = url.replace(':id', id);
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        success: function(response) {
+                            $('#edit_c_name').val(response.c_name);
+                            $('#edit_level_id').val(response.level_id);
+                            courseId = id
+                            $('#edit_level_id').trigger('chosen:updated');
+                            $('#editModal').modal('show');
+                        }
+                    });
+                }
+
+                function UpdateClass() {
+                    var EditLogo = document.getElementById("edit_c_logo").value;
+                    var formData = new FormData()
+                    formData.append('c_name', $("#edit_c_name").val().trim());
+                    formData.append('level_id', $("#edit_level_id").val().trim());
+                    if (EditLogo != '' && EditLogo != null) {
+                        formData.append('c_logo', $("#edit_c_logo")[0].files[0]);
+                    }
+
+                    formData.append('id', courseId);
+                    var formActionUrl = "{{ route('course.update') }}";
+                    UpdateData(formActionUrl, formData);
+                }
+
+                function deleteClass(id) {
+                    var formData = new FormData()
+                    formData.append('id', id);
+                    var url = "{{ route('course.destroy') }}";
+                    deleteData(formData, url);
                 }
             </script>
             {!! Common::renderDataTable() !!}

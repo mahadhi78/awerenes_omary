@@ -30,21 +30,12 @@
             <script type="text/javascript" language="javascript" class="init">
                 $(".indicator-progress").toggle(false);
 
-                $('#dob .input-group.date').datepicker({
-                    startView: 2,
-                    todayBtn: "linked",
-                    keyboardNavigation: false,
-                    forceParse: false,
-                    autoclose: true
-                });
-
-                $('#admision_date_validate .input-group.date').datepicker({
-                    todayBtn: "linked",
-                    keyboardNavigation: false,
-                    forceParse: false,
-                    calendarWeeks: true,
-                    autoclose: true
-                });
+                function deleteUser(id) {
+                    var formData = new FormData()
+                    formData.append('id', id);
+                    var url = "{{ route('learners.destroy') }}";
+                    deleteData(formData, url);
+                }
 
                 $('#level_id').chosen({
                     width: "100%"

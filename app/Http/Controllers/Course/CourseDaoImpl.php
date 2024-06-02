@@ -117,7 +117,7 @@ class CourseDaoImpl implements CourseDao
         return Lesson::join('courses', 'courses.id', '=', 'lessons.course_id')
             ->join('levels', 'levels.id', '=', 'lessons.level_id')
             ->join('modules', 'modules.id', '=', 'lessons.module_id')
-            // ->select('modules.*', 'courses.c_name as course_name', 'levels.lv_name')
+            ->select('lessons.*', 'courses.c_name as course_name', 'levels.lv_name')
             ->where(function ($query) {
                 if (Auth::user()->hasRole(Constants::ROLE_SUPER_ADMINISTRATOR)) {
                     $query->withTrashed()->orderBy('id', 'asc');
@@ -129,7 +129,7 @@ class CourseDaoImpl implements CourseDao
     }
     public function getLessonById($id)
     {
-        return Modules::findOrFail($id);
+        return Lesson::findOrFail($id);
     }
 
     public function getLessonByModuleId($module_id)

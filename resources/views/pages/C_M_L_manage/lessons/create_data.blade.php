@@ -6,8 +6,9 @@
             <div class="col-md-3">
                 <div class="form-group" id="lesson_name_validate">
                     <label for="lesson_name"> Title<span class="text-danger">*</span></label>
-                    <input type='text' class="form-control "  name="lesson_name" id="lesson_name"
-                        placeholder="Lesson  " />
+                    <input type='text' class="form-control " name="lesson_name" id="lesson_name"
+                        placeholder="Lesson  "
+                        value="@if ($lesson) {{ $lesson->lesson_name }} @endif" />
                 </div>
             </div>
 
@@ -53,7 +54,7 @@
             <div class="col-lg-12">
                 <div class="form-group" id="description_validate">
                     <label for="description">Description</label>
-                    <textarea name="description" id="description" class="form-control" minlength="30" maxlength="300"></textarea>
+                    <textarea name="description" id="description" class="form-control" minlength="30" maxlength="300">@if ($lesson) {{ $lesson->description }} @endif</textarea>
                 </div>
             </div>
         </div>
@@ -63,9 +64,9 @@
         <hr>
         <a href="javascript:history.back()" class="btn btn-default">Back</a>
 
-        <button style="color:white !important;" type="submit" onclick="saveLesson()"
+        <button style="color:white !important;" type="submit" @if ($lesson) onclick="updateLesson()" @else onclick="saveLesson()" @endif
             class="btn btn-primary btnSave pull-right">
-            <span style="color:white !important;" class="indicator-label">Save</span>
+            <span style="color:white !important;" class="indicator-label">@if ($lesson)Update @else Save @endif</span>
             <span style="color:white !important;" class="indicator-progress">Please wait...
                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
         </button>

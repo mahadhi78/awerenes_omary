@@ -12,7 +12,7 @@ Route::get('/news/{id}', [NewsController::class, 'edit'])->name('news_edit.list'
 Route::group(['prefix' => 'system'], function () {
     Route::get('/type', [ReportTypeController::class, 'index'])->name('type.list');
     Route::post('/type/save', [ReportTypeController::class, 'store'])->name('type.save');
-    Route::get('/type/edit', [ReportTypeController::class, 'edit'])->name('type.edit');
+    Route::get('/type/edit/{id}', [ReportTypeController::class, 'edit'])->name('type.edit');
     Route::post('/type/update', [ReportTypeController::class, 'update'])->name('type.update');
     Route::post('/type/delete', [ReportTypeController::class, 'destroy'])->name('type.destroy');
 

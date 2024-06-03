@@ -82,6 +82,7 @@
                                                     'minLength' => 3,
                                                     'maxLength' => 30,
                                                     'id' => 'username',
+                                                    $leaner ? 'readonly' : '',
                                                 ]) !!}
                                             </div>
                                         </div>
@@ -94,6 +95,7 @@
                                                 
                                                     'autocomplete' => 'off',
                                                     'id' => 'email',
+                                                    $leaner ? 'readonly' : '',
                                                 ]) !!}
                                             </div>
                                         </div>
@@ -182,7 +184,7 @@
                     formData.append('password', $("#password").val().trim());
 
                     if (isUpdate) {
-                        formData.append('id', {!! isset($user) ? json_encode($user->id) : 'null' !!});
+                        formData.append('id', {!! isset($leaner) ? json_encode($leaner->id) : 'null' !!});
 
                         saveFormData("{{ route('learners.update') }}", formData);
                     } else {

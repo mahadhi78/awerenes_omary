@@ -55,7 +55,7 @@ class LeanerController extends Controller
                 try {
                     $data['password'] = bcrypt($data['password']);
                     $data['userType'] = Constants::LEARNER;
-                    $data['remember_token']= Str::random(60);
+                    $data['remember_token'] = Str::random(60);
                     $user = $this->userDaoImpl->createUser($data);
                     // 
 
@@ -74,7 +74,35 @@ class LeanerController extends Controller
             }
         }
     }
+    public function update(Request $request)
+    {
 
+        if ($request->ajax()) {
+            $user = $this->userDaoImpl->findUserById($request->id);
+
+            $validator = Validator::make($data = $request->all(), CustomUser::$update_rules);
+            if ($validator->fails()) {
+                return ['success' => false, 'response' => $validator->errors()];
+            }
+
+            try {
+                $data['password'] = bcrypt($data['password']);
+                $user = $this->userDaoImpl->updateUserById($data['id'], $data);
+
+                $response = 'User $ Role Updated Successfully';
+                Log::channel('daily')->info($response . ' ' . $user);
+                return ['success' => true, 'response' => $response];
+            } catch (\Exception $error) {
+                $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+                Log::channel('daily')->error($response . ' ' . $error->getMessage());
+
+                return response()->json([
+                    'error' => false,
+                    'response' => $response,
+                ]);
+            }
+        }
+    }
     public function edit($id)
     {
         if (Auth::user()->userType == Constants::LEARNER) {
@@ -109,6 +137,4 @@ class LeanerController extends Controller
             }
         }
     }
-
-
 }

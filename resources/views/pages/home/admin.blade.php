@@ -69,7 +69,7 @@
                     <ol class="dd-list">
                         @foreach ($topCourse as $top)
                             <li class="dd-item dd-collapsed" data-id="1">
-                                <a href="">
+                                <a class='text text-primary' href="{{ route('course.preview', Common::hash($top->id)) }}">
                                     <div class="dd-handle">
                                         <span class="label label-info">
                                             <img src="{{ asset($top->c_logo) }}" width="40px" height="40px"

@@ -59,8 +59,8 @@ class CustomUser extends Model
 		'firstname' => 'required',
 		'middlename' => 'required',
 		'lastname' => 'required',
-		'phone_number' => 'required',
-		'roles' => 'required',
-		'email' => ['required', 'string', 'email', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
+		'password' => 'required',
+		// 'username' => 'required|unique:users|min:5|max:50',
+		// 'email' => ['required', 'string', 'email', 'unique:users', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
 	];
 }

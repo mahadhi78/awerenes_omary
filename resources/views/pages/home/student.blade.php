@@ -1,5 +1,5 @@
 <div class="row animated fadeInRight">
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="ibox ">
             <div class="ibox-title">
                 <h5>Top Course</h5>
@@ -26,7 +26,7 @@
 
         </div>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-8">
         <div class="ibox ">
             <div class="ibox-title">
                 <h5>News</h5>

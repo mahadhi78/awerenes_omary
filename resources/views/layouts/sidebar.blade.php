@@ -4,7 +4,7 @@
         <span class="nav-label">Dashboard</span>
     </a>
 </li>
-@if (!Auth::user()->userType == Constants::LEARNER)
+@if (!(Auth::user()->userType == Constants::LEARNER))
     @if (Gate::any(['phishing-list', 'phishing-edit', 'phishing-save', 'phishing-destroy']))
         <li class="{{ Route::currentRouteName() == 'phishing.list' ? 'active' : '' }}">
             <a href="{{ route('phishing.list') }}" class="{{ Request::is('phishing.list') ? 'active' : '' }}">

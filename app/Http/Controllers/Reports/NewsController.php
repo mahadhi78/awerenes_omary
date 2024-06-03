@@ -30,9 +30,7 @@ class NewsController extends Controller
     public function index()
     {
         $d['news'] = $this->report->getNews();
-        if (Auth::user()->userType == Constants::LEARNER) {
-            return view('pages.Learn.course.index', $d);
-        }
+       
         return view("pages.reports.news.index", $d);
     }
 

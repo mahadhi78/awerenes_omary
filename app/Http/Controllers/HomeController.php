@@ -29,10 +29,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // $d['usersActive'] = $this->home->countStaff();
+        $d['usersActive'] = $this->home->countStaff();
+        $d['studentActive'] = $this->home->countStudents();
+        $d['courseCount'] = $this->home->countCourse();
+        $d['templateCount'] = $this->home->templateCount();
         $d['topCourse'] = $this->course->fetchLastFiveData();
         $d['news'] = $this->report->getNews()->take(5);
-        $d['usersActive'] = $this->home->countStaff();
 
         return view('home', $d);
     }

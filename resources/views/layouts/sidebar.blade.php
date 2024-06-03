@@ -177,6 +177,12 @@
             <span class="nav-label">Report</span>
         </a>
     </li>
+    <li class="{{ Route::currentRouteName() == 'news.list' ? 'active' : '' }}">
+        <a href="{{ route('news.list') }}" class="{{ Request::is('news.list') ? 'active' : '' }}">
+            <i class="fa fa-envelope fa-sm"></i>
+            <span class="nav-label">News</span>
+        </a>
+    </li>
 @endif
 <li id="security">
     <a href="#"><i class="fa fa-lock fa-sm"></i>

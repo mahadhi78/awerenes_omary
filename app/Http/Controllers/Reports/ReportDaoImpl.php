@@ -65,7 +65,7 @@ class ReportDaoImpl implements ReportDao
     // news
     public function getNews()
     {
-        return NewData::all();
+        return NewData::orderBy('id','desc')->get();
     }
     public function getNewsById($id)
     {

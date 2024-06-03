@@ -9,7 +9,7 @@
         <li class="{{ Route::currentRouteName() == 'phishing.list' ? 'active' : '' }}">
             <a href="{{ route('phishing.list') }}" class="{{ Request::is('phishing.list') ? 'active' : '' }}">
                 <i class="fa fa-desktop fa-sm"></i>
-                <span class="nav-label">Phishing</span>
+                <span class="nav-label">Phishingii</span>
             </a>
         </li>
     @endif

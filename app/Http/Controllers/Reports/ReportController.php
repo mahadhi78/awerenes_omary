@@ -38,10 +38,8 @@ class ReportController extends Controller
     public function create()
     {
         $d['type'] = $this->report->getType();
-        // if (Auth::user()->userType == Constants::LEARNER) {
-        //     return view('pages.learn.report.create', $d);
-        // }
-        return view("pages.learn.report.create", $d);
+
+        return view("pages.Learn.report.create", $d);
     }
 
     

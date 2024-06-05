@@ -26,6 +26,8 @@ Route::group(['prefix' => 'system'], function () {
 
 
     // send and preview news
+    Route::post('/news/upload', [NewsController::class, 'upload'])->name('news.upload');
+
     Route::get('/news', [NewsController::class, 'index'])->name('news.list');
     Route::post('/news/save', [NewsController::class, 'store'])->name('news.save');
     Route::post('/news/update', [NewsController::class, 'update'])->name('news.update');

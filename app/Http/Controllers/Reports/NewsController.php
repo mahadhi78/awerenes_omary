@@ -4,17 +4,10 @@ namespace App\Http\Controllers\Reports;
 
 
 use DOMDocument;
-use App\Helpers\Common;
-use App\Constants\Constants;
 use Illuminate\Http\Request;
-use App\Models\system\Report;
-use App\Models\system\Courses;
-
 use App\Models\system\NewData;
-use App\Models\system\ReportType;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Reports\ReportDaoImpl;
 
@@ -66,7 +59,7 @@ class NewsController extends Controller
         $imageFile = $dom->getElementsByTagName('imageFile');
 
         foreach ($imageFile as $item => $image) {
-            $data = $image->getAttribute('src');
+            $data = $img->getAttribute('src');
             list($type, $data) = explode(';', $data);
             list(, $data)      = explode(',', $data);
             $imgeData = base64_decode($data);

@@ -73,7 +73,7 @@ class TemplateController extends Controller
         $imageFile = $dom->getElementsByTagName('imageFile');
 
         foreach ($imageFile as $item => $image) {
-            $data = $image->getAttribute('src');
+            $data = $img->getAttribute('src');
             list($type, $data) = explode(';', $data);
             list(, $data)      = explode(',', $data);
             $imgeData = base64_decode($data);

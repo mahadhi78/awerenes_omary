@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description">
-    <meta name="keywords" content="Awerenes Management System">
+    <meta name="keywords" content="Awerenes">
     <meta name="msapplication-TileColor" content="#ffffff">
     @if ($systemLogo = Common::getSystemLogo())
-        <link rel = "icon" href ="{{ asset('storage/' . $systemLogo) }}" type = "image/x-icon">
+        <link rel = "icon" href ="{{ asset($systemLogo) }}" type = "image/x-icon">
     @else
         <link rel = "icon" href ="{{ asset('images/SchoolLog.jpg') }}" type = "image/x-icon">
     @endif

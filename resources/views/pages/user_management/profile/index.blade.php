@@ -2,7 +2,7 @@
 @section('links')
     <link href="{{ asset('assets/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 @endsection
-@section('title', 'Profile ')
+@section('page_title', 'Profile ')
 
 @section('content')
     <div class="wrapper wrapper-content animated fadeInRight">

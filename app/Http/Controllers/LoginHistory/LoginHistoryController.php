@@ -14,7 +14,7 @@ class LoginHistoryController extends Controller
     }
     public function index()
     {
-        $d['history'] = LoginHistory::where('user_id',auth()->user()->id)->get();
+        $d['history'] = LoginHistory::where('user_id',auth()->user()->id)->orderBy('id','desc')->get();
         return view("pages.LoginHistory.index", $d);
     }
 }

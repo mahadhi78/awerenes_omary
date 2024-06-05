@@ -26,27 +26,25 @@ class NewsController extends Controller
 
         return view("pages.reports.news.index", $d);
     }
-
     public function store(Request $request)
     {
-
         $validator = Validator::make($data = $request->all(), NewData::$rules);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return response()->json(['errors' => $validator->errors()], 400);
         }
         $data['description'] = $this->uploadBySummernote($data['description']);
         try {
-            $school = $this->report->createNews($data);
-            if ($school) {
+            $news = NewData::create($data);
+            if ($news) {
                 $response = 'News Saved successfully';
-                Log::channel('daily')->info($response . ': ' . $school);
-                return back()->with('success', $response);
+                Log::channel('daily')->info($response . ': ' . $news);
+                    return ['success' => true, 'response' => $response];
             }
         } catch (\Exception $error) {
             $response = 'Operation failed, please contact the system administrator: ' . $error->getMessage();
             Log::channel('daily')->error($response);
-            return back()->with('error', $response);
+                return ['success' => 'failure', 'response' => $response];
         }
     }
 
@@ -54,41 +52,37 @@ class NewsController extends Controller
     {
         $dom = new \DomDocument();
         $dom->loadHtml($description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $imageFiles = $dom->getElementsByTagName('img'); // Corrected from 'imageFile' to 'img'
-    
+        $imageFiles = $dom->getElementsByTagName('img');
+
         foreach ($imageFiles as $item => $image) {
             $data = $image->getAttribute('src');
-    
-            // Check if the data is base64
             if (strpos($data, 'data:image') === 0) {
                 list($type, $data) = explode(';', $data);
                 list(, $data) = explode(',', $data);
                 $imageData = base64_decode($data);
-    
+
                 if ($imageData === false) {
                     Log::channel('daily')->error('Failed to decode base64 image data');
                     continue;
                 }
-    
-                $imageName = "/uploads/news/" . time() . $item . '.png';
+
+                $imageName = "/uploads/" . time() . $item . '.png';
                 $path = public_path() . $imageName;
-    
+
                 if (file_put_contents($path, $imageData) === false) {
                     Log::channel('daily')->error('Failed to save image file to path: ' . $path);
                     continue;
                 }
-    
+
                 $image->removeAttribute('src');
                 $image->setAttribute('src', $imageName);
             } else {
                 Log::channel('daily')->error('Image src attribute is not base64 encoded: ' . $data);
             }
         }
-    
+
         return $dom->saveHTML();
     }
-    
-
     public function edit($id)
     {
         return response()->json($this->report->getNewsById($id));

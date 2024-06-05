@@ -54,23 +54,40 @@ class NewsController extends Controller
     {
         $dom = new \DomDocument();
         $dom->loadHtml($description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $imageFile = $dom->getElementsByTagName('imageFile');
-
-        foreach ($imageFile as $item => $image) {
+        $imageFiles = $dom->getElementsByTagName('img'); // Corrected from 'imageFile' to 'img'
+    
+        foreach ($imageFiles as $item => $image) {
             $data = $image->getAttribute('src');
-            list($type, $data) = explode(';', $data);
-            list(, $data)      = explode(',', $data);
-            $imgeData = base64_decode($data);
-            $image_name = "/upload/" . time() . $item . '.png';
-            $path = public_path() . $image_name;
-            file_put_contents($path, $imgeData);
-
-            $image->removeAttribute('src');
-            $image->setAttribute('src', $image_name);
+    
+            // Check if the data is base64
+            if (strpos($data, 'data:image') === 0) {
+                list($type, $data) = explode(';', $data);
+                list(, $data) = explode(',', $data);
+                $imageData = base64_decode($data);
+    
+                if ($imageData === false) {
+                    Log::channel('daily')->error('Failed to decode base64 image data');
+                    continue;
+                }
+    
+                $imageName = "/uploads/news/" . time() . $item . '.png';
+                $path = public_path() . $imageName;
+    
+                if (file_put_contents($path, $imageData) === false) {
+                    Log::channel('daily')->error('Failed to save image file to path: ' . $path);
+                    continue;
+                }
+    
+                $image->removeAttribute('src');
+                $image->setAttribute('src', $imageName);
+            } else {
+                Log::channel('daily')->error('Image src attribute is not base64 encoded: ' . $data);
+            }
         }
-
+    
         return $dom->saveHTML();
     }
+    
 
     public function edit($id)
     {

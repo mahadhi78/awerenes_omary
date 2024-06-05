@@ -67,7 +67,7 @@ class TemplateController extends Controller
 
     protected function uploadBySummernote($description)
     {
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         $dom->loadHtml($description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $imageFile = $dom->getElementsByTagName('imageFile');
 

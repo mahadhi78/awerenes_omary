@@ -30,7 +30,7 @@ class AjaxController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $destinationPath = public_path('/uploads');
+            $destinationPath = public_path('/uploads/images');
             $file->move($destinationPath, $filename);
             $url = url('/uploads/images/' . $filename);
 

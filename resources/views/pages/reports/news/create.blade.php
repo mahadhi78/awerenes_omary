@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <div class="form-group" id="image_validate">
+                    <div class="form-group mt-4 mb-3" id="image_validate">
                         <button type="button" class="btn btn-primary" onclick="uploadImage()"><i class="fa fa-refresh"></i></button>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                     <div class="form-group" id="description_validate">
                         <label for="description">Description</label>
                         <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
-                            minlength="30" maxlength="500"></textarea>
+                            minlength="30" maxlength="500"><img src="" alt=""></textarea>
                         @error('description')
                             <span class="invalid-feedback">
                                 <p>{{ $message }}</p>

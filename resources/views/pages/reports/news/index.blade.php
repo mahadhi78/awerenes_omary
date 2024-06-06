@@ -65,7 +65,7 @@
                     new Clipboard('.btn-copy');
                 });
                 $('#description').summernote({
-                    height: 150 // Set the desired height in pixels
+                    height: 150
                 });
                 removeError();
 

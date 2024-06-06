@@ -14,10 +14,9 @@ use Illuminate\Support\Facades\Validator;
 class LevelController extends Controller
 {
     protected $level, $service;
-    public function __construct(LevelDaoImpl $level, ServiceDaoImpl $service)
+    public function __construct(LevelDaoImpl $level)
     {
         $this->level = $level;
-        $this->service = $service;
         $this->middleware(['auth', 'prevent-back-history']);
     }
 

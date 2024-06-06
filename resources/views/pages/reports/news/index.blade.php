@@ -96,42 +96,7 @@
                     });
                 }
 
-                function uploadImage() {
-                    var fileInput = document.getElementById("image");
-                    var file = fileInput.files[0];
-
-                    if (!file) {
-                        alert("Please select an image file.");
-                        return;
-                    }
-
-                    var formData = new FormData();
-                    formData.append('image', file);
-
-                    $.ajax({
-                        url: '{{ route('upload.image') }}',
-                        type: 'POST',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            if (response.url) {
-                                $('#image').val('');
-                                $('#copytext').text(response.url);
-                                $('#copyData').show();
-                            } else {
-                                alert('Failed to upload image.');
-                            }
-                        },
-                        error: function(xhr) {
-                            console.log(xhr.responseText);
-                            alert('An error occurred while uploading the image.');
-                        }
-                    });
-                }
+              
             </script>
 
             {!! Common::renderDataTable() !!}

@@ -17,34 +17,13 @@
                         @enderror
                     </div>
                 </div>
-            
-                <div class="col-md-4">
-                    <div class="form-group" id="image_validate">
-                        <label for="image"> Image <span class="text-danger">*</span></label>
-                        <input type='file' class="form-control @error('image') is-invalid @enderror"
-                            name="image" id="image" accept="image/png,image/jpeg" />
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group mt-4 mb-3" id="image_validate">
-                        <button type="button" class="btn btn-primary" onclick="uploadImage()"><i class="fa fa-refresh"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="row" >
-                <div class="col-md-12" id="copyData" style="display: none">
-                    <p class="text-navy font-bold" id="copytext">
-
-                    </p>
-                    <button class="btn btn-white btn-copy" data-clipboard-target="#copytext"><i class="fa fa-copy"></i> Copy</button>
-                </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form-group" id="description_validate">
                         <label for="description">Description</label>
                         <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
-                            minlength="30" maxlength="500"><img src="" alt=""></textarea>
+                            minlength="30" maxlength="500"></textarea>
                         @error('description')
                             <span class="invalid-feedback">
                                 <p>{{ $message }}</p>

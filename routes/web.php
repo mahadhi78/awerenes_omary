@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Reports\NewsController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\frontend\HomeFController;
 use App\Http\Controllers\UserManagement\UserController;
@@ -58,13 +57,5 @@ Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
 
     Route::post('/course/get_course', [AjaxController::class, 'get_course'])->name('get_course.list');
     Route::post('/course/get_module', [AjaxController::class, 'get_module'])->name('get_module.list');
-    Route::post('/upload-image', [AjaxController::class, 'upload'])->name('upload.image');
-    Route::group(['prefix' => 'system'], function () {
-        
     
-        Route::get('/news', [NewsController::class, 'index'])->name('news.list');
-        Route::post('/news/save', [NewsController::class, 'store'])->name('news.save');
-        Route::post('/news/update', [NewsController::class, 'update'])->name('news.update');
-        Route::post('/news/delete', [NewsController::class, 'destroy'])->name('news.destroy');
-    });
 });

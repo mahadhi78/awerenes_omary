@@ -24,6 +24,19 @@ class AjaxController extends Controller
     public function get_module(Request $request)
     {
         return $this->course->ajaxModuleByCourseId($request->get('course_id'));
+    }
+    public function upload(Request $request)
+    {
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $destinationPath = public_path('/uploads');
+            $file->move($destinationPath, $filename);
+            $url = url('/uploads/images/' . $filename);
 
+            return response()->json(['url' => $url]);
+        }
+
+        return response()->json(['error' => 'No file uploaded'], 400);
     }
 }

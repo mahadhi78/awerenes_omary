@@ -17,6 +17,27 @@
                         @enderror
                     </div>
                 </div>
+            
+                <div class="col-md-4">
+                    <div class="form-group" id="image_validate">
+                        <label for="image"> Image <span class="text-danger">*</span></label>
+                        <input type='file' class="form-control @error('image') is-invalid @enderror"
+                            name="image" id="image" accept="image/png,image/jpeg" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group" id="image_validate">
+                        <button type="button" class="btn btn-primary" onclick="uploadImage()"><i class="fa fa-refresh"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="row" >
+                <div class="col-md-12" id="copyData" style="display: none">
+                    <p class="text-navy font-bold" id="copytext">
+
+                    </p>
+                    <button class="btn btn-white btn-copy" data-clipboard-target="#copytext"><i class="fa fa-copy"></i> Copy</button>
+                </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">

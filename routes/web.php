@@ -57,5 +57,6 @@ Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
 
     Route::post('/course/get_course', [AjaxController::class, 'get_course'])->name('get_course.list');
     Route::post('/course/get_module', [AjaxController::class, 'get_module'])->name('get_module.list');
-    
+    Route::post('/upload-image', [AjaxController::class, 'upload'])->name('upload.image');
+
 });

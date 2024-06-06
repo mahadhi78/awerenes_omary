@@ -2,19 +2,11 @@
 
 namespace App\Http\Controllers\Reports;
 
-
 use DOMDocument;
-use App\Helpers\Common;
-use App\Constants\Constants;
 use Illuminate\Http\Request;
-use App\Models\system\Report;
-use App\Models\system\Courses;
-
 use App\Models\system\NewData;
-use App\Models\system\ReportType;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Reports\ReportDaoImpl;
 

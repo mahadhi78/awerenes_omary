@@ -57,9 +57,13 @@
             <script src="{{ asset('assets/forms/js/form_sweetAlert.js') }}"></script>
             <script src="{{ asset('assets/system/js/addForm.js') }}"></script>
             <script src="{{ asset('assets/js/plugins/summernote/summernote-bs4.js') }}"></script>
+            <script src="{{ asset('assets/js/plugins/clipboard/clipboard.min.js') }}"></script>
             <script type="text/javascript" language="javascript" class="init">
                 $(".indicator-progress").toggle(false);
 
+                $(document).ready(function() {
+                    new Clipboard('.btn-copy');
+                });
                 $('#description').summernote({
                     height: 150 // Set the desired height in pixels
                 });
@@ -88,6 +92,43 @@
                             document.getElementById('previewModalBody').innerHTML = response.description;
                             document.getElementById('title').innerHTML = response.new_name;
                             $("#documentModal").modal("show");;
+                        }
+                    });
+                }
+
+                function uploadImage() {
+                    var fileInput = document.getElementById("image");
+                    var file = fileInput.files[0];
+
+                    if (!file) {
+                        alert("Please select an image file.");
+                        return;
+                    }
+
+                    var formData = new FormData();
+                    formData.append('image', file);
+
+                    $.ajax({
+                        url: '{{ route('upload.image') }}',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.url) {
+                                $('#image').val('');
+                                $('#copytext').text(response.url);
+                                $('#copyData').show();
+                            } else {
+                                alert('Failed to upload image.');
+                            }
+                        },
+                        error: function(xhr) {
+                            console.log(xhr.responseText);
+                            alert('An error occurred while uploading the image.');
                         }
                     });
                 }

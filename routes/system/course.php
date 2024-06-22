@@ -56,7 +56,6 @@ Route::group(['prefix' => 'system'], function () {
     Route::post('/compaign/delete', [CompaignController::class, 'destroy'])->name('compaign.destroy');
 
     //template
-    Route::get('/template', [TemplateController::class, 'index'])->name('template.list');
     Route::post('/template/save', [TemplateController::class, 'store'])->name('template.save');
     Route::get('/template/edit', [TemplateController::class, 'edit'])->name('template.edit');
     Route::post('/template/update', [TemplateController::class, 'update'])->name('template.update');

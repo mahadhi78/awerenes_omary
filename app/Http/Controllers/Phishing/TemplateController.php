@@ -46,7 +46,7 @@ class TemplateController extends Controller
 
         $schoolExists = Template::where("temp_name", "=", $data['temp_name'])->first();
         if ($schoolExists) {
-            $response = 'Template: ' . $data['lesson_name'] . ' already exists';
+            $response = 'Template: ' . $data['temp_name'] . ' already exists';
             return back()->with('error', $response);
         }
 

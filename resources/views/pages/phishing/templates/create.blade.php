@@ -1,7 +1,7 @@
 <div class="mt-2">
 
     <div class="col-md-12">
-        <form novalidate id="entryForm" action="{{ route('template.save') }}" method="post" enctype="multipart/form-data">
+        <form  action="{{ route('template.save') }}" method="POST">
             @csrf
             <div class="box-body">
 

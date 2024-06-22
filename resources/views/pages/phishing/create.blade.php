@@ -82,14 +82,13 @@
                                     </div>
 
                                     <div class="text-right">
-                                        <button type="submit" class="btn btn-primary">Submit <i
-                                                class=" fa fa-save ml-2"></i></button>
+                                        <button type="submit" class="btn btn-primary">
+                                            Submit
+                                            <i class=" fa fa-save ml-2"></i>
+                                        </button>
                                     </div>
                                 </form>
                             </div>
-
-
-
                         </div>
                     </div>
                 </div>

@@ -83,7 +83,7 @@
 
                                     <div class="text-right">
                                         <button type="submit" class="btn btn-primary">
-                                            Submit
+                                            Submit 
                                             <i class=" fa fa-save ml-2"></i>
                                         </button>
                                     </div>

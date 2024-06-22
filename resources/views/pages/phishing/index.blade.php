@@ -97,18 +97,30 @@
         <script src="{{ asset('assets/system/js/addForm.js') }}"></script>
         <script src="{{ asset('assets/js/plugins/summernote/summernote-bs4.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/restrict/jquery-key-restrictions.min.js') }}"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+
         <script type="text/javascript" language="javascript" class="init">
             $(".indicator-progress").toggle(false);
 
-            $('#info').summernote({
-                height: 150 // Set the desired height in pixels
-            });
+            // $('#info').summernote({
+            //     height: 150 // Set the desired height in pixels
+            // });
 
             $('#ttr_id,#ts_id,#subject_id,#day').chosen({
                 width: "100%"
             });
 
             removeError();
+
+            ClassicEditor
+                .create(document.querySelector('#info'), {
+                    ckfinder: {
+                        uploadUrl: '{{ route('upload.image') . '?_token=' . csrf_token() }}'
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         </script>
         {!! Common::renderDataTable() !!}
         {!! Common::renderDataTable2() !!}

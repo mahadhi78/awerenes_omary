@@ -62,3 +62,4 @@ Route::group(['prefix' => 'system'], function () {
     Route::post('/template/update', [TemplateController::class, 'update'])->name('template.update');
     Route::post('/template/delete', [TemplateController::class, 'destroy'])->name('template.destroy');
 });
+Route::post('/upload/image', [TemplateController::class, 'uploadImage'])->name('upload.image');

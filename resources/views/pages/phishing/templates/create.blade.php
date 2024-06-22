@@ -23,6 +23,7 @@
                     <div class="col-lg-12">
                         <div class="form-group" id="info_validate">
                             <label for="info">Description</label>
+
                             <textarea name="info" id="info" class="form-control @error('info') is-invalid @enderror" minlength="30"
                                 maxlength="300"><p><a href="" target="_blank"> Enter Face Link</a><br></p></textarea>
                             @error('info')

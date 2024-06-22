@@ -50,7 +50,7 @@ class TemplateController extends Controller
             return back()->with('error', $response);
         }
 
-        $data['info'] = $this->uploadBySummernote($data['info']);
+        // $data['info'] = $this->uploadBySummernote($data['info']);
         try {
             $school = $this->phishing->createTemplate($data);
             if ($school) {
@@ -63,6 +63,27 @@ class TemplateController extends Controller
             Log::channel('daily')->error($response);
             return back()->with('error', $response);
         }
+    }
+
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $file = $request->file('upload');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filePath = public_path('uploads');
+
+            if (!file_exists($filePath)) {
+                mkdir($filePath, 0755, true);
+            }
+            $file->move($filePath, $filename);
+            $url = asset('uploads/' . $filename);
+
+            return response()->json([
+                'uploaded' => true,
+                'url' => $url,
+            ]);
+        }
+        return response()->json(['uploaded' => false, 'error' => ['message' => 'No file uploaded']], 400);
     }
 
     protected function uploadBySummernote($description)
@@ -84,39 +105,5 @@ class TemplateController extends Controller
             $image->setAttribute('src', $image_name);
         }
         return $dom->saveHTML();
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
-
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

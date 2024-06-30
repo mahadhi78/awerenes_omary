@@ -75,8 +75,10 @@
                     $(".indicator-label").hide();
 
                     var description = $('#description').val().trim();
+                    var newName = $("#new_name").val().trim();
 
                     var data = {
+                        new_name: newName,
                         description: description
                     };
 

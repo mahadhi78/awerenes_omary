@@ -84,7 +84,19 @@ class NewsController extends Controller
     {
         return response()->json($this->report->getNewsById($id));
     }
+    public function getFileContents($id)
+    {
+        $upload = $this->report->getNewsById($id);
+        $filePath = public_path('uploads/' . $upload->description);
 
+        if (!file_exists($filePath)) {
+            return response()->json(['error' => 'File not found.'], 404);
+        }
+
+        $contents = json_decode(file_get_contents($filePath), true);
+
+        return response()->json($contents);
+    }
 
     public function update(Request $request, $id)
     {

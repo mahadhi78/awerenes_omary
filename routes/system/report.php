@@ -7,7 +7,7 @@ use App\Http\Controllers\Reports\ReportTypeController;
 
 Route::get('/report/edit{id}', [ReportController::class, 'edit'])->name('report_edit.list');
 
-Route::get('/news/{id}', [NewsController::class, 'edit'])->name('news_edit.list');
+Route::get('/news/{id}', [NewsController::class, 'getFileContents'])->name('news_edit.list');
 
 Route::group(['prefix' => 'system'], function () {
     Route::get('/type', [ReportTypeController::class, 'index'])->name('type.list');

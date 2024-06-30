@@ -3,9 +3,9 @@
         <thead>
             <tr>
                 <th>#</th>
+                <th>Lesson Name</th>
                 <th>Course Name</th>
                 <th>Level Name</th>
-                <th>Lesson Name</th>
                 <th>Module Name</th>
                 @canany(['lesson-edit', 'lesson-delete'])
                     <th>Action</th>
@@ -16,6 +16,7 @@
             @foreach ($lesson as $list)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
+                    <td>{{ $list->lesson_name }}</td>
                     <td>
                         <a class='text text-primary' href="{{ route('course.preview', Common::hash($list->c_id)) }}">
                             {{ $list->course_name }}

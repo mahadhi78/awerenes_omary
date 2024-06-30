@@ -38,37 +38,38 @@ class TemplateController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($data = $request->all(), Template::$rules);
+        if ($request->ajax()) {
+            $validator = Validator::make($data = $request->all(), Template::$rules);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $schoolExists = Template::where("temp_name", "=", $data['temp_name'])->first();
-        if ($schoolExists) {
-            $response = 'Template: ' . $data['temp_name'] . ' already exists';
-            return back()->with('error', $response);
-        }
-        $file = $request->file('file');
-
-        // Create a unique filename
-        $filename = 'template_' . time() . '.json';
-
-        // Save the file to the public/uploads directory
-        $file->move(public_path('uploads'), $filename);
-        $data['info'] = $filename;
-
-        try {
-            $school = $this->phishing->createTemplate($data);
-            if ($school) {
-                $response = 'Template saved successfully';
-                Log::channel('daily')->info($response . ': ' . $school);
-                return back()->with('success', $response);
+            if ($validator->fails()) {
+                return ['success' => false, 'response' => $validator->errors()];
             }
-        } catch (\Exception $error) {
-            $response = 'Operation failed, please contact the system administrator: ' . $error->getMessage();
-            Log::channel('daily')->error($response);
-            return back()->with('error', $response);
+            $schoolExists = Template::where("temp_name", "=", $data['temp_name'])->first();
+            if ($schoolExists) {
+                $response = 'Template: ' . $data['temp_name'] . ' already exists';
+                return ['success' => 'failure', 'response' => $response];
+            }
+            $file = $request->file('file');
+    
+            // Create a unique filename
+            $filename = 'template_' . time() . '.json';
+    
+            // Save the file to the public/uploads directory
+            $file->move(public_path('uploads'), $filename);
+            $data['info'] = $filename;
+    
+            try {
+                $school = $this->phishing->createTemplate($data);
+                if ($school) {
+                    $response = 'Template Saved successfully';
+                    Log::channel('daily')->info($response . ': ' . $school);
+                    return ['success' => true, 'response' => $response];
+                }
+            } catch (\Exception $error) {
+                $response = 'Operation failed, please contact the system administrator: ' . $error->getMessage();
+                Log::channel('daily')->error($response);
+                return ['success' => 'failure', 'response' => $response];
+            }
         }
     }
 

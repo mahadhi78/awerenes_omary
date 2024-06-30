@@ -26,7 +26,7 @@ class Lesson extends Model
         "module_id" => "required|exists:courses,id",
         "level_id" => "required|exists:levels,id",
         "course_id" => "required|exists:courses,id",
-        "description" => "required",
+        // "description" => "required",
         'file' => 'required|file|mimes:json|max:10240', // 5MB max size
 
     ];

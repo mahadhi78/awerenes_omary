@@ -4,8 +4,9 @@
             <tr>
                 <th>#</th>
                 <th>Course Name</th>
-                <th>Module Name</th>
                 <th>Level Name</th>
+                <th>Lesson Name</th>
+                <th>Module Name</th>
                 @canany(['lesson-edit', 'lesson-delete'])
                     <th>Action</th>
                 @endcanany
@@ -23,6 +24,7 @@
                     </td>
                     <td>{{ $list->lv_name }}</td>
                     <td>{{ $list->lesson_name }}</td>
+                    <td>{{ $list->module_name }}</td>
                     @canany(['lesson-edit', 'lesson-delete'])
                         <td>
                             @can('lesson-edit')

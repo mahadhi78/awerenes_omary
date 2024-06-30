@@ -59,10 +59,9 @@ class PhishingController extends Controller
         // dd($request->all());
 
         if (in_array("all", $request->input('user_id'))) {
-            $users = User::where('userType', Constants::STATUS_ACTIVE)->all();
+            $users = User::where('userType', Constants::STATUS_ACTIVE)->get();
         } else {
-            $userIds = $request->input('user_id');
-            $users = User::whereIn('id', $userIds)->get();
+            $users = User::whereIn('id', $request->input('user_id'))->get();
         }
 
         $template = Template::findOrFail($request->input('template_id'));

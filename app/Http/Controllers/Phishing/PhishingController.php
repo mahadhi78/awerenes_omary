@@ -64,12 +64,8 @@ class PhishingController extends Controller
         }
 
         $template = Template::findOrFail($request->input('template_id'));
-        $filePath = public_path('uploads/' . $template->info);
-
-        // Read and decode the JSON file
+        $filePath = public_path($template->info);
         $contents = json_decode(file_get_contents($filePath), true);
-
-        // Convert relative URLs to absolute URLs
         $contents['info'] = $this->convertRelativeUrlsToAbsolute($contents['info']);
 
         try {

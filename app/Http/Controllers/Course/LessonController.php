@@ -63,7 +63,7 @@ class LessonController extends Controller
             $file = $request->file('file');
             $filename = 'lesson_' . time() . '.json';
             $file->move(public_path('uploads/lessons'), $filename);
-            $data['description'] = $filename;
+            $data['description'] = public_path('uploads/lessons') . '/' . $filename;
             try {
                 $school = $this->course->createLesson($data);
                 if ($school) {

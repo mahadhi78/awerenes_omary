@@ -35,15 +35,11 @@ class NewsController extends Controller
                 return ['success' => false, 'response' => $validator->errors()];
             }
 
-            // $data['description'] = $this->uploadBySummernote($data['description']);
             $file = $request->file('file');
-
-            // Create a unique filename
             $filename = 'news_' . time() . '.json';
-
-            // Save the file to the public/uploads directory
-            $file->move(public_path('uploads'), $filename);
-            $data['description'] = $filename;
+            $fullPath = public_path('uploads/news');
+            $file->move($fullPath, $filename);
+            $data['description'] = $fullPath . '/' . $filename;
             try {
                 $school = $this->report->createNews($data);
                 if ($school) {
@@ -67,7 +63,7 @@ class NewsController extends Controller
     public function getFileContents($id)
     {
         $upload = $this->report->getNewsById($id);
-        $filePath = public_path('uploads/' . $upload->description);
+        $filePath = public_path($upload->description);
 
         if (!file_exists($filePath)) {
             return response()->json(['error' => 'File not found.'], 404);

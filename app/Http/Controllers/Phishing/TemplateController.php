@@ -51,8 +51,9 @@ class TemplateController extends Controller
             }
             $file = $request->file('file');
             $filename = 'template_' . time() . '.json';
-            $file->move(public_path('uploads/template'), $filename);
-            $data['info'] = $filename;
+            $fullPath= public_path('uploads/template');
+            $file->move($fullPath, $filename);
+            $data['info'] = $fullPath . '/' . $filename;
     
             try {
                 $school = $this->phishing->createTemplate($data);

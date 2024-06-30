@@ -73,7 +73,8 @@
                     $(".btnSave").prop('disabled', true);
                     $(".indicator-progress").toggle(true);
                     $(".indicator-label").hide();
-                    var description = $('#summernote').val().trim();
+
+                    var description = $('#description').val().trim();
 
                     var data = {
                         description: description

@@ -49,8 +49,15 @@ class TemplateController extends Controller
             $response = 'Template: ' . $data['temp_name'] . ' already exists';
             return back()->with('error', $response);
         }
+        $file = $request->file('file');
 
-        // $data['info'] = $this->uploadBySummernote($data['info']);
+        // Create a unique filename
+        $filename = 'template_' . time() . '.json';
+
+        // Save the file to the public/uploads directory
+        $file->move(public_path('uploads'), $filename);
+        $data['info'] = $filename;
+
         try {
             $school = $this->phishing->createTemplate($data);
             if ($school) {

@@ -1,8 +1,7 @@
 <div class="mt-2">
 
     <div class="col-md-12">
-        <form  action="{{ route('template.save') }}" method="POST">
-            @csrf
+
             <div class="box-body">
 
                 <div class="row">
@@ -40,14 +39,13 @@
                 <hr>
                 <a href="javascript:history.back()" class="btn btn-default">Back</a>
 
-                <button style="color:white !important;" type="submit" onclick="saveLesson()"
+                <button style="color:white !important;" type="submit" onclick="saveData()"
                     class="btn btn-primary btnSave pull-right">
                     <span style="color:white !important;" class="indicator-label">Save</span>
                     <span style="color:white !important;" class="indicator-progress">Please wait...
                         <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                 </button>
             </div>
-        </form>
     </div>
 
 </div>

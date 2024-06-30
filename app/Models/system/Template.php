@@ -18,6 +18,8 @@ class Template extends Model
 
     public static $rules = [
         "temp_name" => "required|max:100",
-        "info" => "required",
+        // "info" => "required",
+        'file' => 'required|file|mimes:json|max:10240', // 5MB max size
+
     ];
 }

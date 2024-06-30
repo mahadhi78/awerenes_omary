@@ -97,14 +97,16 @@
         <script src="{{ asset('assets/system/js/addForm.js') }}"></script>
         <script src="{{ asset('assets/js/plugins/summernote/summernote-bs4.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/restrict/jquery-key-restrictions.min.js') }}"></script>
-        <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
-
+        <script src="{{ asset('assets/js/plugins/summernote/summernote-bs4.js') }}"></script>
         <script type="text/javascript" language="javascript" class="init">
             $(".indicator-progress").toggle(false);
 
-            // $('#info').summernote({
-            //     height: 150 // Set the desired height in pixels
-            // });
+            $(document).ready(function() {
+                new Clipboard('.btn-copy');
+            });
+            $('#info').summernote({
+                height: 150
+            });
 
             $('#ttr_id,#ts_id,#subject_id,#day').chosen({
                 width: "100%"
@@ -112,15 +114,33 @@
 
             removeError();
 
-            ClassicEditor
-                .create(document.querySelector('#info'), {
-                    ckfinder: {
-                        uploadUrl: '{{ route('upload.image') . '?_token=' . csrf_token() }}'
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
+            function saveData() {
+                $(".btnSave").prop('disabled', true);
+                $(".indicator-progress").toggle(true);
+                $(".indicator-label").hide();
+
+                var info = $('#info').val().trim();
+                var tempName = $("#temp_name").val().trim();
+
+                var data = {
+                    temp_name: tempName,
+                    info: info
+                };
+
+                // Convert data to JSON string and create a Blob
+                var json = JSON.stringify(data);
+                var blob = new Blob([json], {
+                    type: 'application/json'
                 });
+
+                // Create FormData and append the Blob
+                var formData = new FormData();
+                formData.append('file', blob, 'data.json');
+                formData.append('temp_name', $("#temp_name").val().trim());
+
+                var formActionUrl = "{{ route('template.save') }}";
+                saveFormData(formActionUrl, formData);
+            }
         </script>
         {!! Common::renderDataTable() !!}
         {!! Common::renderDataTable2() !!}

@@ -73,10 +73,22 @@
                     $(".btnSave").prop('disabled', true);
                     $(".indicator-progress").toggle(true);
                     $(".indicator-label").hide();
+                    var description = $('#summernote').val().trim();
 
-                    var formData = new FormData()
+                    var data = {
+                        description: description
+                    };
+
+                    // Convert data to JSON string and create a Blob
+                    var json = JSON.stringify(data);
+                    var blob = new Blob([json], {
+                        type: 'application/json'
+                    });
+
+                    // Create FormData and append the Blob
+                    var formData = new FormData();
+                    formData.append('file', blob, 'data.json');
                     formData.append('new_name', $("#new_name").val().trim());
-                    formData.append('description', $("#description").val().trim());
 
                     var formActionUrl = "{{ route('news.save') }}";
                     saveFormData(formActionUrl, formData);
@@ -95,8 +107,6 @@
                         }
                     });
                 }
-
-              
             </script>
 
             {!! Common::renderDataTable() !!}

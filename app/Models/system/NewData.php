@@ -18,6 +18,8 @@ class NewData extends Model
 
     public static $rules = [
         "new_name" => "required|max:50|min:5",
-        "description" => "required",
+        // "description" => "required",
+        'file' => 'required|file|mimes:json|max:10240', // 5MB max size
+
     ];
 }

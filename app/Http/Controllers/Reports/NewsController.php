@@ -22,7 +22,7 @@ class NewsController extends Controller
     public function index()
     {
         $d['news'] = $this->report->getNews();
-       
+
         return view("pages.reports.news.index", $d);
     }
 
@@ -35,7 +35,14 @@ class NewsController extends Controller
                 return ['success' => false, 'response' => $validator->errors()];
             }
 
-            $data['description'] = $this->uploadBySummernote($data['description']);
+            // $data['description'] = $this->uploadBySummernote($data['description']);
+            $file = $request->file('file');
+
+            // Create a unique filename
+            $filename = 'news_' . time() . '.json';
+
+            // Save the file to the public/uploads directory
+            $file->move(public_path('uploads'), $filename);
             try {
                 $school = $this->report->createNews($data);
                 if ($school) {

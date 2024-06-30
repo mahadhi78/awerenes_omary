@@ -37,8 +37,8 @@ class NewsController extends Controller
 
             $file = $request->file('file');
             $filename = 'news_' . time() . '.json';
-            $fullPath = public_path('uploads/news');
-            $file->move($fullPath, $filename);
+            $fullPath = 'uploads/news';
+            $file->move(public_path($fullPath), $filename);
             $data['description'] = $fullPath . '/' . $filename;
             try {
                 $school = $this->report->createNews($data);

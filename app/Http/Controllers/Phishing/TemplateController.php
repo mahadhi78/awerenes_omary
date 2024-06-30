@@ -51,8 +51,8 @@ class TemplateController extends Controller
             }
             $file = $request->file('file');
             $filename = 'template_' . time() . '.json';
-            $fullPath= public_path('uploads/template');
-            $file->move($fullPath, $filename);
+            $fullPath= 'uploads/template';
+            $file->move(public_path($fullPath), $filename);
             $data['info'] = $fullPath . '/' . $filename;
     
             try {

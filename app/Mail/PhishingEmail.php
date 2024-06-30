@@ -10,19 +10,22 @@ class PhishingEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject;
-    public $body;
+    public $temp_name;
+    public $info;
 
-    public function __construct($subject, $body)
+    public function __construct($temp_name, $info)
     {
-        $this->subject = $subject;
-        $this->body = $body;
+        $this->temp_name = $temp_name;
+        $this->info = $info;
     }
 
     public function build()
     {
-        return $this->subject($this->subject)
-                    ->view('mails.phishing');
+        return $this->view('mails.phishing')
+                    ->subject($this->temp_name)
+                    ->with([
+                        'subject' => $this->temp_name,
+                        'body' => $this->info,
+                    ]);
     }
 }
-

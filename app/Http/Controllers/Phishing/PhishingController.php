@@ -56,7 +56,6 @@ class PhishingController extends Controller
     public function store(Request $request)
     {
         $request->validate(Phishing::$rules);
-        // dd($request->all());
 
         if (in_array("all", $request->input('user_id'))) {
             $users = User::where('userType', Constants::STATUS_ACTIVE)->get();
@@ -67,11 +66,15 @@ class PhishingController extends Controller
         $template = Template::findOrFail($request->input('template_id'));
         $filePath = public_path('uploads/' . $template->info);
 
-
+        // Read and decode the JSON file
         $contents = json_decode(file_get_contents($filePath), true);
+
+        // Convert relative URLs to absolute URLs
+        $contents['info'] = $this->convertRelativeUrlsToAbsolute($contents['info']);
+
         try {
             foreach ($users as $user) {
-                Mail::to($user->email)->send(new PhishingEmail($contents->temp_name, $contents->info));
+                Mail::to($user->email)->send(new PhishingEmail($contents['temp_name'], $contents['info']));
 
                 $info = Phishing::create([
                     'user_id' => $user->id,
@@ -88,5 +91,18 @@ class PhishingController extends Controller
             Log::channel('daily')->error($response);
             return back()->with('error', $response);
         }
+    }
+
+    private function convertRelativeUrlsToAbsolute($html)
+    {
+        $baseUrl = url('/'); // Gets the base URL of your application
+        $pattern = "/<img src=['\"](.*?)['\"]/i";
+        return preg_replace_callback($pattern, function ($matches) use ($baseUrl) {
+            $url = $matches[1];
+            if (!preg_match("/^https?:\/\//i", $url)) {
+                $url = $baseUrl . '/' . ltrim($url, '/');
+            }
+            return str_replace($matches[1], $url, $matches[0]);
+        }, $html);
     }
 }

@@ -123,7 +123,7 @@
                 var tempName = $("#temp_name").val().trim();
 
                 var data = {
-                    temp_name: tempName,=
+                    temp_name: tempName,
                     info: info
                 };
 

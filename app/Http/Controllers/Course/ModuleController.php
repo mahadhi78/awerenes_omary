@@ -64,15 +64,17 @@ class ModuleController extends Controller
     public function modulePreview($id)
     {
         $id = Common::decodeHash($id);
-        $modules = $this->course->getLessonByModuleId($id);
-        $filePath = public_path($modules->description);
-        $d['modules'] = json_decode(file_get_contents($filePath), true);
-
+        $data = $this->course->getLessonByModuleId($id)->first();
+        $filePath = public_path($data->description);
+        $content = json_decode(file_get_contents($filePath), true);
+        $d['modules'] = [$content]; // Wrapping the single module data in an array
+    
         if (Auth::user()->userType == Constants::LEARNER) {
             return view('pages.Learn.course.module_preview', $d);
         }
         return view("pages.C_M_L_manage.module.preview.index", $d);
     }
+    
 
     public function edit($id)
     {

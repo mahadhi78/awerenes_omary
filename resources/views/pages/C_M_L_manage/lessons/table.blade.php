@@ -25,7 +25,6 @@
                     </td>
                     <td>{{ $list->lv_name }}</td>
                     <td>{{ $list->lesson_name }}</td>
-                    <td>{{ $list->module_name }}</td>
                     @canany(['lesson-edit', 'lesson-delete'])
                         <td>
                             @can('lesson-edit')

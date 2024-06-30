@@ -65,10 +65,13 @@ class PhishingController extends Controller
         }
 
         $template = Template::findOrFail($request->input('template_id'));
+        $filePath = public_path('uploads/' . $template->info);
 
+
+        $contents = json_decode(file_get_contents($filePath), true);
         try {
             foreach ($users as $user) {
-                Mail::to($user->email)->send(new PhishingEmail($template->temp_name, $template->info));
+                Mail::to($user->email)->send(new PhishingEmail($contents->temp_name, $contents->info));
 
                 $info = Phishing::create([
                     'user_id' => $user->id,
@@ -76,7 +79,6 @@ class PhishingController extends Controller
                     'template_id' => $request->input('template_id'),
                 ]);
             }
-            // dd($info);
             if ($info) {
                 Log::channel('daily')->info('data' . ': ' . $info);
                 return redirect()->back()->with('success', 'Emails sent successfully.');

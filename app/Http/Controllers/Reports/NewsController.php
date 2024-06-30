@@ -43,6 +43,7 @@ class NewsController extends Controller
 
             // Save the file to the public/uploads directory
             $file->move(public_path('uploads'), $filename);
+            $data['description'] = $filename;
             try {
                 $school = $this->report->createNews($data);
                 if ($school) {

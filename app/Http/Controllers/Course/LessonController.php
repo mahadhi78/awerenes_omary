@@ -56,15 +56,18 @@ class LessonController extends Controller
 
             $schoolExists = Lesson::where("lesson_name", "=", $data['lesson_name'])->first();
             if ($schoolExists) {
-                $response = 'Course: ' . $data['lesson_name'] . ' already exists';
+                $response = 'Lesson: ' . $data['lesson_name'] . ' already exists';
                 return ['success' => 'failure', 'response' => $response];
             }
 
-            $data['description'] = $this->uploadBySummernote($data['description']);
+            $file = $request->file('file');
+            $filename = 'lesson_' . time() . '.json';
+            $file->move(public_path('uploads/lessons'), $filename);
+            $data['description'] = $filename;
             try {
                 $school = $this->course->createLesson($data);
                 if ($school) {
-                    $response = 'Lessons saved successfully';
+                    $response = 'Lesson saved successfully';
                     Log::channel('daily')->info($response . ': ' . $school);
                     return ['success' => true, 'response' => $response];
                 }
@@ -135,24 +138,5 @@ class LessonController extends Controller
         }
     }
 
-    protected function uploadBySummernote($description)
-    {
-        $dom = new DOMDocument();
-        $dom->loadHtml($description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $imageFile = $dom->getElementsByTagName('imageFile');
 
-        foreach ($imageFile as $item => $image) {
-            $data = $image->getAttribute('src');
-            list($type, $data) = explode(';', $data);
-            list(, $data)      = explode(',', $data);
-            $imgeData = base64_decode($data);
-            $image_name = "/upload/lesson" . time() . $item . '.png';
-            $path = public_path() . $image_name;
-            file_put_contents($path, $imgeData);
-
-            $image->removeAttribute('src');
-            $image->setAttribute('src', $image_name);
-        }
-        return $dom->saveHTML();
-    }
 }

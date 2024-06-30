@@ -86,13 +86,26 @@
                     $(".btnSave").prop('disabled', true);
                     $(".indicator-progress").toggle(true);
                     $(".indicator-label").hide();
+                    var lesson_name = $("#lesson_name").val().trim();
+                    var description = $("#description").val().trim();
 
+                    var data = {
+                        lesson_name: lesson_name,
+                        description: description
+                    };
+
+                    // Convert data to JSON string and create a Blob
+                    var json = JSON.stringify(data);
+                    var blob = new Blob([json], {
+                        type: 'application/json'
+                    });
                     var formData = new FormData()
                     formData.append('lesson_name', $("#lesson_name").val().trim());
                     formData.append('level_id', $("#level_id").val().trim());
                     formData.append('course_id', $("#course_id").val().trim());
                     formData.append('module_id', $("#module_id").val().trim());
-                    formData.append('description', $("#description").val().trim());
+                    formData.append('file', blob, 'data.json');
+
 
                     if (isUpdate) {
                         formData.append('id', {!! isset($lesson) ? json_encode($lesson->id) : 'null' !!});

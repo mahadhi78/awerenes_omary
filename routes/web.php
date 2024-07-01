@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\frontend\HomeFController;
 use App\Http\Controllers\UserManagement\UserController;
 use App\Http\Controllers\LoginHistory\LoginHistoryController;
 
@@ -35,6 +34,9 @@ Route::get('/registration', [RegisterController::class, 'create'])->name('regist
 Route::post('/registration/post', [RegisterController::class, 'save'])->name('registration.save');
 
 Auth::routes();
+Route::get('register', function () {
+    return redirect('login');
+});
 Route::post('password-resets', [UserController::class, 'resetPassword'])->name('password.resets');
 Route::post('password-resets-email', [UserController::class, 'resetPasswordEmail'])->name('password.resets-email');
 

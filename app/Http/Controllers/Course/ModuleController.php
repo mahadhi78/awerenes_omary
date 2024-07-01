@@ -65,10 +65,13 @@ class ModuleController extends Controller
     {
         $id = Common::decodeHash($id);
         $data = $this->course->getLessonByModuleId($id)->first();
+        if (!$data || !$data->description) {
+            return redirect()->back()->with('error', 'No module data found or description is missing.');
+        }
         $filePath = public_path($data->description);
         $content = json_decode(file_get_contents($filePath), true);
-        $d['modules'] = [$content]; // Wrapping the single module data in an array
-    
+        $d['modules'] = [$content]; 
+
         if (Auth::user()->userType == Constants::LEARNER) {
             return view('pages.Learn.course.module_preview', $d);
         }

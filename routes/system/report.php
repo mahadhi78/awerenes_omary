@@ -20,7 +20,7 @@ Route::group(['prefix' => 'system'], function () {
     Route::get('/report', [ReportController::class, 'index'])->name('report.list');
     Route::get('/report/create', [ReportController::class, 'create'])->name('report.create');
     Route::post('/report/save', [ReportController::class, 'store'])->name('report.save');
-    Route::get('/report/edit', [ReportController::class, 'edit'])->name('report.edit');
+    Route::get('/report/edit/{id}', [ReportController::class, 'create'])->name('report.edit');
     Route::post('/report/update', [ReportController::class, 'update'])->name('report.update');
     Route::post('/report/delete', [ReportController::class, 'destroy'])->name('report.destroy');
 

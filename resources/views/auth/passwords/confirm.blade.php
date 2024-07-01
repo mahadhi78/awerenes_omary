@@ -1,5 +1,5 @@
 @extends('auth.master')
-
+@section('page_title','Confirm Password')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

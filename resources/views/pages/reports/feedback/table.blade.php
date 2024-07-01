@@ -3,11 +3,12 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Reported By</th>
+                @unless (Auth::user()->userType == Constants::LEARNER)
+                    <th>Reported By</th>
+                @endunless
                 <th>Type</th>
-                <th>preview</th>
-
-                @canany(['levels-edit', 'levels-delete'])
+                <th>{{ Auth::user()->userType != Constants::LEARNER ? 'preview' : 'Action' }}</th>
+                @canany(['report-edit', 'report-delete'])
                     <th>Action</th>
                 @endcanany
             </tr>
@@ -16,23 +17,31 @@
             @foreach ($report as $list)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $list->firstname . ' ' . $list->middlename . ' ' . $list->lastname }}</td>
+                    @unless (Auth::user()->userType == Constants::LEARNER)
+                        <td>{{ $list->firstname . ' ' . $list->middlename . ' ' . $list->lastname }}</td>
+                    @endunless
                     <td>{{ $list->type_name }} </td>
-                    <td style="width: 5%">
+                    <td>
                         <button type="button" class="btn btn-sm btn-secondary rounded-pill" title="Preview Document"
                             onclick="previewDocument( {{ $list->id }})">
                             <i class="fa fa-eye"></i>
                         </button>
+                        @if (Auth::user()->userType == Constants::LEARNER)
+                            <a href="{{ route('report.edit', Common::hash($list->id)) }}" class="btn btn-default ">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        @endif
+
                     </td>
-                    @canany(['levels-edit', 'levels-delete'])
+                    @canany(['report-edit', 'report-delete'])
                         <td>
                             @if ($list->is_deleted)
-                                <button class='btn btn-info btn-sm' onclick="restoreSchool({{ $list->id }})">
+                                <button class='btn btn-info btn-sm' onclick="restoreFeedback({{ $list->id }})">
                                     <i class="fa fa-refresh"></i>
                                 </button>
                             @else
-                                @can('levels-delete')
-                                    <button class='btn btn-danger btn-sm' onclick="deleteSchool({{ $list->id }})">
+                                @can('report-delete')
+                                    <button class='btn btn-danger btn-sm' onclick="deleteFeedback({{ $list->id }})">
                                         <i class="fa fa-trash"></i>
 
                                     </button>

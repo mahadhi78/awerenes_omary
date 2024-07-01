@@ -5,8 +5,7 @@
         @include('pages.home.admin')
     @endif
     @if (Auth::user()->userType == Constants::LEARNER)
-    @include('pages.home.student')
-
+        @include('pages.home.student')
     @endif
     @push('scripts')
     @endpush

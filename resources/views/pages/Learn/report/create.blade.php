@@ -11,7 +11,7 @@
         <div class="col-lg-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h4>Send Reports</h4>
+                    <h4>@if($data) Edit @else Send @endif Reports</h4>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
@@ -23,7 +23,9 @@
                                 </label>
                                 <select name="type_report_id" id="type_report_id" class="form-control">
                                     @foreach ($type as $type)
-                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                        <option value="{{ $type->id }}"
+                                            {{ isset($type_data) && $type_data == $type->type_report_id ? 'selected' : '' }}>
+                                            {{ $type->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -33,7 +35,7 @@
                         <div class="col-lg-12">
                             <div class="form-group" id="description_validate">
                                 <label for="description">Description</label>
-                                <textarea name="description" id="description" class="form-control" minlength="30" maxlength="300"></textarea>
+                                <textarea name="description" id="description" class="form-control" minlength="30" maxlength="300">@if($data) {!! $data['description'] !!} @endif</textarea>
                             </div>
                         </div>
                     </div>
@@ -72,10 +74,18 @@
                 $(".indicator-progress").toggle(true);
                 $(".indicator-label").hide();
 
+                var description = $("#description").val().trim();
+                var data = {
+                    description: description
+                };
+
+                var json = JSON.stringify(data);
+                var blob = new Blob([json], {
+                    type: 'application/json'
+                });
                 var formData = new FormData()
                 formData.append('type_report_id', $("#type_report_id").val().trim());
-                formData.append('description', $("#description").val().trim());
-
+                formData.append('file', blob, 'data.json');
 
                 var formActionUrl = "{{ route('report.save') }}";
                 saveFormData(formActionUrl, formData);

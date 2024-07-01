@@ -4,23 +4,19 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <div class="col-md-6">
-                {{-- <h4>{{ $course }}</h4> --}}
-
-            </div>
             @foreach ($modules as $key => $module)
-                <div class="ibox" id="module{{ $module->id }}">
+                <div class="ibox" id="module{{ $key }}">
                     <div class="ibox-title">
-                        <h5>{{ $module->lesson_name }}</h5>
+                        <h5>{{ $module['lesson_name'] }}</h5>
 
                         <div class="ibox-tools">
-                            <a href="#" class="collapse-link" onclick="toggleCollapse({{ $module->id }})">
+                            <a href="#" class="collapse-link" onclick="toggleCollapse({{ $key }})">
                                 <i class="fa fa-chevron-{{ $key === 0 ? 'down' : 'up' }}"></i>
                             </a>
                         </div>
                     </div>
                     <div class="ibox-content" style="{{ $key === 0 ? 'display: block;' : 'display: none;' }}">
-                        <p>{!! $module->description !!}</p>
+                        {!! $module['description'] !!}
                     </div>
                 </div>
             @endforeach

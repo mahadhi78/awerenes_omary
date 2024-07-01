@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-8 text-right">
                     <span> Templates </span>
-                    <h2 class="font-bold">{{ $templateCount}}</h2>
+                    <h2 class="font-bold">{{ $templateCount }}</h2>
                 </div>
             </div>
         </div>
@@ -69,7 +69,8 @@
                     <ol class="dd-list">
                         @foreach ($topCourse as $top)
                             <li class="dd-item dd-collapsed" data-id="1">
-                                <a class='text text-primary' href="{{ route('course.preview', Common::hash($top->id)) }}">
+                                <a class='text text-primary'
+                                    href="{{ route('course.preview', Common::hash($top->id)) }}">
                                     <div class="dd-handle">
                                         <span class="label label-info">
                                             <img src="{{ asset($top->c_logo) }}" width="40px" height="40px"
@@ -104,14 +105,14 @@
                             </div>
 
                             <div class="vertical-timeline-content">
-                                <h2>{{ $new->new_name }}</h2>
+                                <h2>{{ $new['new_name'] }}</h2>
                                 <p>
-                                    {!! $new->description !!}
+                                    {!! $new['description'] !!}
                                 </p>
-                                
                             </div>
                         </div>
                     @endforeach
+
 
                 </div>
 
@@ -119,4 +120,3 @@
         </div>
     </div>
 </div>
-

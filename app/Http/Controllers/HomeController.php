@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Common;
-use App\Constants\Constants;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Course\CourseDaoImpl;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Home\HomeDaoImpl;
 use App\Http\Controllers\Reports\ReportDaoImpl;
 
@@ -34,8 +31,16 @@ class HomeController extends Controller
         $d['courseCount'] = $this->home->countCourse();
         $d['templateCount'] = $this->home->templateCount();
         $d['topCourse'] = $this->course->fetchLastFiveData();
-        $d['news'] = $this->report->getNews()->take(5);
+        $data = $this->report->getNews()->take(5);
 
+        $news = [];
+        foreach ($data as $item) {
+            $filePath = public_path($item->description);
+            $content = json_decode(file_get_contents($filePath), true);
+            $news[] = $content;
+        }
+
+        $d['news'] = $news;
         return view('home', $d);
     }
 }

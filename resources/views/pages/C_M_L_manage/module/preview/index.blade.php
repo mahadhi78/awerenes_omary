@@ -6,10 +6,6 @@
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-lg-12">
-                <div class="col-md-6">
-                    {{-- <h4>{{ $course }}</h4> --}}
-
-                </div>
                 @foreach ($modules as $key => $module)
                     <div class="ibox" id="module{{ $key }}">
                         <div class="ibox-title">

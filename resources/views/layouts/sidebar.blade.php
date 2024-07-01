@@ -171,11 +171,23 @@
             <span class="nav-label">Course</span>
         </a>
     </li>
-    <li class="{{ Route::currentRouteName() == 'report.create' ? 'active' : '' }}">
-        <a href="{{ route('report.create') }}" class="{{ Request::is('report.create') ? 'active' : '' }}">
-            <i class="fa fa-file fa-sm"></i>
-            <span class="nav-label">Report</span>
+    <li id="reports">
+        <a href="#"><i class="fa fa-file-text-o fa-sm"></i>
+            <span class="nav-label">Reports</span>
+            <span class="fa arrow"></span>
         </a>
+        <ul class="nav nav-second-level collapse">
+            <li>
+                <a href="{{ route('report.create') }}" data-route="report.create">
+                    Send Report
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('report.list') }}" data-route="report.list">
+                    My Reports
+                </a>
+            </li>
+        </ul>
     </li>
     <li class="{{ Route::currentRouteName() == 'news.list' ? 'active' : '' }}">
         <a href="{{ route('news.list') }}" class="{{ Request::is('news.list') ? 'active' : '' }}">

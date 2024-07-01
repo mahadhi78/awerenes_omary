@@ -20,6 +20,5 @@ class Report extends Model
 
     public static $rules = [
         "type_report_id" => "required",
-        "description" => "required",
     ];
 }

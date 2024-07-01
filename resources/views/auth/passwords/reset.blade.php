@@ -1,4 +1,5 @@
 @extends('auth.auth_master')
+@section('page_title','Reset Password')
 @section('content')
     <div class="ibox-content shadow">
         <center>

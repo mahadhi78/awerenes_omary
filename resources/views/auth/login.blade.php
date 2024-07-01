@@ -1,4 +1,6 @@
 @extends('auth.auth_master')
+
+@section('page_title','Login')
 @section('content')
     <div class="ibox-content shadow">
         <center>

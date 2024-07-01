@@ -44,9 +44,9 @@
                             </div>
 
                             <div class="vertical-timeline-content">
-                                <h2>{{ $new->new_name }}</h2>
+                                <h2>{{ $new['new_name'] }}</h2>
                                 <p>
-                                    {!! $new->description !!}
+                                    {!! $new['description'] !!}
                                 </p>
                                 
                             </div>

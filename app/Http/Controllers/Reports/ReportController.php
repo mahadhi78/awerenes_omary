@@ -28,21 +28,36 @@ class ReportController extends Controller
 
     public function index()
     {
-        $d['report'] = $this->report->getReport();
-        // if (Auth::user()->userType == Constants::LEARNER) {
-        //     return view('pages.Learn.course.index', $d);
-        // }
+        $query = $this->report->getReport();
+        if (Auth::user()->userType == Constants::LEARNER) {
+            $query = $query->where('user_id', Auth::user()->id);
+        }
+        $d['report'] = $query;
         return view("pages.reports.feedback.index", $d);
     }
 
-    public function create()
+    public function create($id = null)
     {
         $d['type'] = $this->report->getType();
 
+        if ($id) {
+
+            $data = $this->report->getReportById(Common::decodeHash($id));
+            $filePath = $data->description;
+
+            if (!file_exists($filePath)) {
+                return response()->json(['error' => 'File not found.'], 404);
+            }
+            $d['data'] = json_decode(file_get_contents($filePath), true);
+            $d['type_data'] = $data;
+
+        }
+        $d['data'] = null;
         return view("pages.Learn.report.create", $d);
     }
 
-    
+
+
     public function store(Request $request)
     {
         if ($request->ajax()) {
@@ -52,7 +67,13 @@ class ReportController extends Controller
                 return ['success' => false, 'response' => $validator->errors()];
             }
 
-            $data['description'] = $this->uploadBySummernote($data['description']);
+
+            $file = $request->file('file');
+            $filename = 'report_' . time() . '.json';
+            $fullPath = 'uploads/reports';
+            $file->move(public_path($fullPath), $filename);
+            $data['description'] = $fullPath . '/' . $filename;
+
             $data['user_id'] = Auth::user()->id;
             try {
                 $school = $this->report->createReport($data);
@@ -69,30 +90,17 @@ class ReportController extends Controller
         }
     }
 
-    protected function uploadBySummernote($description)
-    {
-        $dom = new DOMDocument();
-        $dom->loadHtml($description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $imageFile = $dom->getElementsByTagName('imageFile');
 
-        foreach ($imageFile as $item => $image) {
-            $data = $image->getAttribute('src');
-            list($type, $data) = explode(';', $data);
-            list(, $data)      = explode(',', $data);
-            $imgeData = base64_decode($data);
-            $image_name = "/upload/" . time() . $item . '.png';
-            $path = public_path() . $image_name;
-            file_put_contents($path, $imgeData);
-
-            $image->removeAttribute('src');
-            $image->setAttribute('src', $image_name);
-        }
-        return $dom->saveHTML();
-    }
 
     public function edit($id)
     {
-        return response()->json($this->report->getReportById($id));
+        $upload = $this->report->getReportById($id);
+        $filePath = public_path($upload->description);
+        if (!file_exists($filePath)) {
+            return response()->json(['error' => 'File not found.'], 404);
+        }
+        $contents = json_decode(file_get_contents($filePath), true);
+        return response()->json($contents);
     }
 
 
@@ -101,8 +109,17 @@ class ReportController extends Controller
         //
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $class = $this->report->deleteReportById($request['id']);
+        try {
+            $response = 'Data Deleted Successfully';
+            Log::channel('daily')->info($response . ' ' . $class);
+            return ['success' => true, 'response' => $response];
+        } catch (\Exception $error) {
+            $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+            Log::channel('daily')->error($response . ' ' . $error->getMessage());
+            return ['success' => 'failure', 'response' => $response];
+        }
     }
 }

@@ -36,7 +36,6 @@ class PhishingController extends Controller
         $d['compaign'] = $this->phishing->getCompaign();
         $d['activeStatus'] = Constants::STATUS_ACTIVE;
         $d['templates'] = $this->phishing->getTemplate();
-
         return view("pages.phishing.index", $d);
     }
 
@@ -49,6 +48,45 @@ class PhishingController extends Controller
         return view("pages.phishing.create", $d);
     }
 
+    // public function store(Request $request)
+    // {
+    //     $request->validate(Phishing::$rules);
+
+    //     if (in_array("all", $request->input('user_id'))) {
+    //         $users = User::where('userType', Constants::STATUS_ACTIVE)->get();
+    //     } else {
+    //         $users = User::whereIn('id', $request->input('user_id'))->get();
+    //     }
+
+    //     $template = $this->phishing->getTemplateById($request->input('template_id'));
+    //     $contents = json_decode(file_get_contents($template->info), true);
+    //     $contents['info'] = $this->convertRelativeUrlsToAbsolute($contents['info']);
+
+    //     try {
+    //         foreach ($users as $user) {
+
+    //             $info = Phishing::create([
+    //                 'user_id' => $user->id,
+    //                 'compaign_id' => $request->input('compaign_id'),
+    //                 'template_id' => $request->input('template_id'),
+    //             ]);
+    //             Mail::to($user->email)->send(new PhishingEmail(
+    //                 $contents['temp_name'],
+    //                 $contents['info'],
+    //                 Common::hash($info->id),
+    //                 Common::hash($request->input('template_id'))
+    //             ));
+    //         }
+    //         if ($info) {
+    //             Log::channel('daily')->info('data' . ': ' . $info);
+    //             return redirect()->back()->with('success', 'Emails sent successfully.');
+    //         }
+    //     } catch (\Exception $error) {
+    //         $response = 'Operation failed, please contact the system administrator: ' . $error->getMessage();
+    //         Log::channel('daily')->error($response);
+    //         return back()->with('error', $response);
+    //     }
+    // }
     public function store(Request $request)
     {
         $request->validate(Phishing::$rules);
@@ -60,18 +98,17 @@ class PhishingController extends Controller
         }
 
         $template = $this->phishing->getTemplateById($request->input('template_id'));
-        $filePath = public_path($template->info);
-        $contents = json_decode(file_get_contents($filePath), true);
+        $contents = json_decode(file_get_contents($template->info), true);
         $contents['info'] = $this->convertRelativeUrlsToAbsolute($contents['info']);
 
         try {
             foreach ($users as $user) {
-
                 $info = Phishing::create([
                     'user_id' => $user->id,
                     'compaign_id' => $request->input('compaign_id'),
                     'template_id' => $request->input('template_id'),
                 ]);
+
                 Mail::to($user->email)->send(new PhishingEmail(
                     $contents['temp_name'],
                     $contents['info'],
@@ -90,6 +127,7 @@ class PhishingController extends Controller
         }
     }
 
+
     private function convertRelativeUrlsToAbsolute($html)
     {
         $baseUrl = url('/'); // Gets the base URL of your application
@@ -103,17 +141,20 @@ class PhishingController extends Controller
         }, $html);
     }
 
-    public function countClicked($template_id, $info_id)
+    public function countClicked($template_name, $template_id, $info_id)
     {
         Phishing::findOrFail(Common::decodeHash($info_id))->update([
             'clicked' => true
         ]);
+
         $template = $this->phishing->getTemplateById(Common::decodeHash($template_id));
+
+
         $filePath = public_path($template->info);
         $d['contents'] = json_decode(file_get_contents($filePath), true);
         // $contents['info'] = $this->convertRelativeUrlsToAbsolute($contents['info']);
 
-        $d['message'] = 'You have been failed by clicking phishing link be awaere with attacking issue';
+        $d['message'] = 'You have been failed by clicking phishing link be awere with attacking issue';
         return view("pages.phishing.clicked_view", $d);
     }
 }

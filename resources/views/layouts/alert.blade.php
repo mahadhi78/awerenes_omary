@@ -13,7 +13,6 @@
         swal({
             text: "{{ Session::get('error') }}",
             icon: "error",
-            timer: 1500,
             showConfirmButton: true,
         });
     </script>

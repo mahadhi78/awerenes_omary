@@ -6,6 +6,7 @@
                 <th>Compaign Name</th>
                 <th>Start At</th>
                 <th>End At</th>
+                <th>Total Clicked</th>
                 <th>Status</th>
                 {{-- @canany(['course-edit', 'course-delete']) --}}
                     <th>Action</th>
@@ -24,6 +25,7 @@
                     </td>
                     <td>{{ $list->start_at }}</td>
                     <td>{{ $list->end_at }}</td>
+                    <td>{{ $list->total_clicks }}</td>
                     
                     <td>
                         @if ($list->status == $activeStatus)

@@ -12,12 +12,23 @@ class PhishingDaoImpl implements PhishingDao
 {
     public function getCompaign()
     {
+        $query = Compaign::select('compaigns.id', 'compaigns.name', 'compaigns.status','compaigns.start_at','compaigns.end_at','compaigns.created_at','compaigns.deleted_at','compaigns.updated_at') // Include all necessary columns from `compaigns`
+            ->leftJoin('phishings', 'phishings.compaign_id', '=', 'compaigns.id')
+            ->selectRaw('compaigns.*, COALESCE(SUM(phishings.clicked), 0) as total_clicks')
+            ->groupBy('compaigns.id', 'compaigns.name', 'compaigns.status','compaigns.start_at','compaigns.end_at','compaigns.created_at','compaigns.deleted_at','compaigns.updated_at') // Include all selected columns from `compaigns`
+            ->orderBy('compaigns.id', 'desc');
+
         if (Auth::user()->hasRole(Constants::ROLE_SUPER_ADMINISTRATOR)) {
-            $data = Compaign::withTrashed()->get();
+            $query->withTrashed();
         }
-        $data = Compaign::all();
-        return $data;
+
+        return $query->get();
     }
+
+
+
+
+
     public function getCompaignById($id)
     {
         return Compaign::findOrFail($id);
@@ -36,7 +47,7 @@ class PhishingDaoImpl implements PhishingDao
     }
     public function getCompaignByIdAndName()
     {
-        return  Compaign::where('status',Constants::STATUS_ACTIVE)->pluck('name', 'id')->all();
+        return  Compaign::where('status', Constants::STATUS_ACTIVE)->pluck('name', 'id')->all();
     }
 
 

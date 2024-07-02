@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Hashids\Hashids;
+use App\Models\system\Faq;
 use App\Constants\Constants;
 use Illuminate\Support\Facades\Auth;
 
@@ -142,5 +143,20 @@ class Qs
         $hash = new Hashids($date, 14);
         $decoded = $hash->decode($str);
         return $toString ? implode(',', $decoded) : $decoded;
+    }
+
+    public static function getFaqs()
+    {
+        $data = Faq::orderBy('created_at', 'desc')->get()->take(5);
+
+        $news = [];
+        foreach ($data as $item) {
+            $filePath = public_path($item->description);
+            $content = json_decode(file_get_contents($filePath), true);
+            $news[] = $content;
+        }
+
+        $d['faqs'] = $news;
+        return $news;
     }
 }

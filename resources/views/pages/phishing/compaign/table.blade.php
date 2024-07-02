@@ -17,10 +17,10 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>
-                        <a class='text text-primary' href="{{ route('course.preview', Common::hash($list->id)) }}">
+                        {{-- <a class='text text-primary' href="{{ route('course.preview', Common::hash($list->id)) }}"> --}}
                             {{ $list->name }}
-                            <i class="fa fa-eye"></i>
-                        </a>
+                            {{-- <i class="fa fa-eye"></i>
+                        </a> --}}
                     </td>
                     <td>{{ $list->start_at }}</td>
                     <td>{{ $list->end_at }}</td>

@@ -50,6 +50,11 @@
                         <a href="{{ route('lesson.list') }}" data-route="lesson.list">Lessons</a>
                     </li>
                 @endif
+                @if (Gate::any(['faqs-list', 'faqs-edit', 'faqs-save', 'faqs-destroy']))
+                    <li>
+                        <a href="{{ route('faqs.list') }}" data-route="faqs.list">Faqs</a>
+                    </li>
+                @endif
             </ul>
         </li>
     @endif

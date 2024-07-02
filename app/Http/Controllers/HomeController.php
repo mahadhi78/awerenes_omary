@@ -41,6 +41,8 @@ class HomeController extends Controller
         }
 
         $d['news'] = $news;
+
+        
         return view('home', $d);
     }
 }

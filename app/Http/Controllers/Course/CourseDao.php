@@ -30,4 +30,12 @@ interface CourseDao
     public function createLesson($data);
     public function updateLessonById($id, $data);
     public function deleteLessonById($id);
+
+
+    // faqs
+    public function getFaq();
+    public function getFaqById($id);
+    public function createFaq($data);
+    public function updateFaqById($id, $data);
+    public function deleteFaqById($id);
 }

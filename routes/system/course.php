@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Course\FaqsController;
 use App\Http\Controllers\Course\LessonController;
 use App\Http\Controllers\Course\ModuleController;
 use App\Http\Controllers\Course\CourrseController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Phishing\TemplateController;
 Route::get('/course/preview/{id}', [CourrseController::class, 'coursePreview'])->name('course.preview');
 
 Route::get('/module/preview/{id}', [ModuleController::class, 'modulePreview'])->name('module.preview');
+Route::get('/faqs/preview/{id}', [FaqsController::class, 'preview'])->name('faqs.preview');
 
 Route::post('/phishing/{temp_name}/{user_id}', [PhishingController::class, 'storePhished'])->name('phishing.storePhished');
 // ->where('temp_name', '\d{4}(?:\/|\-|\_)(?:\d{2,10})')
@@ -60,5 +62,13 @@ Route::group(['prefix' => 'system'], function () {
     Route::get('/template/edit', [TemplateController::class, 'edit'])->name('template.edit');
     Route::post('/template/update', [TemplateController::class, 'update'])->name('template.update');
     Route::post('/template/delete', [TemplateController::class, 'destroy'])->name('template.destroy');
+
+
+    Route::get('/faqs', [FaqsController::class, 'index'])->name('faqs.list');
+    Route::get('/faqs/create', [FaqsController::class, 'create'])->name('faqs.create');
+    Route::post('/faqs/save', [FaqsController::class, 'store'])->name('faqs.save');
+    Route::get('/faqs/edit', [FaqsController::class, 'edit'])->name('faqs.edit');
+    Route::post('/faqs/update', [FaqsController::class, 'update'])->name('faqs.update');
+    Route::post('/faqs/delete', [FaqsController::class, 'destroy'])->name('faqs.destroy');
 });
 Route::post('/upload/image', [TemplateController::class, 'uploadImage'])->name('upload.image');

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Course;
 
+use App\Models\system\Faq;
 use App\Constants\Constants;
+use App\Models\system\Lesson;
 use App\Models\system\Courses;
+use App\Models\system\Modules;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Course\CourseDao;
-use App\Models\system\Lesson;
-use App\Models\system\Modules;
 
 class CourseDaoImpl implements CourseDao
 {
@@ -117,7 +118,7 @@ class CourseDaoImpl implements CourseDao
         return Lesson::join('courses', 'courses.id', '=', 'lessons.course_id')
             ->join('levels', 'levels.id', '=', 'lessons.level_id')
             ->join('modules', 'modules.id', '=', 'lessons.module_id')
-            ->select('lessons.*','courses.id as c_id' ,'courses.c_name as course_name','modules.m_name as module_name', 'levels.lv_name')
+            ->select('lessons.*', 'courses.id as c_id', 'courses.c_name as course_name', 'modules.m_name as module_name', 'levels.lv_name')
             ->where(function ($query) {
                 if (Auth::user()->hasRole(Constants::ROLE_SUPER_ADMINISTRATOR)) {
                     $query->withTrashed()->orderBy('id', 'asc');
@@ -148,5 +149,27 @@ class CourseDaoImpl implements CourseDao
     public function deleteLessonById($id)
     {
         return Lesson::findOrFail($id)->delete();
+    }
+
+    // faqs
+    public function getFaq()
+    {
+        return Faq::all();
+    }
+    public function getFaqById($id)
+    {
+        return Faq::findOrFail($id);
+    }
+    public function createFaq($data)
+    {
+        return Faq::create($data);
+    }
+    public function updateFaqById($id, $data)
+    {
+        return $this->getFaqById($id)->update($data);
+    }
+    public function deleteFaqById($id)
+    {
+        return $this->getFaqById($id)->delete();
     }
 }

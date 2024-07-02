@@ -41,13 +41,14 @@
                                             </a>
                                         </li>
                                     @endcan
-                                    @can('template-list')
+                                    @canany(['template-save', 'template-edit', 'template-destroy'])
                                         <li class="nav-item">
                                             <a href="#new-section3" class="nav-link" data-toggle="tab">
                                                 Templates List
                                             </a>
                                         </li>
-                                    @endcan
+                                    @endcanany
+
                                     @can('template-save')
                                         <li class="nav-item">
                                             <a href="#new-section4" class="nav-link" data-toggle="tab">

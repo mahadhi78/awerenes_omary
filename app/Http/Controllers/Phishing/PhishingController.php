@@ -8,7 +8,6 @@ use App\Helpers\Common;
 use App\Mail\PhishingEmail;
 use App\Constants\Constants;
 use Illuminate\Http\Request;
-use App\Models\system\Courses;
 
 use App\Models\system\Phishing;
 use App\Models\system\Template;
@@ -16,9 +15,6 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Level\LevelDaoImpl;
-use App\Http\Controllers\Course\CourseDaoImpl;
 use App\Http\Controllers\Phishing\PhishingDaoImpl;
 use App\Http\Controllers\UserManagement\Dao\UserDaoImpl;
 
@@ -63,20 +59,25 @@ class PhishingController extends Controller
             $users = User::whereIn('id', $request->input('user_id'))->get();
         }
 
-        $template = Template::findOrFail($request->input('template_id'));
+        $template = $this->phishing->getTemplateById($request->input('template_id'));
         $filePath = public_path($template->info);
         $contents = json_decode(file_get_contents($filePath), true);
         $contents['info'] = $this->convertRelativeUrlsToAbsolute($contents['info']);
 
         try {
             foreach ($users as $user) {
-                Mail::to($user->email)->send(new PhishingEmail($contents['temp_name'], $contents['info']));
 
                 $info = Phishing::create([
                     'user_id' => $user->id,
                     'compaign_id' => $request->input('compaign_id'),
                     'template_id' => $request->input('template_id'),
                 ]);
+                Mail::to($user->email)->send(new PhishingEmail(
+                    $contents['temp_name'],
+                    $contents['info'],
+                    Common::hash($info->id),
+                    Common::hash($request->input('template_id'))
+                ));
             }
             if ($info) {
                 Log::channel('daily')->info('data' . ': ' . $info);
@@ -100,5 +101,19 @@ class PhishingController extends Controller
             }
             return str_replace($matches[1], $url, $matches[0]);
         }, $html);
+    }
+
+    public function countClicked($template_id, $info_id)
+    {
+        Phishing::findOrFail(Common::decodeHash($info_id))->update([
+            'clicked' => true
+        ]);
+        $template = $this->phishing->getTemplateById(Common::decodeHash($template_id));
+        $filePath = public_path($template->info);
+        $d['contents'] = json_decode(file_get_contents($filePath), true);
+        // $contents['info'] = $this->convertRelativeUrlsToAbsolute($contents['info']);
+
+        $d['message'] = 'You have been failed by clicking phishing link be awaere with attacking issue';
+        return view("pages.phishing.clicked_view", $d);
     }
 }

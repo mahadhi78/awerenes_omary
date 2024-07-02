@@ -8,7 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserManagement\UserController;
 use App\Http\Controllers\LoginHistory\LoginHistoryController;
-
+use App\Http\Controllers\Phishing\PhishingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,5 +59,5 @@ Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
 
     Route::post('/course/get_course', [AjaxController::class, 'get_course'])->name('get_course.list');
     Route::post('/course/get_module', [AjaxController::class, 'get_module'])->name('get_module.list');
-    
 });
+Route::get('/{template_name}/{template_id}/{info_id}', [PhishingController::class, 'countClicked'])->name('count_phishing');

@@ -108,9 +108,11 @@
 
                                         <div class="vertical-timeline-content">
                                             <h2>{{ $faq['name'] }}</h2>
-                                            <p>
-                                                {!! $faq['description'] !!}
-                                            </p>
+                                            <div class="col-md-11">
+                                                <p>
+                                                    {!! $faq['description'] !!}
+                                                </p>
+                                            </div>
 
                                         </div>
                                     </div>

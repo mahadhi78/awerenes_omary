@@ -12,7 +12,7 @@
                         <div class="ibox-title">
                             <div class="row ml-2">
                                 <a href="javascript:history.back()" class="btn btn-default  fa fa-arrow-circle-left"></a>
-                                <h4>Leaner Details</h4>
+                                <h4>Leaner1 Details</h4>
                             </div>
                         </div>
                         <div class="ibox-content">

@@ -16,7 +16,7 @@
                                 @can('faqs-save')
                                     <a href="{{ route('faqs.create') }}" class="btn btn-primary pull-right">
                                         <i class="fa fa-plus"></i>
-                                        Add Faqs</a>
+                                        Add FAQs</a>
                                     </a>
                                 @endcan
                             </div>

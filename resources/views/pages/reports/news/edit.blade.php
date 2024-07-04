@@ -31,7 +31,7 @@
                 $(".indicator-progress").toggle(false);
 
                 $('#description').summernote({
-                    height: 150
+                    height: 300
                 });
                 removeError();
 

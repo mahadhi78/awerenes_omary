@@ -12,11 +12,11 @@
                         <div class="ibox-title">
                             <div class="row ml-2">
                                 <a href="javascript:history.back()" class="btn btn-default  fa fa-arrow-circle-left"></a>
-                                <h4>Faqs Management</h4>
+                                <h4>FAQs Management</h4>
                                 @can('faqs-save')
                                     <a href="{{ route('faqs.create') }}" class="btn btn-primary pull-right">
                                         <i class="fa fa-plus"></i>
-                                        Add Faqs</a>
+                                        Add FAQs</a>
                                     </a>
                                 @endcan
                             </div>

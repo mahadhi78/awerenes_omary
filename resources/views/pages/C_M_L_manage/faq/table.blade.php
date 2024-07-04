@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Faq Name</th>
+                <th>FAQ Name</th>
                 <th>Preview</th>
 
                 @canany(['levels-edit', 'levels-delete'])

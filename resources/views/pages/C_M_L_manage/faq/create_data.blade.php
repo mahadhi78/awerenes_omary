@@ -18,10 +18,10 @@
     </div>
 </div>
 <div class="box-footer">
-    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-white" data-dismiss="modal">Close1</button>
     <button style="color:white !important;" type="submit" onclick="saveFaqs()"
         class="btn btn-primary btnSave pull-right">
-        <span style="color:white !important;" class="indicator-label">Save</span>
+        <span style="color:white !important;" class="indicator-label">Save1</span>
         <span style="color:white !important;" class="indicator-progress">Please wait...
             <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
     </button>

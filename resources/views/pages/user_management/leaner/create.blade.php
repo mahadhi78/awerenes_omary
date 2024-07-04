@@ -2,7 +2,7 @@
 @section('links')
     <link href="{{ asset('assets/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 @endsection
-@section('page_title', 'Leaner Registration')
+@section('page_title', 'Student Registration')
 
 @section('content')
     @if (Gate::check('staffs-save'))

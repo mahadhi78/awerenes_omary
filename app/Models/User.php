@@ -37,6 +37,7 @@ class User extends Authenticatable
         'userType',
         'photo_path',
         'username',
+        'is_deleted',
         'email_token'
     ];
 

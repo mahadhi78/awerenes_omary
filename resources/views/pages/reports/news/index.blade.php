@@ -110,6 +110,13 @@
                         }
                     });
                 }
+
+                function deleteNews(id) {
+                    var formData = new FormData()
+                    formData.append('id', id);
+                    var url = "{{ route('news.destroy') }}";
+                    deleteData(formData, url);
+                }
             </script>
 
             {!! Common::renderDataTable() !!}

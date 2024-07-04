@@ -29,6 +29,7 @@ Route::group(['prefix' => 'system'], function () {
     Route::post('/news/upload', [NewsController::class, 'upload'])->name('news.upload');
 
     Route::get('/news', [NewsController::class, 'index'])->name('news.list');
+    Route::get('/news/edit/{id}', [NewsController::class, 'edit'])->name('news.edit');
     Route::post('/news/save', [NewsController::class, 'store'])->name('news.save');
     Route::post('/news/update', [NewsController::class, 'update'])->name('news.update');
     Route::post('/news/delete', [NewsController::class, 'destroy'])->name('news.destroy');

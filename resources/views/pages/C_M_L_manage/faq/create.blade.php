@@ -13,11 +13,11 @@
                             <div class="row ml-2">
                                 <a href="javascript:history.back()" class="btn btn-default  fa fa-arrow-circle-left"></a>
                                 <h4>Faqs Management</h4>
-                              
+
                             </div>
                         </div>
                         <div class="ibox-content">
-                            
+
                             @include('pages.C_M_L_manage.faq.create_data')
                         </div>
                     </div>
@@ -35,7 +35,17 @@
                     height: 150 // Set the desired height in pixels
                 });
 
-                function saveFaqs(isUpdate) {
+                @if ($faqs)
+                    function updateFaqs() {
+                        faqsData(true);
+                    }
+                @else
+                    function saveFaqs() {
+                        faqsData(false);
+                    }
+                @endif
+
+                function faqsData(isUpdate) {
                     $(".btnSave").prop('disabled', true);
                     $(".indicator-progress").toggle(true);
                     $(".indicator-label").hide();
@@ -56,8 +66,18 @@
                     formData.append('name', $("#name").val().trim());
                     formData.append('file', blob, 'data.json');
 
-                    var formActionUrl = "{{ route('faqs.save') }}";
-                    saveFormData(formActionUrl, formData);
+
+
+                    if (isUpdate) {
+                        var faqs = @json($faqs);
+                        var faqId = faqs.id !== undefined ? faqs.id : null;
+                        formData.append('id', faqId);
+
+                        saveFormData("{{ route('faqs.update') }}", formData);
+                    } else {
+                        var formActionUrl = "{{ route('faqs.save') }}";
+                        saveFormData(formActionUrl, formData);
+                    }
                 }
 
                 removeError();

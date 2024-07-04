@@ -48,7 +48,7 @@ class CourrseController extends Controller
                 $response = 'Course: ' . $data['c_name'] . ' already exists';
                 return ['success' => 'failure', 'response' => $response];
             }
-            $fileUploadResult = Common::handleFileUpload($request, 'c_logo', '/uploads/schools/');
+            $fileUploadResult = Common::handleFileUpload($request, 'c_logo', '/uploads/course/');
 
             if ($fileUploadResult['success']) {
                 $data['c_logo'] = $fileUploadResult['response'];
@@ -86,8 +86,6 @@ class CourrseController extends Controller
         //
     }
 
-
-
     public function edit($id)
     {
         return response()->json($this->course->getCourseById($id));
@@ -110,7 +108,7 @@ class CourrseController extends Controller
                 $response = 'Course: ' . $data['c_name'] . ' already exists';
                 return ['success' => 'failure', 'response' => $response];
             }
-            $fileUploadResult = Common::handleFileUpload($request, 'c_logo', '/uploads/schools/');
+            $fileUploadResult = Common::handleFileUpload($request, 'c_logo', '/uploads/course/');
 
             if ($fileUploadResult['success']) {
                 $data['c_logo'] = $fileUploadResult['response'];
@@ -138,7 +136,7 @@ class CourrseController extends Controller
     {
         $class = $this->course->deleteCourseById($request['id']);
         try {
-            $response = 'Data Deleted Successfully';
+            $response = 'Course Deleted Successfully';
             Log::channel('daily')->info($response . ' ' . $class);
             return ['success' => true, 'response' => $response];
         } catch (\Exception $error) {

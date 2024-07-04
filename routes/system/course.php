@@ -67,7 +67,7 @@ Route::group(['prefix' => 'system'], function () {
     Route::get('/faqs', [FaqsController::class, 'index'])->name('faqs.list');
     Route::get('/faqs/create', [FaqsController::class, 'create'])->name('faqs.create');
     Route::post('/faqs/save', [FaqsController::class, 'store'])->name('faqs.save');
-    Route::get('/faqs/edit', [FaqsController::class, 'edit'])->name('faqs.edit');
+    Route::get('/faqs/edit/{id}', [FaqsController::class, 'edit'])->name('faqs.edit');
     Route::post('/faqs/update', [FaqsController::class, 'update'])->name('faqs.update');
     Route::post('/faqs/delete', [FaqsController::class, 'destroy'])->name('faqs.destroy');
 });

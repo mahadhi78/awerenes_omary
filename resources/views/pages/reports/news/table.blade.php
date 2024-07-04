@@ -24,14 +24,13 @@
                     @canany(['news-edit', 'news-delete'])
                         <td style="width: 15%">
                             @can('news-edit')
-                                <a class='btn btn-default btn-sm' onclick="editSchool({{ $list->id }})">
+                                <a href="{{ route('news.edit', Common::hash($list->id)) }}" class="btn btn-default btn-xs">
                                     <i class="fa fa-edit"></i>
                                 </a>
                             @endcan
                             @can('news-delete')
-                                <button class='btn btn-danger btn-sm' onclick="deleteSchool({{ $list->id }})">
+                                <button class='btn btn-danger btn-sm' onclick="deleteNews({{ $list->id }})">
                                     <i class="fa fa-trash"></i>
-
                                 </button>
                             @endcan
                         </td>

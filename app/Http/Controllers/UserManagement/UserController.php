@@ -310,16 +310,6 @@ class UserController extends Controller
         }
     }
 
-    function generateRandomPassword($length)
-    {
-        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $password = '';
-        for ($i = 0; $i < $length; $i++) {
-            $password .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $password;
-    }
 
     public function resetPasswordEmail(Request $request)
     {

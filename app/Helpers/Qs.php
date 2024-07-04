@@ -153,10 +153,9 @@ class Qs
         foreach ($data as $item) {
             $filePath = public_path($item->description);
             $content = json_decode(file_get_contents($filePath), true);
+            $content['id'] = $item->id;
             $news[] = $content;
         }
-
-        $d['faqs'] = $news;
         return $news;
     }
 }

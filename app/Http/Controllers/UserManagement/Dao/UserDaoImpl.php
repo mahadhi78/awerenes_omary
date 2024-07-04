@@ -23,25 +23,26 @@ class UserDaoImpl implements UserDao
 
     public function getUnApprovedUsers()
     {
-        return CustomUser::where('is_approved', Constants::PENDING)->get();
+        return CustomUser::where([['is_approved', Constants::PENDING], ['is_deleted', false]])->get();
+    }
+    private function getApproved($data = null)
+    {
+        return CustomUser::where([
+            ['is_approved', Constants::APPROVED],
+            $data,
+            ['is_deleted', false]
+        ])->get();
     }
 
     public function getApprovedUsers()
     {
-        $data = CustomUser::where('is_approved', Constants::APPROVED)->where('userType', Constants::STAFF)->get();
-
-        return $data;
+        return $this->getApproved(['userType', Constants::STAFF]);
     }
 
     public function getApprovedlearners()
     {
-        $data = CustomUser::where('is_approved', Constants::APPROVED)->where('userType', Constants::LEARNER)->get();
-
-        return $data;
+        return $this->getApproved(['userType', Constants::LEARNER]);
     }
-
-
-
 
     public function findUserById($id)
     {
@@ -56,15 +57,15 @@ class UserDaoImpl implements UserDao
 
     public function updateUserById($id, $data)
     {
-        $user = User::findOrFail($id);
-        if ($user) {
-            $user->update($data);
-        }
-        return $user;
+        return  User::findOrFail($id)->update($data);
     }
 
     public function deleteuser($id)
     {
-        return User::findOrFail($id)->delete();
+        return User::findOrFail($id)->update([
+            'is_deleted' => true,
+            'status' => Constants::STATUS_INACTIVE,
+            'activation_status' => Constants::STATUS_INACTIVE
+        ]);
     }
 }

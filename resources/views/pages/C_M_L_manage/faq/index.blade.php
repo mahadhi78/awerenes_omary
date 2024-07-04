@@ -53,6 +53,15 @@
                         }
                     });
                 }
+
+                
+
+                function deleteFaq(id) {
+                    var formData = new FormData()
+                    formData.append('id', id);
+                    var url = "{{ route('faqs.destroy') }}";
+                    deleteData(formData, url);
+                }
             </script>
             {!! Common::renderDataTable() !!}
         @endpush

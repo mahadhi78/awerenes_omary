@@ -116,7 +116,7 @@ class ModuleController extends Controller
     {
         $class = $this->course->deleteModuleById($request['id']);
         try {
-            $response = 'Data Deleted Successfully';
+            $response = 'Module Deleted Successfully';
             Log::channel('daily')->info($response . ' ' . $class);
             return ['success' => true, 'response' => $response];
         } catch (\Exception $error) {

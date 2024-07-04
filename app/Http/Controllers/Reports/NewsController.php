@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reports;
 
 use DOMDocument;
+use App\Helpers\Common;
 use Illuminate\Http\Request;
 use App\Models\system\NewData;
 use Illuminate\Support\Facades\Log;
@@ -22,7 +23,7 @@ class NewsController extends Controller
     public function index()
     {
         $d['news'] = $this->report->getNews();
-
+        $d['news_data'] = null;
         return view("pages.reports.news.index", $d);
     }
 
@@ -58,7 +59,19 @@ class NewsController extends Controller
 
     public function edit($id)
     {
-        return response()->json($this->report->getNewsById($id));
+        $decodedId = Common::decodeHash($id);
+        $d['news_data'] = $this->report->getNewsById($decodedId);
+        $filePath = public_path($d['news_data']->description);
+    
+        if (file_exists($filePath)) {
+            $content = json_decode(file_get_contents($filePath), true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $d['news_data'] = $content;
+            }
+        }
+        $d['news_data']['id'] = $decodedId;
+        return view("pages.reports.news.edit", $d);
+
     }
     public function getFileContents($id)
     {
@@ -74,13 +87,48 @@ class NewsController extends Controller
         return response()->json($contents);
     }
 
-    public function update(Request $request, $id)
+
+    public function update(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $validator = Validator::make($data = $request->all(), NewData::$rules);
+
+            if ($validator->fails()) {
+                return ['success' => false, 'response' => $validator->errors()];
+            }
+            $file = $request->file('file');
+            $path = 'uploads/news/';
+            $filename = 'news_' . time() . '.json';
+            $file->move(public_path($path), $filename);
+            $data['description'] = $path . $filename;
+            
+            try {
+                $school = $this->report->updateNewsById($data['id'], $data);
+                if ($school) {
+                    $response = 'News Updated successfully';
+                    Log::channel('daily')->info($response . ': ' . $school);
+                    return ['success' => true, 'response' => $response];
+                }
+            } catch (\Exception $error) {
+                $response = 'Operation failed, please contact the system administrator: ' . $error->getMessage();
+                Log::channel('daily')->error($response);
+                return ['success' => 'failure', 'response' => $response];
+            }
+        }
     }
 
-    public function destroy($id)
+
+    public function destroy(Request $request)
     {
-        //
+        $class = $this->report->deleteNewsById($request['id']);
+        try {
+            $response = 'News Deleted Successfully';
+            Log::channel('daily')->info($response . ' ' . $class);
+            return ['success' => true, 'response' => $response];
+        } catch (\Exception $error) {
+            $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+            Log::channel('daily')->error($response . ' ' . $error->getMessage());
+            return ['success' => 'failure', 'response' => $response];
+        }
     }
 }

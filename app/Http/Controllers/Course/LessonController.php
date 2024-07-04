@@ -80,22 +80,31 @@ class LessonController extends Controller
     }
 
 
-
-    public function show($id)
-    {
-        //
-    }
-
-
     public function edit($id)
     {
         $d['course'] = $this->course->getCourse();
         $d['levels'] = $this->level->getAlevelByIdAndName();
         $d['lesson'] = $this->course->getLessonById(Common::decodeHash($id));
+        $d['selected_level_id'] = $d['lesson']->level_id; // Extract the level_id
+        $d['lesson_data'] = $d['lesson'];
+        $filePath = public_path( $d['lesson_data']->description);
+        if (file_exists($filePath)) {
+            $content = json_decode(file_get_contents($filePath), true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $d['lesson_data'] = $content;
+            } else {
+                // Handle JSON decode error
+                // Optionally, you can log the error or handle it in another way
+                $d['lesson_data'] = ['error' => 'Invalid JSON format'];
+            }
+        } else {
+            // Handle file not found error
+            $d['lesson_data'] = ['error' => 'File not found'];
+        }
+    
         return view("pages.C_M_L_manage.lessons.create", $d);
     }
-
-
+    
     public function update(Request $request)
     {
         if ($request->ajax()) {
@@ -107,9 +116,15 @@ class LessonController extends Controller
 
             $schoolExists = Lesson::where("lesson_name", "=", $data['lesson_name'])->first();
             if ($schoolExists) {
-                $response = 'Lesson: ' . $data['c_name'] . ' already exists';
+                $response = 'Lesson: ' . $data['lesson_name'] . ' already exists';
                 return ['success' => 'failure', 'response' => $response];
             }
+        // dd($request->all());
+
+            $file = $request->file('file');
+            $filename = 'lesson_' . time() . '.json';
+            $file->move(public_path('uploads/lessons'), $filename);
+            $data['description'] = 'uploads/lessons/' . $filename;
             try {
                 $school = $this->course->updateLessonById($data['id'], $data);
                 $response = 'Lesson Updated successfully';
@@ -137,6 +152,4 @@ class LessonController extends Controller
             return ['success' => 'failure', 'response' => $response];
         }
     }
-
-
 }

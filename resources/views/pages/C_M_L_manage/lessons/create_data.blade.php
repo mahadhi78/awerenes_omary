@@ -18,7 +18,7 @@
                         <span>Level <i class="text-danger">*</i></span>
                     </label>
                     <!--end::Label-->
-                    {!! Form::select('level_id', $levels, null, [
+                    {!! Form::select('level_id', $levels, $selected_level_id, [
                         'placeholder' => 'Please Select Here',
                         'class' => 'form-control ',
                         'required' => 'required',
@@ -26,6 +26,7 @@
                         'onchange' => 'getCourse(this.value)',
                     ]) !!}
                 </div>
+
             </div>
             <div class="col-md-3">
                 <div class="form-group" id="course_id_validate">
@@ -54,7 +55,11 @@
             <div class="col-lg-12">
                 <div class="form-group" id="description_validate">
                     <label for="description">Description</label>
-                    <textarea name="description" id="description" class="form-control" minlength="30" maxlength="300">@if ($lesson) {{ $lesson->description }} @endif</textarea>
+                    <textarea name="description" id="description" class="form-control" minlength="30" maxlength="300">
+@if ($lesson_data)
+{{ $lesson_data['description'] }}
+@endif
+</textarea>
                 </div>
             </div>
         </div>
@@ -64,9 +69,16 @@
         <hr>
         <a href="javascript:history.back()" class="btn btn-default">Back</a>
 
-        <button style="color:white !important;" type="submit" @if ($lesson) onclick="updateLesson()" @else onclick="saveLesson()" @endif
+        <button style="color:white !important;" type="submit"
+            @if ($lesson) onclick="updateLesson()" @else onclick="saveLesson()" @endif
             class="btn btn-primary btnSave pull-right">
-            <span style="color:white !important;" class="indicator-label">@if ($lesson)Update @else Save @endif</span>
+            <span style="color:white !important;" class="indicator-label">
+                @if ($lesson)
+                    Update
+                @else
+                    Save
+                @endif
+            </span>
             <span style="color:white !important;" class="indicator-progress">Please wait...
                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
         </button>

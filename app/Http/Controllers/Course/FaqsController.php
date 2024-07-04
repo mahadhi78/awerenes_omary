@@ -32,8 +32,9 @@ class FaqsController extends Controller
     }
     public function create()
     {
-        $d['faqs'] = $this->course->getFaq();
-        return view("pages.C_M_L_manage.faq.create", $d);
+        // $d['faqs'] = $this->course->getFaq();
+        $d['faqs'] = null;
+        return view("pages.C_M_L_manage.faq.create",$d);
     }
     public function store(Request $request)
     {
@@ -70,7 +71,6 @@ class FaqsController extends Controller
         }
     }
 
-
     public function preview($id)
     {
         $upload = $this->course->getFaqById($id);
@@ -85,13 +85,22 @@ class FaqsController extends Controller
         return response()->json($contents);
     }
 
-
-
     public function edit($id)
     {
-        return response()->json($this->course->getFaqById($id));
+        $decodedId = Common::decodeHash($id);
+        $d['faqs'] = $this->course->getFaqById($decodedId);
+        $filePath = public_path($d['faqs']->description);
+    
+        if (file_exists($filePath)) {
+            $content = json_decode(file_get_contents($filePath), true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $d['faqs'] = $content;
+            }
+        }
+        $d['faqs']['id'] = $decodedId;
+        return view("pages.C_M_L_manage.faq.create", $d);
     }
-
+    
 
     public function update(Request $request)
     {
@@ -101,13 +110,16 @@ class FaqsController extends Controller
             if ($validator->fails()) {
                 return ['success' => false, 'response' => $validator->errors()];
             }
-            $school = $this->course->getFaqById($data['id']);
-
-
+            $file = $request->file('file');
+            $path = 'uploads/faqs/';
+            $filename = 'faqs_' . time() . '.json';
+            $file->move(public_path($path), $filename);
+            $data['description'] = $path . $filename;
+            
             try {
-                $school = $this->course->updateCourseById($data['id'], $data);
+                $school = $this->course->updateFaqById($data['id'], $data);
                 if ($school) {
-                    $response = 'Course Updated successfully';
+                    $response = 'Faq Updated successfully';
                     Log::channel('daily')->info($response . ': ' . $school);
                     return ['success' => true, 'response' => $response];
                 }
@@ -122,9 +134,9 @@ class FaqsController extends Controller
 
     public function destroy(Request $request)
     {
-        $class = $this->course->deleteCourseById($request['id']);
+        $class = $this->course->deleteFaqById($request['id']);
         try {
-            $response = 'Data Deleted Successfully';
+            $response = 'Faq Deleted Successfully';
             Log::channel('daily')->info($response . ' ' . $class);
             return ['success' => true, 'response' => $response];
         } catch (\Exception $error) {

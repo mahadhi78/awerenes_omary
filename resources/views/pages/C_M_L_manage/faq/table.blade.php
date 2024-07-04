@@ -30,14 +30,13 @@
                                 </button>
                             @else
                                 @can('levels-edit')
-                                    <a class='btn btn-default btn-sm' onclick="editData({{ $list->id }})">
+                                    <a class='btn btn-default btn-sm' href="{{ route('faqs.edit', Common::hash($list->id)) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 @endcan
                                 @can('levels-delete')
-                                    <button class='btn btn-danger btn-sm' onclick="deleteLevel({{ $list->id }})">
+                                    <button class='btn btn-danger btn-sm' onclick="deleteFaq({{ $list->id }})">
                                         <i class="fa fa-trash"></i>
-
                                     </button>
                                 @endcan
                             @endif

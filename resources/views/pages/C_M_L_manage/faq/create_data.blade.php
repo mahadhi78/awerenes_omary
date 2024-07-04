@@ -2,7 +2,7 @@
     <div class="col-md-6 col-lg-6 col-sm-6">
         <div class="form-group" id="name_validate">
             <label for="name">
-                <span> Name1 <i class="text-danger">*</i></span>
+                <span> Name <i class="text-danger">*</i></span>
             </label>
             <input type="text" required class="form-control" placeholder="Enter Name" minlength="3" maxlength="250"
                 name="name" id="name" />
@@ -11,7 +11,7 @@
     <div class="col-md-12 col-lg-12 col-sm-12">
         <div class="form-group" id="description_validate">
             <label for="description">
-                <span> Description1 <i class="text-danger">*</i></span>
+                <span> Description <i class="text-danger">*</i></span>
             </label>
             <textarea name="description" id="description" class="form-control" minlength="30" maxlength="300"></textarea>
         </div>

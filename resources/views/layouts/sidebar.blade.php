@@ -52,7 +52,7 @@
                 @endif
                 @if (Gate::any(['faqs-list', 'faqs-edit', 'faqs-save', 'faqs-destroy']))
                     <li>
-                        <a href="{{ route('faqs.list') }}" data-route="faqs.list">Faqs</a>
+                        <a href="{{ route('faqs.list') }}" data-route="faqs.list">FAQs</a>
                     </li>
                 @endif
             </ul>

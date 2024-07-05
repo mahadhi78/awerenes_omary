@@ -15,7 +15,7 @@
                                 <a href="javascript:history.back()"
                                     class="btn btn-default  fa fa-arrow-circle-left"></a>&nbsp;&nbsp;
                                 <h4>
-                                    Leaner @if ($leaner)
+                                    Student @if ($leaner)
                                         Update
                                     @else
                                         Registration

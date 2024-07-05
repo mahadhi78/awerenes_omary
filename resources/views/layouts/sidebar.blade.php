@@ -4,20 +4,21 @@
         <span class="nav-label">Dashboard</span>
     </a>
 </li>
+
+    @if (Gate::any(['news-list', 'news-edit', 'news-save', 'news-destroy']))
+        <li class="{{ Route::currentRouteName() == 'news.list' ? 'active' : '' }}">
+            <a href="{{ route('news.list') }}" class="{{ Request::is('news.list') ? 'active' : '' }}">
+                <i class="fa fa-envelope fa-sm"></i>
+                <span class="nav-label">News</span>
+            </a>
+        </li>
+    @endif
 @if (!(Auth::user()->userType == Constants::LEARNER))
     @if (Gate::any(['phishing-list', 'phishing-edit', 'phishing-save', 'phishing-destroy']))
         <li class="{{ Route::currentRouteName() == 'phishing.list' ? 'active' : '' }}">
             <a href="{{ route('phishing.list') }}" class="{{ Request::is('phishing.list') ? 'active' : '' }}">
                 <i class="fa fa-desktop fa-sm"></i>
                 <span class="nav-label">Phishing</span>
-            </a>
-        </li>
-    @endif
-    @if (Gate::any(['news-list', 'news-edit', 'news-save', 'news-destroy']))
-        <li class="{{ Route::currentRouteName() == 'news.list' ? 'active' : '' }}">
-            <a href="{{ route('news.list') }}" class="{{ Request::is('news.list') ? 'active' : '' }}">
-                <i class="fa fa-envelope fa-sm"></i>
-                <span class="nav-label">News</span>
             </a>
         </li>
     @endif

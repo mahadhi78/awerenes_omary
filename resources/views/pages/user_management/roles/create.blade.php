@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('page_title', 'Subject')
+@section('page_title', 'System Role')
 
 @section('content')
     @if (Gate::check('roles-save'))

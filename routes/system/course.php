@@ -14,6 +14,7 @@ Route::get('/course/preview/{id}', [CourrseController::class, 'coursePreview'])-
 
 Route::get('/module/preview/{id}', [ModuleController::class, 'modulePreview'])->name('module.preview');
 Route::get('/faqs/preview/{id}', [FaqsController::class, 'preview'])->name('faqs.preview');
+Route::get('/template/preview/{id}', [TemplateController::class, 'preview'])->name('template.preview');
 
 Route::post('/phishing/{temp_name}/{user_id}', [PhishingController::class, 'storePhished'])->name('phishing.storePhished');
 // ->where('temp_name', '\d{4}(?:\/|\-|\_)(?:\d{2,10})')
@@ -53,9 +54,10 @@ Route::group(['prefix' => 'system'], function () {
     //compaign
     Route::get('/compaign', [CompaignController::class, 'index'])->name('compaign.list');
     Route::post('/compaign/save', [CompaignController::class, 'store'])->name('compaign.save');
-    Route::get('/compaign/edit', [CompaignController::class, 'edit'])->name('compaign.edit');
+    Route::get('/compaign/edit/{id}', [CompaignController::class, 'edit'])->name('compaign.edit');
     Route::post('/compaign/update', [CompaignController::class, 'update'])->name('compaign.update');
     Route::post('/compaign/delete', [CompaignController::class, 'destroy'])->name('compaign.destroy');
+    Route::post('/compaign/restore', [CompaignController::class, 'restore'])->name('compaign.restore');
 
     //template
     Route::post('/template/save', [TemplateController::class, 'store'])->name('template.save');

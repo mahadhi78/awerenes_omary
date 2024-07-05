@@ -25,7 +25,7 @@
                     @canany(['roles-edit', 'roles-delete'])
                         <td>
                             @can('roles-edit')
-                                <a href="{{ route('roles.edit', [$list->id]) }}" class='btn btn-default btn-xs'>
+                                <a href="{{ route('roles.edit', Common::hash($list->id)) }}" class='btn btn-default btn-xs'>
                                     <i class="fa fa-edit"></i>
                                 </a>
                             @endcan

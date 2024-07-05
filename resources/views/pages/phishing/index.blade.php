@@ -57,12 +57,12 @@
                                             </a>
                                         </li>
                                     @endcan
-
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane show  active " id="new-section">
                                         <div class="col-lg-12">
                                             @include('pages.phishing.compaign.table')
+                                            @include('pages.phishing.compaign.edit')
                                         </div>
                                     </div>
 
@@ -80,9 +80,9 @@
                                     <div class="tab-pane show" id="new-section4">
                                         <div class="col-lg-12">
                                             @include('pages.phishing.templates.create')
+                                            @include('pages.phishing.templates.preview')
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -102,15 +102,8 @@
         <script type="text/javascript" language="javascript" class="init">
             $(".indicator-progress").toggle(false);
 
-            $(document).ready(function() {
-                new Clipboard('.btn-copy');
-            });
             $('#info').summernote({
                 height: 150
-            });
-
-            $('#ttr_id,#ts_id,#subject_id,#day').chosen({
-                width: "100%"
             });
 
             removeError();
@@ -142,8 +135,65 @@
                 var formActionUrl = "{{ route('template.save') }}";
                 saveFormData(formActionUrl, formData);
             }
+
+            var typeId = null;
+
+            function editCompaign(id) {
+                var url = "{{ route('compaign.edit', ':id') }}";
+                url = url.replace(':id', id);
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    success: function(response) {
+                        $('#edit_name').val(response.name);
+                        $('#edit_status').val(response.status);
+                        $('#edit_start_at').val(response.start_at);
+                        $('#edit_end_at').val(response.end_at);
+                        typeId = id
+                        $('#edit_status').trigger('chosen:updated');
+                        $('#editModal').modal('show');
+                    }
+                });
+            }
+
+            function UpdateCompaign() {
+                var formData = new FormData()
+                formData.append('name', $("#edit_name").val().trim());
+                formData.append('status', $("#edit_status").val().trim());
+                formData.append('start_at', $("#edit_start_at").val().trim());
+                formData.append('end_at', $("#edit_end_at").val().trim());
+
+                formData.append('id', typeId);
+                var formActionUrl = "{{ route('compaign.update') }}";
+                UpdateData(formActionUrl, formData);
+            }
+            function previewTemplate(id) {
+            var url = "{{ route('template.preview', ':id') }}";
+            url = url.replace(':id', id);
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function(response) {
+                    document.getElementById('previewModalBody').innerHTML = response.description;
+                    document.getElementById('title').innerHTML = response.new_name;
+                    $("#documentModal").modal("show");;
+                }
+            });
+        }
+            function deleteCompaign(id) {
+                var formData = new FormData()
+                formData.append('id', id);
+                var url = "{{ route('compaign.destroy') }}";
+                deleteData(formData, url);
+            }
+
+            function restoreCompaign(id) {
+                var formData = new FormData()
+                formData.append('id', id);
+                var url = "{{ route('compaign.restore') }}";
+                restoreData(formData, url);
+            }
         </script>
         {!! Common::renderDataTable() !!}
-        {!! Common::renderDataTable2() !!}
     @endpush
 @endsection

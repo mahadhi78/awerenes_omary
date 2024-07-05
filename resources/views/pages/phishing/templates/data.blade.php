@@ -13,16 +13,38 @@
                                     <i class="fa fa-file"></i>
                                 </div>
                                 <div class="file-name">
-                                    <a href="">{{ $tmp->temp_name }}</a>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <a href="">{{ $tmp->temp_name }}</a>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="row">
+
+                                                @can('template-delete')
+                                                    <button title="Delete" class='btn btn-danger btn-sm'
+                                                        onclick="deleteTemplate({{ $tmp->id }})">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                @endcan
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </a>
                         </div>
-
                     </div>
                 @endforeach
-
             </div>
-
         </div>
     </div>
 </div>
+@push('scripts')
+    <script>
+        function deleteTemplate(id) {
+            var formData = new FormData()
+            formData.append('id', id);
+            var url = "{{ route('template.destroy') }}";
+            deleteData(formData, url);
+        }
+    </script>
+@endpush

@@ -59,29 +59,78 @@ class CompaignController extends Controller
                 $response = 'Compaign saved successfully';
                 Log::channel('daily')->info($response . ': ' . $school);
                 return back()->with('success', $response);
-
             }
         } catch (\Exception $error) {
             $response = 'Operation failed, please contact the system administrator: ' . $error->getMessage();
             Log::channel('daily')->error($response);
             return back()->with('error', $response);
-
         }
     }
 
     public function edit($id)
     {
-        //
+        return response()->json($this->phishing->getCompaignById($id));
+    }
+
+    public function update(Request $request)
+    {
+        if ($request->ajax()) {
+            $validator = Validator::make($data = $request->all(), Compaign::$rules);
+
+            if ($validator->fails()) {
+                return ['success' => false, 'response' => $validator->errors()];
+            }
+            $schoolExists = Compaign::where([
+                [
+                    "name", $data['name'],
+                    ['status', $data['status']]
+                ]
+            ])->first();
+            if ($schoolExists) {
+                $response = 'Compaign: ' . $data['name'] . ' already exists';
+                return ['success' => 'failure', 'response' => $response];
+            }
+            try {
+                $school = $this->phishing->updateCompaignById($data['id'], $data);
+                if ($school) {
+                    $response = 'Compaign Updated successfully';
+                    Log::channel('daily')->info($response . ': ' . $school);
+                    return ['success' => true, 'response' => $response];
+                }
+            } catch (\Exception $error) {
+                $response = 'Operation failed, please contact the system administrator: ' . $error->getMessage();
+                Log::channel('daily')->error($response);
+                return ['success' => 'failure', 'response' => $response];
+            }
+        }
     }
 
 
-    public function update(Request $request, $id)
+    public function destroy(Request $request)
     {
-        //
+        $class = $this->phishing->deleteCompaignById($request['id']);
+        try {
+            $response = 'Compaign Deleted Successfully';
+            Log::channel('daily')->info($response . ' ' . $class);
+            return ['success' => true, 'response' => $response];
+        } catch (\Exception $error) {
+            $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+            Log::channel('daily')->error($response . ' ' . $error->getMessage());
+            return ['success' => 'failure', 'response' => $response];
+        }
     }
 
-    public function destroy($id)
+    public function restore(Request $request)
     {
-        //
+        try {
+            $class = $this->phishing->restoreCompaignById($request['id']);
+            $response = 'Data Restored Successfully';
+            Log::channel('daily')->info($response . ' ' . $class);
+            return ['success' => true, 'response' => $response];
+        } catch (\Exception $error) {
+            $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+            Log::channel('daily')->error($response . ' ' . $error->getMessage());
+            return ['success' => 'failure', 'response' => $response];
+        }
     }
 }

@@ -51,10 +51,10 @@ class TemplateController extends Controller
             }
             $file = $request->file('file');
             $filename = 'template_' . time() . '.json';
-            $fullPath= 'uploads/template';
+            $fullPath = 'uploads/template';
             $file->move(public_path($fullPath), $filename);
             $data['info'] = $fullPath . '/' . $filename;
-    
+
             try {
                 $school = $this->phishing->createTemplate($data);
                 if ($school) {
@@ -70,25 +70,32 @@ class TemplateController extends Controller
         }
     }
 
-    public function uploadImage(Request $request)
+    public function preview($id)
     {
-        if ($request->hasFile('upload')) {
-            $file = $request->file('upload');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $filePath = public_path('uploads');
+        $upload = $this->phishing->getTemplateById($id);
+        $filePath = public_path($upload->info);
 
-            if (!file_exists($filePath)) {
-                mkdir($filePath, 0755, true);
-            }
-            $file->move($filePath, $filename);
-            $url = asset('uploads/' . $filename);
-
-            return response()->json([
-                'uploaded' => true,
-                'url' => $url,
-            ]);
+        if (!file_exists($filePath)) {
+            return response()->json(['error' => 'File not found.'], 404);
         }
-        return response()->json(['uploaded' => false, 'error' => ['message' => 'No file uploaded']], 400);
+
+        $contents = json_decode(file_get_contents($filePath), true);
+
+        return response()->json($contents);
+    }
+
+    public function destroy(Request $request)
+    {
+        $class = $this->phishing->deleteTemplateById($request['id']);
+        try {
+            $response = 'Template Deleted Successfully';
+            Log::channel('daily')->info($response . ' ' . $class);
+            return ['success' => true, 'response' => $response];
+        } catch (\Exception $error) {
+            $response = 'Operation Failed,Please Contact System Administrator ' . $error;
+            Log::channel('daily')->error($response . ' ' . $error->getMessage());
+            return ['success' => 'failure', 'response' => $response];
+        }
     }
 
 }

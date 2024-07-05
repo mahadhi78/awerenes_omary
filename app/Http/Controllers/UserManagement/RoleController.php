@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\UserManagement;
 
 
+use App\Helpers\Common;
 use App\Constants\Constants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -148,6 +149,7 @@ class RoleController extends Controller
 
     public function edit($id)
     {
+        $id = Common::decodeHash($id);
         if (Auth::user()->userType == Constants::LEARNER) {
             return redirect()->route('learning.home');
 

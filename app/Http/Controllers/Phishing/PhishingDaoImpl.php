@@ -49,7 +49,10 @@ class PhishingDaoImpl implements PhishingDao
     {
         return  Compaign::where('status', Constants::STATUS_ACTIVE)->pluck('name', 'id')->all();
     }
-
+    public function restoreCompaignById($id)
+    {
+        return Compaign::onlyTrashed()->findOrFail($id)->restore();
+    }
 
     // template
 
@@ -71,11 +74,11 @@ class PhishingDaoImpl implements PhishingDao
     }
     public function updateTemplateById($id, $data)
     {
-        return $this->getCompaignById($id)->update($data);
+        return $this->getTemplateById($id)->update($data);
     }
     public function deleteTemplateById($id)
     {
-        return $this->getCompaignById($id)->delete();
+        return $this->getTemplateById($id)->delete();
     }
     public function getTemplateByIdAndName()
     {

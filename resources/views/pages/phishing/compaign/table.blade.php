@@ -8,9 +8,9 @@
                 <th>End At</th>
                 <th>Total Clicked</th>
                 <th>Status</th>
-                {{-- @canany(['course-edit', 'course-delete']) --}}
+                @canany(['compaign-edit', 'compaign-delete'])
                     <th>Action</th>
-                {{-- @endcanany --}}
+                @endcanany
             </tr>
         </thead>
         <tbody>
@@ -34,27 +34,26 @@
                             <span class="badge bg-danger">{{ $list->status }}</span>
                         @endif
                     </td>
-                    {{-- @canany(['course-edit', 'course-delete']) --}}
+                    @canany(['compaign-edit', 'compaign-delete'])
                         <td>
-                            @if ($list->is_deleted)
-                                <button class='btn btn-info btn-sm' onclick="restoreClass({{ $list->id }})">
+                            @if ($list->deleted_at)
+                                <button title="restore" class='btn btn-danger btn-sm' onclick="restoreCompaign({{ $list->id }})">
                                     <i class="fa fa-refresh"></i>
                                 </button>
                             @else
-                                {{-- @can('course-edit') --}}
-                                    <a class='btn btn-default btn-sm' onclick="editClass({{ $list->id }})">
+                                @can('compaign-edit')
+                                    <a title="Edit" class='btn btn-default btn-sm' onclick="editCompaign({{ $list->id }})">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                {{-- @endcan --}}
-                                {{-- @can('course-delete') --}}
-                                    <button class='btn btn-danger btn-sm' onclick="deleteClass({{ $list->id }})">
+                                @endcan
+                                @can('compaign-delete')
+                                    <button title="Delete" class='btn btn-danger btn-sm' onclick="deleteCompaign({{ $list->id }})">
                                         <i class="fa fa-trash"></i>
-
                                     </button>
-                                {{-- @endcan --}}
+                                @endcan
                             @endif
                         </td>
-                    {{-- @endcanany --}}
+                    @endcanany
                 </tr>
             @endforeach
         </tbody>

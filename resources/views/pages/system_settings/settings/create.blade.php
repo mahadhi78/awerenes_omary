@@ -37,7 +37,24 @@
                 </div>
             </div>
 
-
+<div class="col-lg-4">
+                <div class="form-group">
+                    <label for="logo" >System Logo:</label>
+                    <div class="mb-3">
+                        @if ($systemLogo = Common::getSystemLogo())
+                            <img src="{{ asset($systemLogo) }}" style="width:150px;height:150px;" alt="School Logo">
+                        @else
+                            <img src="{{ asset('images/SchoolLog.jpg') }}" style="width:150px;height:150px;"
+                                alt="School Logo">
+                        @endif
+                        {{-- <img style="width: 100px" height="100px" src="{{ asset('storage/'.$s['logo'])  }}" alt=""> --}}
+                    </div>
+                    <input name="logo" id="logo" @if (Auth::user()->can('settings-edit')) @else readonly @endif
+                        accept="image/*" type="file" class="file-input" data-show-caption="false"
+                        data-show-upload="false" data-fouc>
+                </div>
+            </div>
+        </div>
             
 
         <hr class="divider">
